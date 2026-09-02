@@ -1,0 +1,119 @@
+/*
+ * slipcaseformat.org brand for Axe — the case and the card.
+ *
+ * The palette is the one the Slipcase application page at excelano.com/slipcase
+ * already carries, so the format's home and the app that opens containers read
+ * as one family: slate blue for the case, ochre for the card. Blue against
+ * orange rather than green against red, because the pairing stays legible under
+ * red-green colour blindness.
+ *
+ * One departure from that page. There the ochre is the link colour, which works
+ * on a hero band and against large type; here every link is body text on a white
+ * surface, where #c0803a reaches only 3.29:1 and fails AA. So the slate blue
+ * carries links (7.4:1) and the ochre is demoted to the highlight role — rules,
+ * marks, the active state — in a deeper #a3692c that clears 4.5:1 on white in
+ * case it is ever set in text.
+ *
+ * This file layers AFTER axe/default.css, and mirrors all four theme contexts
+ * because theme.js writes data-theme onto the root: a bare :root override would
+ * lose to default.css's higher-specificity [data-theme] blocks.
+ *
+ * Author: David M. Anderson
+ * Built with AI assistance (Claude, Anthropic)
+ */
+
+/* Light (default and explicit) */
+:root,
+[data-theme="light"] {
+    --color-bg:           #f4f1ea;  /* sandstone paper, the card's cream */
+    --color-surface:      #ffffff;
+    --color-text:         #1b2430;
+    --color-text-muted:   #5c6773;
+    --color-border:       #ddd6c8;
+    --color-accent:          #38557f;  /* the case */
+    --color-accent-hover:    #29405f;
+    --color-highlight:       #a3692c;  /* the card, deepened to clear AA */
+    --color-highlight-hover: #8a5723;
+    --color-nav-bg:       #29405f;
+    --color-nav-text:     #f4f6fa;
+
+    --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+}
+
+/* Dark — system preference */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --color-bg:           #0e1620;
+        --color-surface:      #16202c;
+        --color-text:         #e3e8ee;
+        --color-text-muted:   #93a1b0;
+        --color-border:       #26313f;
+        --color-accent:          #9dbbe6;
+        --color-accent-hover:    #bcd2f0;
+        --color-highlight:       #d9a45f;
+        --color-highlight-hover: #e8bd82;
+        --color-nav-bg:       #131d2c;
+        --color-nav-text:     #ebebeb;
+    }
+}
+
+/* Dark — manual override */
+[data-theme="dark"] {
+    --color-bg:           #0e1620;
+    --color-surface:      #16202c;
+    --color-text:         #e3e8ee;
+    --color-text-muted:   #93a1b0;
+    --color-border:       #26313f;
+    --color-accent:          #9dbbe6;
+    --color-accent-hover:    #bcd2f0;
+    --color-highlight:       #d9a45f;
+    --color-highlight-hover: #e8bd82;
+    --color-nav-bg:       #131d2c;
+    --color-nav-text:     #ebebeb;
+}
+
+/* ---- Site-specific, kept small on purpose. Axe styles the elements; what
+        follows is only what the framework has no opinion about. ---- */
+
+/* The one-line statement of what a container is, under the title. */
+.lede {
+    font-size: 1.15rem;
+    color: var(--color-text-muted);
+    margin-top: -0.25rem;
+}
+
+/* Provenance line at the foot of a generated page: which revision was baked,
+   and when. Small, muted, and never mistaken for the specification's own text. */
+.provenance {
+    border-top: 1px solid var(--color-border);
+    padding-top: 1rem;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+}
+
+/* Contents block on the generated pages. Axe styles nav for the site bar, so
+   the document's own list of sections is a plain aside. */
+.contents ul {
+    columns: 2;
+    column-gap: 2rem;
+    margin-bottom: 0;
+}
+
+@media (max-width: 600px) {
+    .contents ul { columns: 1; }
+}
+
+/* The icon beside the title on the home page. */
+.title-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.title-row img {
+    width: 64px;
+    height: 64px;
+    flex: none;
+}
+
+.title-row h1 { margin: 0; }

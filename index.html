@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>slipcase — a container format that attaches metadata to a file</title>
+    <meta name="description" content="slipcase is a container file format: a ZIP archive holding one payload file of any type together with a TOML document describing it, so the two travel as one file. The specification is public domain and needs no special tooling to read or write.">
+    <link rel="canonical" href="https://slipcaseformat.org/">
+    <link rel="icon" href="/img/slipcase-icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="slipcase">
+    <meta property="og:title" content="slipcase — a container format that attaches metadata to a file">
+    <meta property="og:description" content="A .slpc file is a ZIP archive holding a payload of any type together with a TOML document describing it, so the two travel as one file. Public domain, and readable with the tools you already have.">
+    <meta property="og:url" content="https://slipcaseformat.org/">
+    <meta property="og:image" content="https://slipcaseformat.org/img/og-card.png">
+    <meta property="og:image:alt" content="The slipcase icon beside the words slipcase and the line: a container file format that attaches metadata to a file.">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="/axe/default.css">
+    <link rel="stylesheet" href="/brand.css"><!-- site brand override; cascades over default.css -->
+    <link rel="stylesheet" href="/axe/axe.css">
+    <script src="/axe/theme.js"></script>
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="/">slipcase</a></li>
+        <li><a href="/spec/">Specification</a></li>
+        <li><a href="/design/">Design</a></li>
+        <li><a href="/implementations/">Implementations</a></li>
+        <li><a href="https://github.com/excelano/slipcase" rel="noopener">GitHub</a></li>
+        <li class="nav-right"><button class="theme-toggle" aria-label="Toggle theme"></button></li>
+    </ul>
+</nav>
+
+<main>
+<article>
+
+    <header>
+        <div class="title-row">
+            <img src="/img/slipcase-icon.svg" alt="" aria-hidden="true" width="64" height="64">
+            <h1>slipcase</h1>
+        </div>
+        <p class="lede">A container file format that attaches metadata to a file.</p>
+    </header>
+
+    <section id="what">
+        <p>A <code>.slpc</code> file is a ZIP archive holding a payload file of any type together with a TOML metadata document describing it. The two become one file, so copying, moving, or sending the payload carries its metadata along.</p>
+
+        <p>Most files have nowhere to put metadata. Some formats have an embedded slot, but writing to it means modifying the payload, and a great many types have no slot at all. Filenames carry very little. Sidecar files sit beside the payload until someone copies one and not the other. Databases hold metadata well until the file leaves the system, and then the two are separated with nothing to reconnect them.</p>
+
+        <p>A container puts the description inside the same file as the thing it describes, and asks nothing of the payload: it is not modified, not re-encoded, and not required to have a slot of its own.</p>
+    </section>
+
+    <section id="make-one">
+        <h2>Making one takes no special tooling</h2>
+
+        <p>Write the metadata document, then zip it together with the payload:</p>
+
+<pre><code>cat &gt; slipcase.metadata.toml &lt;&lt;'TOML'
+slipcase_version = "1.0"
+
+[payload]
+file = "report.pdf"
+TOML
+
+zip report.pdf.slpc slipcase.metadata.toml report.pdf</code></pre>
+
+        <p>That is a conformant container, and <code>unzip report.pdf.slpc</code> recovers both members. Nothing about the format is reachable only through a library: a shell, an archive manager, or any language's ZIP module is enough to read one or to write one. That is a deliberate property rather than a happy accident, and the reasoning behind it is in the <a href="/design/#2-created-with-ordinary-tools">design document</a>.</p>
+    </section>
+
+    <section id="inside">
+        <h2>What is inside</h2>
+
+        <p>A container is a ZIP archive with exactly one member named <code>slipcase.metadata.toml</code> and exactly one member named by the metadata's <code>payload.file</code> key. It may hold any number of other members, which have no defined meaning and do not make it non-conformant. The metadata document is <a href="https://toml.io/en/v1.1.0" rel="noopener">TOML 1.1.0</a> in UTF-8, and the specification requires two keys of it:</p>
+
+        <dl>
+            <dt><code>slipcase_version</code></dt>
+            <dd>A string naming the version of the specification the container conforms to. It implies no compatibility at any level: an implementation written against one version cannot assume it can read a container declaring a higher one.</dd>
+
+            <dt><code>payload.file</code></dt>
+            <dd>A string naming the payload member. It is a plain filename and never a path — no separators, no <code>.</code> or <code>..</code>, no control characters.</dd>
+        </dl>
+
+        <p>Every other key is yours. The specification defines no vocabulary of descriptive metadata and assigns no meaning to any key beyond those two, so a container carrying keys it has never heard of is conformant, and an implementation is required to preserve the ones it does not recognise rather than dropping them.</p>
+    </section>
+
+    <section id="not">
+        <h2>What it does not do</h2>
+
+        <p>Version 1.0 defines no signature or attestation mechanism, no encryption of its own, no aggregation of several payloads into one container, no checksum or fixity key, and no vocabulary of descriptive metadata keys. A container binds one payload to one description and stops there. The <a href="/design/#5-non-goals">design document</a> records why each of those was left out rather than deferred, which is a different claim and the more useful one to read before proposing that a future version take it on.</p>
+    </section>
+
+    <section id="identity">
+        <h2>Extension and media type</h2>
+
+        <p>The file extension is <code>.slpc</code>. The media type is <code>application/x.slipcase+zip</code>, provisional in the unregistered <code>x.</code> tree of <a href="https://www.rfc-editor.org/rfc/rfc6838" rel="noopener">RFC 6838</a>; a vendor-tree registration for <code>application/vnd.excelano.slipcase+zip</code> was submitted to IANA on 29 August 2026 and is pending. The specification will name the registered type when there is one. The <a href="https://github.com/excelano/slipcase/blob/main/IANA-REGISTRATION.md" rel="noopener">submission is in the repository</a>, field for field.</p>
+
+        <p>Neither the extension nor the media type appears inside a container. The format reserves no magic bytes: a file is identified as a container by opening it and finding a conformant metadata member, which is a parse of untrusted input and is why <a href="/spec/#6-security-considerations">§6 of the specification</a> requires a reader to bound what it spends before it knows what it is holding.</p>
+    </section>
+
+    <section id="documents">
+        <h2>The documents</h2>
+
+        <div class="grid">
+            <a href="/spec/">
+                <h3>Specification</h3>
+                <p>What a conformant container is, and what a program that reads or writes one must do. Version 1.0, final since 29 August 2026.</p>
+            </a>
+            <a href="/design/">
+                <h3>Design document</h3>
+                <p>Why each rule is the way it is, and what was considered and rejected. A rule and its reasoning travel together.</p>
+            </a>
+            <a href="https://github.com/excelano/slipcase/tree/main/conformance" rel="noopener">
+                <h3>Conformance corpus</h3>
+                <p>Eighty-seven test containers with declared verdicts, built by a generator with no dependencies. Not normative: where a case and the specification disagree, the specification wins.</p>
+            </a>
+            <a href="/implementations/">
+                <h3>Implementations</h3>
+                <p>The reference library and command-line tool, the applications that open a container, and what to read if you are writing your own.</p>
+            </a>
+        </div>
+    </section>
+
+    <section id="license">
+        <h2>Using it</h2>
+
+        <p>The specification is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener">CC0 1.0</a>. Anyone can implement it, quote it, fork it, or embed the text, with no obligation to this project and nothing to ask permission for.</p>
+
+        <p>The most useful thing to send back is a question the specification cannot answer. The format is small and its rules are short, which makes it easy to read past a case that neither document decides — and two conforming implementations disagreeing about the same container is the clearest form of that. Open an issue on <a href="https://github.com/excelano/slipcase/issues" rel="noopener">the specification repository</a>; a case the specification leaves open is a specification bug rather than a matter of opinion.</p>
+    </section>
+
+    <footer>
+        <p><small>The specification repository at <a href="https://github.com/excelano/slipcase" rel="noopener">github.com/excelano/slipcase</a> is the authority on the format. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener">open to pull requests</a> and, like the specification, is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener">CC0 1.0</a>.</small></p>
+    </footer>
+
+</article>
+</main>
+
+</body>
+</html>

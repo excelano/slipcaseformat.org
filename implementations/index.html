@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implementations — slipcase</title>
+    <meta name="description" content="Programs that read and write slipcase containers: the reference library and command-line tool, the desktop applications that open one, and what to read before writing your own.">
+    <link rel="canonical" href="https://slipcaseformat.org/implementations/">
+    <link rel="icon" href="/img/slipcase-icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="slipcase">
+    <meta property="og:title" content="Implementations — slipcase">
+    <meta property="og:description" content="The reference library and command-line tool, the applications that open a container, and what to read before writing your own implementation.">
+    <meta property="og:url" content="https://slipcaseformat.org/implementations/">
+    <meta property="og:image" content="https://slipcaseformat.org/img/og-card.png">
+    <meta property="og:image:alt" content="The slipcase icon beside the words slipcase and the line: a container file format that attaches metadata to a file.">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="/axe/default.css">
+    <link rel="stylesheet" href="/brand.css"><!-- site brand override; cascades over default.css -->
+    <link rel="stylesheet" href="/axe/axe.css">
+    <script src="/axe/theme.js"></script>
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="/">slipcase</a></li>
+        <li><a href="/spec/">Specification</a></li>
+        <li><a href="/design/">Design</a></li>
+        <li><a href="/implementations/">Implementations</a></li>
+        <li><a href="https://github.com/excelano/slipcase" rel="noopener">GitHub</a></li>
+        <li class="nav-right"><button class="theme-toggle" aria-label="Toggle theme"></button></li>
+    </ul>
+</nav>
+
+<main>
+<article>
+
+    <header>
+        <h1>Implementations</h1>
+        <p class="lede">Programs that read or write containers, and what to read before writing one.</p>
+    </header>
+
+    <section id="preamble">
+        <p>Nothing on this page is privileged by the format. The specification is public domain, an implementation needs no permission and no blessing, and the only thing that makes one correct is <a href="/spec/">the specification</a> itself. The programs below are the ones that exist today; the list is open, and <a href="#adding">a pull request adds to it</a>.</p>
+    </section>
+
+    <section id="reference">
+        <h2>The reference implementation</h2>
+
+        <p><a href="https://github.com/excelano/slpc-rust" rel="noopener"><strong>slpc-rust</strong></a> is a Rust workspace holding two crates: <code>slpc</code>, the library that reads, writes and validates containers, and <code>slipcase</code>, the command-line tool built on it. It is a reference implementation in the strict sense — it exists to show that the specification is implementable, and to be checked against it. Where the two disagree, the specification is right.</p>
+
+<pre><code>slipcase pack report.pdf --meta owner.toml       # writes report.pdf.slpc
+slipcase info report.pdf.slpc                    # prints the metadata
+slipcase repack report.pdf.slpc --meta new.toml  # changes it in place, keeping the rest
+slipcase validate report.pdf.slpc                # exit 0 if conformant
+slipcase unpack report.pdf.slpc --dest ./out     # writes the payload and nothing else</code></pre>
+
+        <p>Wherever a file is read, <code>-</code> names standard input, and wherever one is written it names standard output. Exit codes tell success from bad input, from a bad command line, from a container the build cannot judge.</p>
+
+        <p>On Debian and Ubuntu it is <code>sudo apt install slipcase</code> from the <a href="https://excelano.com/apt/" rel="noopener">Excelano apt repository</a>; on macOS and Linux with Homebrew, <code>brew install excelano/tap/slipcase</code>; from source, <code>cargo install slipcase</code>. Windows, the curl installer and the plain release archives are covered in <a href="https://github.com/excelano/slpc-rust#install" rel="noopener">the repository's README</a>, which is where the current instructions live rather than here. MIT licensed.</p>
+    </section>
+
+    <section id="applications">
+        <h2>Applications</h2>
+
+        <p><a href="https://excelano.com/slipcase/" rel="noopener"><strong>Slipcase</strong></a> opens a container, says whether it is conformant, shows the payload and the metadata travelling with it, lets the metadata be edited in place, and hands the payload to whatever the operating system already opens that kind of file with. It is on the Mac App Store and the Microsoft Store, in the Excelano apt repository as <code>slipcase-desktop</code>, and in source at <a href="https://github.com/excelano/slipcase-desktop" rel="noopener">excelano/slipcase-desktop</a>. It parses no containers itself: every read, every write and every verdict comes from <code>slpc</code>.</p>
+
+        <p><a href="https://github.com/excelano/slipcase-open" rel="noopener"><strong>slipcase-open</strong></a> takes the other half of the job. Double-click a container and the payload opens in whatever application normally handles it; edit it there, save, and the edit is repacked into the container. No metadata window and no container browsing — the two products claim the same file association deliberately, and whichever was installed last wins while the other stays one click away in the Open With menu. Linux today, from the apt repository or from source; Windows and macOS are not built yet. MIT licensed.</p>
+
+        <p><a href="https://github.com/excelano/slipcase-common" rel="noopener"><strong>slipcase-common</strong></a> is not a program. It is the media type declaration and the icon a container is drawn with, packaged once so that every slipcase product on a Linux machine can depend on it — two packages cannot ship the same path, and an icon named for a media type is one file at one path. Without it a container draws as a blank generic document, which is the first thing somebody sees of a file format they were sent and did not ask for.</p>
+    </section>
+
+    <section id="writing-your-own">
+        <h2>Writing your own</h2>
+
+        <p>Read <a href="/spec/#2-the-container">§2</a> for what a container is and <a href="/spec/#3-implementation-requirements">§3</a> for what a program handling one must do. The second is the part that is easy to skip and is where the interesting requirements are: locate the payload by <code>payload.file</code> and never by position, establish uniqueness by enumerating central directory entries rather than by a name-keyed lookup, preserve metadata keys and archive members you do not recognise, write only the payload when extracting, and never apply the permission bits recorded in the archive.</p>
+
+        <p>Read <a href="/spec/#6-security-considerations">§6</a> before anything that runs unattended. Identifying a container is a parse of untrusted input — a reader cannot know whether a file is a container without decompressing the metadata member and parsing it as TOML, and it must do that before anything about the file has been established. An indexer, a scanner or a shell preview handler is invoked on whatever happens to be in the directory, so the bound on what it will spend has to be in place before it knows what it is holding.</p>
+
+        <p>Then check yourself against <a href="https://github.com/excelano/slipcase/tree/main/conformance" rel="noopener">the conformance corpus</a>: eighty-seven containers with declared verdicts, built by a generator that needs nothing but Python 3.11. It covers the cases a hand-written test suite tends not to reach — a local file header disagreeing with the central directory, a CP437 name with the UTF-8 flag clear, duplicate member names, an entry that is not a regular file. It is not normative. Where a case and the specification disagree, the specification wins and the case is a bug worth reporting.</p>
+
+        <p>If the specification cannot answer a question you actually hit, that is the most valuable thing you can send back. <a href="https://github.com/excelano/slipcase/issues" rel="noopener">Open an issue</a>.</p>
+    </section>
+
+    <section id="adding">
+        <h2>Adding to this list</h2>
+
+        <p>Open a pull request against <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener">this site's repository</a>. What is wanted is a program someone can actually obtain, a note of which version of the specification it implements, and a link to its source or its listing. Completeness is not a bar — a library that only reads containers is worth listing and worth saying so about.</p>
+    </section>
+
+    <footer>
+        <p><small>The specification repository at <a href="https://github.com/excelano/slipcase" rel="noopener">github.com/excelano/slipcase</a> is the authority on the format. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener">open to pull requests</a> and, like the specification, is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener">CC0 1.0</a>.</small></p>
+    </footer>
+
+</article>
+</main>
+
+</body>
+</html>

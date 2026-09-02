@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://slipcaseformat.org/sitemap.xml
