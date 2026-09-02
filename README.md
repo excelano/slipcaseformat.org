@@ -1,6 +1,6 @@
 # slipcaseformat.org
 
-The website for the [slipcase](https://github.com/excelano/slipcase) container
+The website for the [Slipcase](https://github.com/excelano/slipcase) container
 format, live at <https://slipcaseformat.org>.
 
 **The specification is not kept here.** It lives in `excelano/slipcase`, which is

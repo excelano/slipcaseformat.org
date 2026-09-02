@@ -11,18 +11,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>slipcase — Design Document</title>
+    <title>Slipcase — Design Document</title>
     <meta name="description" content="SPEC.md states the rules. This document says why each one is drawn where it is,">
     <link rel="canonical" href="https://slipcaseformat.org/design/">
     <link rel="icon" href="/img/slipcase-icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="slipcase">
-    <meta property="og:title" content="slipcase — Design Document">
+    <meta property="og:site_name" content="Slipcase">
+    <meta property="og:title" content="Slipcase — Design Document">
     <meta property="og:description" content="SPEC.md states the rules. This document says why each one is drawn where it is,">
     <meta property="og:url" content="https://slipcaseformat.org/design/">
     <meta property="og:image" content="https://slipcaseformat.org/img/og-card.png">
-    <meta property="og:image:alt" content="The slipcase icon beside the words slipcase and the line: a container file format that attaches metadata to a file.">
+    <meta property="og:image:alt" content="The Slipcase icon beside the words Slipcase and the line: a container file format that attaches metadata to a file.">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="stylesheet" href="/axe/default.css">
     <link rel="stylesheet" href="/brand.css"><!-- site brand override; cascades over default.css -->
@@ -33,7 +33,7 @@
 
 <nav>
     <ul>
-        <li><a href="/">slipcase</a></li>
+        <li><a href="/">Slipcase</a></li>
         <li><a href="/spec/">Specification</a></li>
         <li><a href="/design/">Design</a></li>
         <li><a href="/implementations/">Implementations</a></li>
@@ -46,7 +46,7 @@
 <article>
 
     <header>
-        <h1>slipcase — Design Document</h1>
+        <h1>Slipcase — Design Document</h1>
         <p class="lede">Why each rule is the way it is, and what was considered and rejected.</p>
     </header>
 
@@ -68,11 +68,11 @@
 <p>So this document does not restate a rule in order to explain it. A rule lives in one place, and a change to a rule is an edit to <code>SPEC.md</code> alone; a change to the reasoning is an edit here alone. Rules are cited as <strong>SPEC §2.1</strong>, never as a bare section number, because both documents have a §3 and they are not the same subject.</p>
 <hr />
 <h2 id="1-what-this-is-about">1. What this is about</h2>
-<p><code>README.md</code> states what slipcase is and the problem it addresses: most files have nowhere to put metadata, and the usual answers — filenames, sidecars, a database — each fail as soon as the file moves. This document assumes that framing and takes up where it leaves off.</p>
-<p>One property of it bears on almost every decision below. slipcase is domain-neutral: nothing in the format knows about any particular industry, system, or kind of document. Where a rule could have been bent toward one kind of payload, it was not.</p>
+<p><code>README.md</code> states what Slipcase is and the problem it addresses: most files have nowhere to put metadata, and the usual answers — filenames, sidecars, a database — each fail as soon as the file moves. This document assumes that framing and takes up where it leaves off.</p>
+<p>One property of it bears on almost every decision below. Slipcase is domain-neutral: nothing in the format knows about any particular industry, system, or kind of document. Where a rule could have been bent toward one kind of payload, it was not.</p>
 <hr />
 <h2 id="2-created-with-ordinary-tools">2. Created with ordinary tools</h2>
-<p>A container can be built with <code>zip</code> and a text editor, and its contents recovered with <code>unzip</code>. No slipcase implementation is required at either end, on any platform, and there is no incantation to get right:</p>
+<p>A container can be built with <code>zip</code> and a text editor, and its contents recovered with <code>unzip</code>. No Slipcase implementation is required at either end, on any platform, and there is no incantation to get right:</p>
 <pre class="bash"><code>cat &gt; slipcase.metadata.toml &lt;&lt;&#39;EOF&#39;
 slipcase_version = &quot;1.0&quot;
 
@@ -105,7 +105,7 @@ zip report.pdf.slpc slipcase.metadata.toml report.pdf</code></pre>
 <p><strong>Why the specification lists what it does not constrain.</strong> An implementer reading about a ZIP-based format will reasonably wonder whether member order, compression method, timestamps, encryption, or Zip64 are pinned. SPEC §2.5 answers all of them at once so that nobody writes a reader that rejects a container for a property the format never cared about. A zero-byte payload is valid for the same reason: an empty file is a file, and someone would otherwise guess it was not.</p>
 <p><strong>Why no magic bytes.</strong> The extension and media type live outside the container. The alternative — a <code>mimetype</code> member stored uncompressed at a known offset — is examined and rejected in §5.</p>
 <h3 id="32-the-metadata-member--spec-22-24">3.2 The metadata member — SPEC §2.2, §2.4</h3>
-<p><strong>Why it is mandatory, and why its name is fixed.</strong> There is no such thing as a slipcase container without metadata. The fixed name is what makes the payload discoverable, since the payload's own name is not known in advance.</p>
+<p><strong>Why it is mandatory, and why its name is fixed.</strong> There is no such thing as a Slipcase container without metadata. The fixed name is what makes the payload discoverable, since the payload's own name is not known in advance.</p>
 <p><strong>Why the TOML version is pinned.</strong> An implementer otherwise does not know which grammar to write against. It is unrelated to <code>slipcase_version</code>, which names this specification rather than the metadata language.</p>
 <p><strong>Why a byte order mark is permitted.</strong> TOML says nothing about a leading mark and parsers split on whether to strip one or reject it, so the format decides rather than leaving it to whichever library an implementation happens to link. Rejecting would punish someone whose editor inserted a character they cannot see, which sits badly with a format that advertises hand-editing.</p>
 <p><strong>Why an unreadable metadata member is undetermined.</strong> SPEC §2.5 does not permit rejecting a container because a member is encrypted, while SPEC §2.2 requires the metadata member to parse as TOML, which an encrypted member does not. The requirement therefore applies to the decrypted content, and a container whose metadata cannot be read is undetermined rather than non-conformant. A reader without the key knows it cannot answer the question, and that is different from knowing the answer is no.</p>
@@ -141,7 +141,7 @@ zip report.pdf.slpc slipcase.metadata.toml report.pdf</code></pre>
 <p>This section once ended by saying that nothing else in SPEC §3 was a security requirement, and that decompression bombs and resource limits belonged to whatever ZIP parser an implementation used, since they applied equally to every ZIP consumer. Four of the rules above are now security requirements. The resource-limit claim was wrong in its premise rather than in its conclusion: a ZIP consumer chooses what to inflate and a reader of this format does not, because inflating the metadata member is how it finds out whether it is holding a container. SPEC §6 takes that up, and §6 below says why it is a rule rather than a library's business.</p>
 <hr />
 <h2 id="5-non-goals">5. Non-goals</h2>
-<p><strong>Signatures.</strong> Out of scope. Signing layers above slipcase, or arrives in a later specification version with its own member, which an implementation written against 1.0 will open and ignore. Anything built on top must account for the absence of a canonical serialization: hash what was actually signed, rather than assuming a container re-serializes identically.</p>
+<p><strong>Signatures.</strong> Out of scope. Signing layers above Slipcase, or arrives in a later specification version with its own member, which an implementation written against 1.0 will open and ignore. Anything built on top must account for the absence of a canonical serialization: hash what was actually signed, rather than assuming a container re-serializes identically.</p>
 <p><strong>Multiple payloads.</strong> <code>payload.file</code> names one member, so the metadata describes one file. A container may physically hold more, but the format assigns them no meaning and defines no aggregation mechanism. Naming N payloads would reinvent ZIP and make the metadata ambiguous about what it describes.</p>
 <p><strong>Encryption.</strong> The format adds none of its own and forbids none. Either member may be encrypted by ZIP's own mechanisms or by encrypting the file before packing it, and a container whose metadata is unreadable to a passer-by is still a container: it is attaching metadata to a file for whoever holds the key. Worth knowing rather than legislating: ZIP encryption narrows which implementations can open a container, since Go's <code>archive/zip</code> supports none of it and Info-ZIP's <code>unzip</code> has not handled AES.</p>
 <p><strong>Fixity.</strong> No checksum key, and no position on whether a payload has changed. That is a preservation question, and preservation is a separate discipline with its own formats. Anyone who wants a digest records one; the format simply does not define it, in the same way it defines no other descriptive key.</p>
@@ -157,7 +157,7 @@ zip report.pdf.slpc slipcase.metadata.toml report.pdf</code></pre>
     </section>
 
     <footer>
-        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase/blob/033200d1a61700be7898ddf4bb4f41aa0f840930/DESIGN.md" rel="noopener">DESIGN.md</a> at commit <code>033200d</code>, 2 September 2026. The repository is the authority on the format: where this page and it differ, it is right and this page is stale.</p>
+        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase/blob/2a82e43531bfe67720888df14c25d9aa223a23d5/DESIGN.md" rel="noopener">DESIGN.md</a> at commit <code>2a82e43</code>, 2 September 2026. The repository is the authority on the format: where this page and it differ, it is right and this page is stale.</p>
         <p><small>The specification is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener">CC0 1.0</a>. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener">open to pull requests</a>, though not this page — it is generated.</small></p>
     </footer>
 

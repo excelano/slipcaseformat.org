@@ -35,7 +35,7 @@ magick -size 1200x630 "xc:$CASE_DEEP" \
     -fill "$OCHRE" -draw 'rectangle 0,614 1200,630' \
     "$TMP/icon.png" -geometry +100+185 -composite \
     -font "$BOLD" -pointsize 96 -fill "$TEXT" \
-    -annotate +430+300 'slipcase' \
+    -annotate +430+300 'Slipcase' \
     -font "$REG" -pointsize 40 -fill "$DIM" \
     -annotate +432+365 'A container file format that' \
     -annotate +432+415 'attaches metadata to a file.' \

@@ -30,8 +30,8 @@ TEMPLATE="$SITE/tools/doc-template.html"
 # markdown, because neither document opens with a sentence that works as a
 # subtitle and neither should be edited so that it does.
 DOCS=(
-    "SPEC.md|spec|slipcase — Specification|What a conformant container is, and what a program that handles one must do."
-    "DESIGN.md|design|slipcase — Design Document|Why each rule is the way it is, and what was considered and rejected."
+    "SPEC.md|spec|Slipcase — Specification|What a conformant container is, and what a program that handles one must do."
+    "DESIGN.md|design|Slipcase — Design Document|Why each rule is the way it is, and what was considered and rejected."
 )
 
 for arg in "$@"; do
