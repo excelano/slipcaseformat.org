@@ -65,11 +65,15 @@
     </section>
 
     <section id="document">
-<p><strong>Version:</strong> 1.0 <strong>Status:</strong> final</p>
+<p><strong>Version:</strong> 1.0<br />
+<strong>Status:</strong> final</p>
 <p>A slipcase container is a ZIP archive that binds a single payload file to a metadata document describing it, so that the two travel as one file.</p>
 <h2 id="1-terminology">1. Terminology</h2>
 <p>The key words <strong>MUST</strong>, <strong>MUST NOT</strong>, and <strong>MAY</strong> are to be interpreted as described in BCP 14 (<a href="https://www.rfc-editor.org/rfc/rfc2119">RFC 2119</a>, <a href="https://www.rfc-editor.org/rfc/rfc8174">RFC 8174</a>) when, and only when, they appear in capitals.</p>
-<p><strong>Container</strong> — a ZIP archive conforming to §2. <strong>Metadata member</strong> — the archive member named <code>slipcase.metadata.toml</code>. <strong>Payload</strong> — the archive member named by the <code>payload.file</code> key. <strong>Implementation</strong> — a program that reads or writes containers.</p>
+<p><strong>Container</strong> — a ZIP archive conforming to §2.<br />
+<strong>Metadata member</strong> — the archive member named <code>slipcase.metadata.toml</code>.<br />
+<strong>Payload</strong> — the archive member named by the <code>payload.file</code> key.<br />
+<strong>Implementation</strong> — a program that reads or writes containers.</p>
 <p>Section 2 states properties of a container, each of which can be checked against a file. Section 3 states requirements on implementations. Some of those can be put to an implementation by handing it a container and reading what it reports; the rest govern what it then writes or displays, and can be checked only by watching it work.</p>
 <h2 id="2-the-container">2. The container</h2>
 <h3 id="21-structure">2.1 Structure</h3>
@@ -175,7 +179,7 @@ zip report.pdf.slpc slipcase.metadata.toml report.pdf</code></pre>
     </section>
 
     <footer>
-        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase/blob/7251ce97ac699cafb6c6a63973204c7f32fa61f7/SPEC.md" rel="noopener">SPEC.md</a> at commit <code>7251ce9</code>, 31 August 2026. The repository is the authority on the format: where this page and it differ, it is right and this page is stale.</p>
+        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase/blob/033200d1a61700be7898ddf4bb4f41aa0f840930/SPEC.md" rel="noopener">SPEC.md</a> at commit <code>033200d</code>, 2 September 2026. The repository is the authority on the format: where this page and it differ, it is right and this page is stale.</p>
         <p><small>The specification is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener">CC0 1.0</a>. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener">open to pull requests</a>, though not this page — it is generated.</small></p>
     </footer>
 
