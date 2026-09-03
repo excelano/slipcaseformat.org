@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slipcase — a container format that attaches metadata to a file</title>
-    <meta name="description" content="Slipcase is a container file format: a ZIP archive holding one payload file of any type together with a TOML document describing it, so the two travel as one file. The specification is public domain and needs no special tooling to read or write.">
+    <title>Slipcase — the .slpc container format</title>
+    <meta name="description" content="A .slpc file is a Slipcase container: a ZIP archive holding one payload file of any type together with a TOML document describing it, so the two travel as one file. What one is, how to open one, and the specification.">
     <link rel="canonical" href="https://slipcaseformat.org/">
     <link rel="icon" href="/img/slipcase-icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Slipcase">
-    <meta property="og:title" content="Slipcase — a container format that attaches metadata to a file">
-    <meta property="og:description" content="A .slpc file is a ZIP archive holding a payload of any type together with a TOML document describing it, so the two travel as one file. Public domain, and readable with the tools you already have.">
+    <meta property="og:title" content="Slipcase — the .slpc container format">
+    <meta property="og:description" content="A .slpc file is a Slipcase container: a ZIP archive holding a payload of any type together with a TOML document describing it. What one is, how to open one, and the specification.">
     <meta property="og:url" content="https://slipcaseformat.org/">
     <meta property="og:image" content="https://slipcaseformat.org/img/og-card.png">
     <meta property="og:image:alt" content="The Slipcase icon beside the words Slipcase and the line: a container file format that attaches metadata to a file.">
@@ -46,11 +46,23 @@
     </header>
 
     <section id="what">
+        <h2>What is a <code>.slpc</code> file?</h2>
+
         <p>A <code>.slpc</code> file is a ZIP archive holding a payload file of any type together with a TOML metadata document describing it. The two become one file, so copying, moving, or sending the payload carries its metadata along.</p>
 
         <p>Most files have nowhere to put metadata. Some formats have an embedded slot, but writing to it means modifying the payload, and a great many types have no slot at all. Filenames carry very little. Sidecar files sit beside the payload until someone copies one and not the other. Databases hold metadata well until the file leaves the system, and then the two are separated with nothing to reconnect them.</p>
 
         <p>A container puts the description inside the same file as the thing it describes, and asks nothing of the payload: it is not modified, not re-encoded, and not required to have a slot of its own.</p>
+    </section>
+
+    <section id="opening">
+        <h2>How do I open one?</h2>
+
+        <p>Any program that opens a ZIP archive opens a container, because that is what a container is. Unzipping one gives you the payload and a small text file beside it, and on most systems renaming <code>report.pdf.slpc</code> to <code>report.pdf.zip</code> is enough to make the archive manager offer to open it. Nothing is lost by doing it that way and no tool is required.</p>
+
+        <p>What the purpose-built tools add is that they read the metadata rather than leaving it as a text file for you to open yourself. <a href="https://excelano.com/slipcase/" rel="noopener">Slipcase Desktop</a> shows what a container holds and lets the description be edited in place, on macOS, Windows and Linux. <a href="https://github.com/excelano/slipcase-open" rel="noopener">slipcase-open</a> takes the other approach: double-click a container and the payload opens in whatever application normally handles it, with edits written back. On the command line, <code>slipcase unpack report.pdf.slpc</code> writes the payload and nothing else. All of them are on <a href="/implementations/">the implementations page</a>, with what each one is for.</p>
+
+        <p>A container is not encrypted and holds nothing hidden. If you were sent one and want to know what is in it before opening anything, <code>unzip -l</code> lists the members, and the metadata member is plain text you can read.</p>
     </section>
 
     <section id="make-one">
