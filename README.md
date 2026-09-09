@@ -15,9 +15,11 @@ Four pages of plain HTML. `index.html` is what a container is and why;
 [Axe](https://github.com/excelano/axe) framework, vendored under `axe/` as real
 files, with `brand.css` layered over it as this site's palette.
 
-There is no build step for the hand-written pages, no framework, and no
-JavaScript beyond `axe/theme.js`, which remembers whether you asked for the dark
-theme. The site loads nothing from a third party: no fonts, no analytics, no
+There is no build step for the hand-written pages and no framework. The
+JavaScript is two small scripts and no more: `axe/theme.js`, which remembers
+whether you asked for the dark theme, and an inline block on the front page that
+names the visitor's operating system in the banner link. Both degrade to working
+markup with scripting off. The site loads nothing from a third party: no fonts, no analytics, no
 trackers, no CDN.
 
 ## The two generated pages

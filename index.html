@@ -35,6 +35,36 @@
 </nav>
 
 <main>
+
+<aside class="open-banner">
+    <p>Just want to know how to open a <code>.slpc</code> file? <a id="get-slipcase-open" href="https://excelano.com/slipcase/#open" rel="noopener">Get Slipcase Open</a>.</p>
+</aside>
+<script>
+// Name the visitor's system in the banner link and point it at that system's
+// instructions. The markup above is the answer without this: a generic link to
+// the section that carries all three. Runs here rather than on DOMContentLoaded
+// so the text is settled before the banner is painted.
+(function () {
+    var link = document.getElementById('get-slipcase-open');
+    var ua = navigator.userAgent || '';
+    var platform = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || ua;
+
+    // No build for either mobile platform, so leave the generic link alone.
+    // iPadOS reports itself as MacIntel and is caught by the touch test.
+    if (/iPhone|iPad|iPod|Android/i.test(ua)) return;
+    if (/Mac/i.test(platform) && navigator.maxTouchPoints > 1) return;
+
+    var os = /Win/i.test(platform)              ? ['Windows', 'open-windows']
+           : /Mac/i.test(platform)              ? ['macOS',   'open-macos']
+           : /Linux|X11|CrOS/i.test(platform)   ? ['Linux',   'open-linux']
+           : null;
+    if (!os) return;
+
+    link.textContent = 'Get Slipcase Open for ' + os[0];
+    link.href = 'https://excelano.com/slipcase/#' + os[1];
+})();
+</script>
+
 <article>
 
     <header>
@@ -58,7 +88,7 @@
     <section id="opening">
         <h2>How do I open one?</h2>
 
-        <p>The short answer is <a href="https://excelano.com/slipcase/#open" rel="noopener">Slipcase Open</a>: install it, double-click the container, and the payload opens in whatever application you already use for that kind of file. Edit it there, save, and the edit goes back into the container. It is on the <a href="https://apps.microsoft.com/detail/9P5M97FB1HDW" rel="noopener">Microsoft Store</a>, on macOS through Homebrew, and on Debian and Ubuntu through the <a href="https://excelano.com/apt/" rel="noopener">Excelano apt repository</a>. <a href="https://excelano.com/slipcase/" rel="noopener">Slipcase Desktop</a> is the other one to know about, on the same three systems: it shows what a container holds and lets the description be edited in place. On the command line, <code>slipcase unpack report.pdf.slpc</code> writes the payload and nothing else. All of them are on <a href="/implementations/">the implementations page</a>.</p>
+        <p>The short answer is <a href="https://excelano.com/slipcase/#open" rel="noopener">Slipcase Open</a>: install it, double-click the container, and the payload opens in whatever application you already use for that kind of file. Edit it there, save, and the edit goes back into the container. It is on the <a href="https://apps.microsoft.com/detail/9P5M97FB1HDW" rel="noopener">Microsoft Store</a>, on macOS through Homebrew, and on Debian and Ubuntu through the <a href="https://excelano.com/apt/" rel="noopener">Excelano apt repository</a>. The other programs that read and write containers are on <a href="/implementations/">the implementations page</a>.</p>
 
         <p>No tool is required, though. A container is a ZIP archive, so any program that opens one of those opens a container: unzipping it gives you the payload and a small text file beside it. On a command line that is <code>unzip report.pdf.slpc</code>, and nothing has to be renamed for it. In a file manager:</p>
 

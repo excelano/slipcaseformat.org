@@ -117,3 +117,23 @@
 }
 
 .title-row h1 { margin: 0; }
+
+/* --- The "how do I open this?" banner ----------------------
+   Above the article on the front page, for somebody who was sent a container
+   and wants the answer rather than the format. Sized to the article's own
+   860px so the two edges line up, and carrying the ochre highlight on its
+   leading edge because that is the role the palette gives that colour: a mark
+   on a surface, never body text. The inline script beside it names the
+   visitor's system; with no JavaScript the link still reads and still works. */
+.open-banner {
+    max-width: 860px;
+    margin: 0 auto 1rem;
+    padding: 0.9rem 1.25rem;
+    background: var(--color-surface);
+    border-left: 4px solid var(--color-highlight);
+    box-shadow: var(--shadow);
+}
+
+.open-banner p {
+    margin: 0;
+}
