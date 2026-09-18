@@ -150,7 +150,7 @@ file = &quot;report.pdf&quot;</code></pre>
 <p>The bidirectional requirement is one instance of a general obligation: a name is displayed and never interpreted. Where an implementation renders <code>payload.file</code> into a medium that parses what it is handed — markup in a graphical toolkit or a desktop notification, HTML in a generated report — the characters that medium reserves have to be neutralised there as well. That is not stated as a requirement because the medium belongs to the implementation rather than to this specification, and a conformance suite cannot observe it.</p>
 <p>Several of these are security requirements. The one that is not stated here is in §6, because bounding what a reader spends is something it must do before it knows whether it is holding a container at all.</p>
 <h2 id="4-file-extension-and-media-type">4. File extension and media type</h2>
-<p>The file extension is <code>.slpc</code>. The media type is <code>application/x.slipcase+zip</code>, provisional in the unregistered <code>x.</code> tree of <a href="https://www.rfc-editor.org/rfc/rfc6838">RFC 6838</a>.</p>
+<p>The file extension is <code>.slpc</code>. The media type is <a href="https://www.iana.org/assignments/media-types/application/vnd.excelano.slipcase+zip"><code>application/vnd.excelano.slipcase+zip</code></a>, registered in the vendor tree of <a href="https://www.rfc-editor.org/rfc/rfc6838">RFC 6838</a>. It supersedes <code>application/x.slipcase+zip</code>, provisional in the unregistered <code>x.</code> tree, which the registration records as a deprecated alias.</p>
 <p>Neither appears inside a container. A container is identified by opening it and finding a conformant metadata member; this specification reserves no magic bytes and defines no identification by content.</p>
 <h2 id="5-out-of-scope-for-this-version">5. Out of scope for this version</h2>
 <p>This version defines no signature or attestation mechanism, no encryption of its own, no aggregation of multiple payloads, no checksum or fixity key, and no vocabulary of descriptive metadata keys. It takes no position on whether a container may be modified after it is written.</p>
@@ -179,7 +179,7 @@ zip report.pdf.slpc slipcase.metadata.toml report.pdf</code></pre>
     </section>
 
     <footer>
-        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase/blob/2a82e43531bfe67720888df14c25d9aa223a23d5/SPEC.md" rel="noopener">SPEC.md</a> at commit <code>2a82e43</code>, 2 September 2026. The repository is the authority on the format: where this page and it differ, it is right and this page is stale.</p>
+        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase/blob/43a60138ad1909178077411957dd49e4c24161b1/SPEC.md" rel="noopener">SPEC.md</a> at commit <code>43a6013</code>, 17 September 2026. The repository is the authority on the format: where this page and it differ, it is right and this page is stale.</p>
         <p><small>The specification is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener">CC0 1.0</a>. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener">open to pull requests</a>, though not this page — it is generated.</small></p>
     </footer>
 
