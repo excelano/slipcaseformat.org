@@ -53,12 +53,17 @@ trap 'rm -rf "$WORK"' EXIT
 # fetches, and so the stamp names a commit rather than a moving branch.
 if [ -n "${SPEC_SRC:-}" ]; then
     [ -d "$SPEC_SRC/.git" ] || { echo "SPEC_SRC is not a git checkout: $SPEC_SRC"; exit 1; }
-    COMMIT="$(git -C "$SPEC_SRC" rev-parse "$REF")"
+    # ^{commit} rather than the ref alone, because an annotated tag resolves to
+    # the tag object, and the stamp has to name a commit for its link to lead
+    # anywhere.
+    COMMIT="$(git -C "$SPEC_SRC" rev-parse "$REF^{commit}")"
     COMMITDATE="$(git -C "$SPEC_SRC" show -s --format=%cd --date=format:'%-d %B %Y' "$COMMIT")"
-    if ! git -C "$SPEC_SRC" diff --quiet "$COMMIT" -- SPEC.md DESIGN.md; then
-        echo "Refusing to bake: SPEC.md or DESIGN.md is modified in $SPEC_SRC."
-        echo "A page stamped with a commit has to hold what that commit says."
-        exit 1
+    # The text comes out of the commit and never out of the working tree, so a
+    # page holds what its stamp says. Uncommitted edits are therefore not baked,
+    # and a maintainer who has some is told so rather than left to notice.
+    if ! git -C "$SPEC_SRC" diff --quiet HEAD -- SPEC.md DESIGN.md; then
+        echo "Note: SPEC.md or DESIGN.md is modified in $SPEC_SRC." >&2
+        echo "Baking ${COMMIT:0:7}, which does not include those edits." >&2
     fi
     fetch() { git -C "$SPEC_SRC" show "$COMMIT:$1"; }
 else
