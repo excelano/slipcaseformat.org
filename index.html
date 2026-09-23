@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Slipcase — the .slpc container format</title>
-    <meta name="description" content="A .slpc file is a Slipcase container: a ZIP archive holding one payload file of any type together with a TOML document describing it, so the two travel as one file. What one is, how to open one, and the specification.">
+    <meta name="description" content="A .slpc file is a Slipcase container: a ZIP archive holding one content file of any type together with a TOML flyleaf describing it, so the two travel as one file. What one is, how to open one, and the specification.">
     <link rel="canonical" href="https://slipcaseformat.org/">
     <link rel="icon" href="/img/slipcase-icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Slipcase">
     <meta property="og:title" content="Slipcase — the .slpc container format">
-    <meta property="og:description" content="A .slpc file is a Slipcase container: a ZIP archive holding a payload of any type together with a TOML document describing it. What one is, how to open one, and the specification.">
+    <meta property="og:description" content="A .slpc file is a Slipcase container: a ZIP archive holding a content file of any type together with a TOML flyleaf describing it. What one is, how to open one, and the specification.">
     <meta property="og:url" content="https://slipcaseformat.org/">
     <meta property="og:image" content="https://slipcaseformat.org/img/og-card.png">
     <meta property="og:image:alt" content="The Slipcase icon beside the words Slipcase and the line: a container file format that attaches metadata to a file.">
@@ -88,9 +88,9 @@
     <section id="opening">
         <h2>How do I open one?</h2>
 
-        <p>The short answer is <a href="https://excelano.com/slipcase/#open" rel="noopener">Slipcase Open</a>: install it, double-click the container, and the payload opens in whatever application you already use for that kind of file. Edit it there, save, and the edit goes back into the container. It is on the <a href="https://apps.microsoft.com/detail/9P5M97FB1HDW" rel="noopener">Microsoft Store</a>, on macOS through Homebrew, and on Debian and Ubuntu through the <a href="https://excelano.com/apt/" rel="noopener">Excelano apt repository</a>. The other programs that read and write containers are on <a href="/implementations/">the implementations page</a>.</p>
+        <p>The short answer is <a href="https://excelano.com/slipcase/#open" rel="noopener">Slipcase Open</a>: install it, double-click the container, and the content file opens in whatever application you already use for that kind of file. Edit it there, save, and the edit goes back into the container. It is on the <a href="https://apps.microsoft.com/detail/9P5M97FB1HDW" rel="noopener">Microsoft Store</a>, on macOS through Homebrew, and on Debian and Ubuntu through the <a href="https://excelano.com/apt/" rel="noopener">Excelano apt repository</a>. The other programs that read and write containers are on <a href="/implementations/">the implementations page</a>.</p>
 
-        <p>No tool is required, though. A container is a ZIP archive, so any program that opens one of those opens a container: unzipping it gives you the payload and a small text file beside it. On a command line that is <code>unzip report.pdf.slpc</code>, and nothing has to be renamed for it. In a file manager:</p>
+        <p>No tool is required, though. A container is a ZIP archive, so any program that opens one of those opens a container: unzipping it gives you the content file and a small text file beside it. On a command line that is <code>unzip report.pdf.slpc</code>, and nothing has to be renamed for it. In a file manager:</p>
 
         <p id="linux"><strong>Linux.</strong> Right-click, Open With, Archive Manager.</p>
 
@@ -98,22 +98,22 @@
 
         <p id="windows"><strong>Windows.</strong> Right-click, Open with, and choose 7-Zip or whichever archiver you have. Windows' own Compressed Folders is not something that menu can offer, so with nothing else installed it is <code>tar -xf report.pdf.slpc</code> in PowerShell, or rename a copy to <code>report.pdf.zip</code> and open that.</p>
 
-        <p>A container is not encrypted and holds nothing hidden. If you were sent one and want to know what is in it before opening anything, <code>unzip -l</code> lists the members, and the metadata member is plain text you can read.</p>
+        <p>A container is not encrypted and holds nothing hidden. If you were sent one and want to know what is in it before opening anything, <code>unzip -l</code> lists the members, and the flyleaf is plain text you can read.</p>
     </section>
 
     <section id="make-one">
         <h2>Making one takes no special tooling</h2>
 
-        <p>Write the metadata document, then zip it together with the payload:</p>
+        <p>Write the flyleaf, then zip it together with the content file:</p>
 
-<pre><code>cat &gt; slipcase.metadata.toml &lt;&lt;'TOML'
-slipcase_version = "1.0"
+<pre><code>cat &gt; slipcase.flyleaf.toml &lt;&lt;'TOML'
+slipcase_version = "1.1"
 
-[payload]
+[content]
 file = "report.pdf"
 TOML
 
-zip report.pdf.slpc slipcase.metadata.toml report.pdf</code></pre>
+zip report.pdf.slpc slipcase.flyleaf.toml report.pdf</code></pre>
 
         <p>That is a conformant container, and <code>unzip report.pdf.slpc</code> recovers both members. Nothing about the format is reachable only through a library: a shell, an archive manager, or any language's ZIP module is enough to read one or to write one. That is a deliberate property rather than a happy accident, and the reasoning behind it is in the <a href="/design/#2-created-with-ordinary-tools">design document</a>.</p>
     </section>
@@ -121,14 +121,14 @@ zip report.pdf.slpc slipcase.metadata.toml report.pdf</code></pre>
     <section id="inside">
         <h2>What is inside</h2>
 
-        <p>A container is a ZIP archive with exactly one member named <code>slipcase.metadata.toml</code> and exactly one member named by the metadata's <code>payload.file</code> key. It may hold any number of other members, which have no defined meaning and do not make it non-conformant. The metadata document is <a href="https://toml.io/en/v1.1.0" rel="noopener">TOML 1.1.0</a> in UTF-8, and the specification requires two keys of it:</p>
+        <p>A container is a ZIP archive with exactly one member named <code>slipcase.flyleaf.toml</code> and exactly one member named by the flyleaf's <code>content.file</code> key. It may hold any number of other members, which have no defined meaning and do not make it non-conformant. The flyleaf is <a href="https://toml.io/en/v1.1.0" rel="noopener">TOML 1.1.0</a> in UTF-8, and the specification requires two keys of it:</p>
 
         <dl>
             <dt><code>slipcase_version</code></dt>
             <dd>A string naming the version of the specification the container conforms to. It implies no compatibility at any level: an implementation written against one version cannot assume it can read a container declaring a higher one.</dd>
 
-            <dt><code>payload.file</code></dt>
-            <dd>A string naming the payload member. It is a plain filename and never a path — no separators, no <code>.</code> or <code>..</code>, no control characters.</dd>
+            <dt><code>content.file</code></dt>
+            <dd>A string naming the content file. It is a plain filename and never a path — no separators, no <code>.</code> or <code>..</code>, no control characters.</dd>
         </dl>
 
         <p>Every other key is yours. The specification defines no vocabulary of descriptive metadata and assigns no meaning to any key beyond those two, so a container carrying keys it has never heard of is conformant, and an implementation is required to preserve the ones it does not recognize rather than dropping them.</p>
@@ -137,7 +137,7 @@ zip report.pdf.slpc slipcase.metadata.toml report.pdf</code></pre>
     <section id="not">
         <h2>What it does not do</h2>
 
-        <p>Version 1.0 defines no signature or attestation mechanism, no encryption of its own, no aggregation of several payloads into one container, no checksum or fixity key, and no vocabulary of descriptive metadata keys. A container binds one payload to one description and stops there. The <a href="/design/#5-non-goals">design document</a> records why each of those was left out rather than deferred, which is a different claim and the more useful one to read before proposing that a future version take it on.</p>
+        <p>Version 1.1 defines no signature or attestation mechanism, no encryption of its own, no aggregation of several content files into one container, no checksum or fixity key, and no vocabulary of descriptive metadata keys. A container binds one content file to one description and stops there. The <a href="/design/#5-non-goals">design document</a> records why each of those was left out rather than deferred, which is a different claim and the more useful one to read before proposing that a future version take it on.</p>
     </section>
 
     <section id="identity">
@@ -145,7 +145,7 @@ zip report.pdf.slpc slipcase.metadata.toml report.pdf</code></pre>
 
         <p>The file extension is <code>.slpc</code>. The media type is <a href="https://www.iana.org/assignments/media-types/application/vnd.excelano.slipcase+zip" rel="noopener"><code>application/vnd.excelano.slipcase+zip</code></a>, registered in the vendor tree of <a href="https://www.rfc-editor.org/rfc/rfc6838" rel="noopener">RFC 6838</a>. It supersedes <code>application/x.slipcase+zip</code>, provisional in the unregistered <code>x.</code> tree, which the registration records as a deprecated alias. The <a href="https://github.com/excelano/slipcase/blob/main/IANA-REGISTRATION.md" rel="noopener">registration is in the repository</a>, field for field.</p>
 
-        <p>Neither the extension nor the media type appears inside a container. The format reserves no magic bytes: a file is identified as a container by opening it and finding a conformant metadata member, which is a parse of untrusted input and is why <a href="/spec/#6-security-considerations">§6 of the specification</a> requires a reader to bound what it spends before it knows what it is holding.</p>
+        <p>Neither the extension nor the media type appears inside a container. The format reserves no magic bytes: a file is identified as a container by opening it and finding a conformant flyleaf, which is a parse of untrusted input and is why <a href="/spec/#6-security-considerations">§6 of the specification</a> requires a reader to bound what it spends before it knows what it is holding.</p>
     </section>
 
     <section id="documents">
