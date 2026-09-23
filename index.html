@@ -78,11 +78,11 @@
     <section id="what">
         <h2>What is a <code>.slpc</code> file?</h2>
 
-        <p>A <code>.slpc</code> file is a ZIP archive holding a payload file of any type together with a TOML metadata document describing it. The two become one file, so copying, moving, or sending the payload carries its metadata along.</p>
+        <p>A <code>.slpc</code> file bundles a document, image, or other file together with a description of what it is — who made it, what it's for, how it should be handled. That description travels with the file automatically: copy the file, email it, move it to another drive, and the description goes along for the ride.</p>
 
-        <p>Most files have nowhere to put metadata. Some formats have an embedded slot, but writing to it means modifying the payload, and a great many types have no slot at all. Filenames carry very little. Sidecar files sit beside the payload until someone copies one and not the other. Databases hold metadata well until the file leaves the system, and then the two are separated with nothing to reconnect them.</p>
+        <p>Most files can't carry this kind of information on their own. A few formats let you tuck a little information inside, but only by opening up and altering the file itself, and most formats don't even offer that. File names can hold a hint at best. Notes kept in a separate file next to the original get separated the moment someone copies one and forgets the other. Information stored in a company database works fine until the file leaves that system, at which point nothing ties the two back together.</p>
 
-        <p>A container puts the description inside the same file as the thing it describes, and asks nothing of the payload: it is not modified, not re-encoded, and not required to have a slot of its own.</p>
+        <p>A <code>.slpc</code> file solves this by keeping the file and its description together in one package, without touching the original file at all.</p>
     </section>
 
     <section id="opening">
