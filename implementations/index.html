@@ -59,7 +59,7 @@ slipcase unpack report.pdf.slpc --dest ./out        # writes the content file an
 
         <p>Wherever a file is read, <code>-</code> names standard input, and wherever one is written it names standard output. Exit codes tell success from bad input, from a bad command line, from a container the build cannot judge.</p>
 
-        <p>On Debian and Ubuntu it is <code>sudo apt install slipcase</code> from the <a href="https://excelano.com/apt/" rel="noopener">Excelano apt repository</a>; from source, <code>cargo install slipcase</code>. Windows and the plain release archives are covered in <a href="https://github.com/excelano/slpc-rust#install" rel="noopener">the repository's README</a>, which is where the current instructions live rather than here. MIT licensed.</p>
+        <p>On Debian and Ubuntu it is <code>sudo apt install slipcase</code> from the <a href="https://excelano.com/apt/" rel="noopener">Excelano apt repository</a>; on Windows, <code>winget install Excelano.slipcase-cli</code>; from source anywhere else, macOS included, <code>cargo install slipcase</code>. <a href="https://github.com/excelano/slpc-rust#install" rel="noopener">The repository's README</a> holds the current instructions. MIT licensed.</p>
     </section>
 
     <section id="applications">
@@ -83,7 +83,7 @@ slipcase unpack report.pdf.slpc --dest ./out        # writes the content file an
 
         <p>It reads each flyleaf in place through <code>slpc</code>, never unpacks a content file, keeps no index and changes nothing, so every answer is what is on disk now. A key a container lacks is an empty cell, and a file it cannot read is skipped and counted rather than failing the query. It runs as a prompt, with <code>-e</code> for one query, or over piped standard input, and writes tables, CSV, TSV or JSON. The crate is also a library, which is how Slipcase Query above uses it.</p>
 
-        <p>On Debian and Ubuntu it is <code>sudo apt install slipql</code> from the <a href="https://excelano.com/apt/" rel="noopener">Excelano apt repository</a>; from source, <code>cargo install slipql</code>. <a href="https://github.com/excelano/slipql/blob/main/GRAMMAR.md" rel="noopener">GRAMMAR.md</a> is the language reference. MIT licensed.</p>
+        <p>On Debian and Ubuntu it is <code>sudo apt install slipql</code> from the <a href="https://excelano.com/apt/" rel="noopener">Excelano apt repository</a>; on Windows, <code>winget install Excelano.slipql</code>; from source anywhere else, macOS included, <code>cargo install slipql</code>. <a href="https://github.com/excelano/slipql/blob/main/GRAMMAR.md" rel="noopener">GRAMMAR.md</a> is the language reference. MIT licensed.</p>
     </section>
 
     <section id="writing-your-own">
