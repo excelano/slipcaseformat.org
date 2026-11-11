@@ -88,7 +88,7 @@
     <section id="opening">
         <h2>How do I open one?</h2>
 
-        <p>The short answer is <a href="https://excelano.com/slipcase/#open" rel="noopener">Slipcase Open</a>: install it, double-click the container, and the content file opens in whatever application you already use for that kind of file. Edit it there, save, and the edit goes back into the container. It is on the <a href="https://apps.microsoft.com/detail/9P5M97FB1HDW" rel="noopener">Microsoft Store</a>, on macOS through Homebrew, and on Debian and Ubuntu through the <a href="https://excelano.com/apt/" rel="noopener">Excelano apt repository</a>. The other programs that read and write containers are on <a href="/implementations/">the implementations page</a>.</p>
+        <p>The short answer is <a href="https://excelano.com/slipcase/#open" rel="noopener">Slipcase Open</a>: install it, double-click the container, and the content file opens in whatever application you already use for that kind of file. Edit it there, save, and the edit goes back into the container. Its source and installation instructions are at <a href="https://github.com/excelano/slipcase-open" rel="noopener">excelano/slipcase-open</a>. The other programs that read and write containers are on <a href="/implementations/">the implementations page</a>.</p>
 
         <p>No tool is required, though. A container is a ZIP archive, so any program that opens one of those opens a container: unzipping it gives you the content file and a small text file beside it. On a command line that is <code>unzip report.pdf.slpc</code>, and nothing has to be renamed for it. In a file manager:</p>
 
@@ -98,7 +98,7 @@
 
         <p id="windows"><strong>Windows.</strong> Right-click, Open with, and choose 7-Zip or whichever archiver you have. Windows' own Compressed Folders is not something that menu can offer, so with nothing else installed it is <code>tar -xf report.pdf.slpc</code> in PowerShell, or rename a copy to <code>report.pdf.zip</code> and open that.</p>
 
-        <p>A container is not encrypted and holds nothing hidden. If you were sent one and want to know what is in it before opening anything, <code>unzip -l</code> lists the members, and the flyleaf is plain text you can read.</p>
+        <p>The format adds no encryption of its own, though whoever made a container may have encrypted either member with ZIP's own mechanisms. If you were sent one and want to know what is in it before opening anything, <code>unzip -l</code> lists every member, and an unencrypted flyleaf is plain text you can read.</p>
     </section>
 
     <section id="make-one">
@@ -137,7 +137,7 @@ zip report.pdf.slpc slipcase.flyleaf.toml report.pdf</code></pre>
     <section id="not">
         <h2>What it does not do</h2>
 
-        <p>Version 1.1 defines no signature or attestation mechanism, no encryption of its own, no aggregation of several content files into one container, no checksum or fixity key, and no vocabulary of descriptive metadata keys. A container binds one content file to one description and stops there. The <a href="/design/#5-non-goals">design document</a> records why each of those was left out rather than deferred, which is a different claim and the more useful one to read before proposing that a future version take it on.</p>
+        <p>The format defines no signature or attestation mechanism, no encryption of its own, no aggregation of several content files into one container, no checksum or fixity key, and no vocabulary of descriptive metadata keys. A container binds one content file to one description and stops there. The <a href="/design/#5-non-goals">design document</a> records why each of those was left out rather than deferred, which is a different claim and the more useful one to read before proposing that a future version take it on.</p>
     </section>
 
     <section id="identity">
@@ -154,7 +154,7 @@ zip report.pdf.slpc slipcase.flyleaf.toml report.pdf</code></pre>
         <div class="grid">
             <a href="/spec/">
                 <h3>Specification</h3>
-                <p>What a conformant container is, and what a program that reads or writes one must do. Version 1.1, final.</p>
+                <p>What a conformant container is, and what a program that reads or writes one must do.</p>
             </a>
             <a href="/design/">
                 <h3>Design document</h3>
@@ -162,7 +162,7 @@ zip report.pdf.slpc slipcase.flyleaf.toml report.pdf</code></pre>
             </a>
             <a href="https://github.com/excelano/slipcase/tree/main/conformance" rel="noopener">
                 <h3>Conformance corpus</h3>
-                <p>Ninety test containers with declared verdicts, built by a generator that needs nothing but Python 3.11. Not normative: where a case and the specification disagree, the specification wins.</p>
+                <p>Test containers with declared verdicts, built by a generator that needs nothing but Python. Not normative: where a case and the specification disagree, the specification wins.</p>
             </a>
             <a href="/implementations/">
                 <h3>Implementations</h3>

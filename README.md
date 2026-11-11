@@ -9,20 +9,20 @@ page here that disagrees with the specification is a bug in the page.
 
 ## What is in it
 
-Four pages of plain HTML. `index.html` is what a container is and why;
+Plain HTML. `index.html` is what a container is and why;
 `implementations/` is the programs that read and write one; `spec/` and
 `design/` are generated (see below). Styling is the
 [Axe](https://github.com/excelano/axe) framework, vendored under `axe/` as real
 files, with `brand.css` layered over it as this site's palette.
 
 There is no build step for the hand-written pages and no framework. The
-JavaScript is two small scripts and no more: `axe/theme.js`, which remembers
-whether you asked for the dark theme, and an inline block on the front page that
-names the visitor's operating system in the banner link. Both degrade to working
+JavaScript is `axe/theme.js`, which remembers whether you asked for the dark
+theme, and an inline block on the front page that names the visitor's operating
+system in the banner link. Both degrade to working
 markup with scripting off. The site loads nothing from a third party: no fonts, no analytics, no
 trackers, no CDN.
 
-## The two generated pages
+## The generated pages
 
 `spec/index.html` and `design/index.html` are rendered from `SPEC.md` and
 `DESIGN.md` in the specification repository. Do not edit them — edit the
@@ -61,12 +61,12 @@ Pull requests are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md). A merged
 change goes live when the maintainer deploys, which is a manual step and usually
 quick.
 
-## Licence
+## License
 
 Everything here is dedicated to the public domain under
 [CC0 1.0](LICENSE), the same terms as the specification.
 
-Two exceptions, both belonging to other repositories and carried here as copies:
+The exceptions belong to other repositories and are carried here as copies:
 `img/slipcase-icon.svg` is from
 [excelano/slipcase-common](https://github.com/excelano/slipcase-common) and
 `axe/` is from [excelano/axe](https://github.com/excelano/axe), each MIT
