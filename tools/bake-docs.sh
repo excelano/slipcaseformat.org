@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 #
+# Author: David M. Anderson
+# Built with AI assistance (Claude, Anthropic)
+#
 # Render the specification and the design document into the two pages that
 # carry them, /spec/ and /design/.
 #
@@ -10,7 +13,7 @@
 # committed, so deploying the site needs neither pandoc nor a network.
 #
 #   tools/bake-docs.sh              # re-render from the tip of main
-#   tools/bake-docs.sh --ref v1.0   # from a tag
+#   tools/bake-docs.sh --ref=v1.0   # from a tag
 #   tools/bake-docs.sh --check      # exit 1 if the committed pages are stale
 #   SPEC_SRC=~/slipcase/slipcase tools/bake-docs.sh   # from a local checkout
 #
