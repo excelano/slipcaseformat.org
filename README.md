@@ -32,7 +32,7 @@ specification, and re-bake:
 tools/bake-docs.sh                                # from the tip of main
 tools/bake-docs.sh --ref=v1.0                     # from a tag
 tools/bake-docs.sh --check                        # exit 1 if the site is stale
-SPEC_SRC=~/slipcase/slipcase tools/bake-docs.sh   # from a local checkout
+SPEC_SRC=~/repos/slipcase/slipcase tools/bake-docs.sh   # from a local checkout
 ```
 
 It needs `pandoc`, and `curl` unless `SPEC_SRC` names a checkout. Each page is
@@ -52,7 +52,7 @@ Root-relative URLs mean the pages need a server root rather than `file://`:
 python3 -m http.server 8000    # then http://localhost:8000/
 ```
 
-`update-axe.sh` refreshes the vendored framework from a local `~/axe`. It is
+`update-axe.sh` refreshes the vendored framework from a local `~/repos/web/axe`. It is
 gitignored and is the maintainer's, not a contributor's.
 
 ## Contributing

@@ -1,4 +1,4 @@
-# Names a local path (~/axe) and is a dev convenience, not part of the site.
+# Names a local path (~/repos/web/axe) and is a dev convenience, not part of the site.
 # updatesite excludes the filename from every deploy in any case.
 update-axe.sh
 

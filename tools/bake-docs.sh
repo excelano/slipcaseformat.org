@@ -15,7 +15,7 @@
 #   tools/bake-docs.sh              # re-render from the tip of main
 #   tools/bake-docs.sh --ref=v1.0   # from a tag
 #   tools/bake-docs.sh --check      # exit 1 if the committed pages are stale
-#   SPEC_SRC=~/slipcase/slipcase tools/bake-docs.sh   # from a local checkout
+#   SPEC_SRC=~/repos/slipcase/slipcase tools/bake-docs.sh   # from a local checkout
 #
 # Needs pandoc, and curl unless SPEC_SRC names a checkout.
 #
