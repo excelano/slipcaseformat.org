@@ -51,11 +51,20 @@
 
         <p><a href="https://github.com/excelano/slpc-rust" rel="noopener" target="_blank"><strong>slpc-rust</strong></a> is a Rust workspace holding two crates: <code>slpc</code>, the library that reads, writes and validates containers, and <code>slipcase</code>, the command-line tool built on it. It is a reference implementation in the strict sense — it exists to show that the specification is implementable, and to be checked against it. Where the two disagree, the specification is right.</p>
 
-<pre><code>slipcase pack report.pdf --flyleaf owner.toml       # writes report.pdf.slpc
-slipcase info report.pdf.slpc                       # prints the flyleaf
-slipcase repack report.pdf.slpc --flyleaf new.toml  # changes it in place, keeping the rest
-slipcase validate report.pdf.slpc                   # exit 0 if conformant
-slipcase unpack report.pdf.slpc --dest ./out        # writes the content file and nothing else</code></pre>
+<pre><code># write report.pdf.slpc
+slipcase pack report.pdf --flyleaf owner.toml
+
+# print the flyleaf
+slipcase info report.pdf.slpc
+
+# change the flyleaf in place, keeping the rest
+slipcase repack report.pdf.slpc --flyleaf new.toml
+
+# exit 0 if conformant
+slipcase validate report.pdf.slpc
+
+# write the content file and nothing else
+slipcase unpack report.pdf.slpc --dest ./out</code></pre>
 
         <p>Wherever a file is read, <code>-</code> names standard input, and wherever one is written it names standard output. Exit codes tell success from bad input, from a bad command line, from a container the build cannot judge.</p>
 
@@ -79,7 +88,7 @@ slipcase unpack report.pdf.slpc --dest ./out        # writes the content file an
 
         <p><a href="https://github.com/excelano/slipql" rel="noopener" target="_blank"><strong>SlipQL</strong></a> is a query language over flyleaves, and a command that runs it. Point <code>slipql</code> at a directory of containers and ask in <code>select</code>, <code>from</code> and <code>where</code>: each container is a row, each flyleaf key a column. The clauses come from SQL and the literals from TOML, so anyone who can write a flyleaf can write a query against one.</p>
 
-<pre><code>slipql&gt; select @path, title, governance.owner where status = "draft" or tags contains "legal"</code></pre>
+<pre><code>slipql&gt; select @path, title, governance.owner where status = "draft"</code></pre>
 
         <p>It reads each flyleaf in place through <code>slpc</code>, never unpacks a content file, keeps no index and changes nothing, so every answer is what is on disk now. A key a container lacks is an empty cell, and a file it cannot read is skipped and counted rather than failing the query. It runs as a prompt, with <code>-e</code> for one query, or over piped standard input, and writes tables, CSV, TSV or JSON. The crate is also a library, which is how Slipcase Query above uses it.</p>
 
