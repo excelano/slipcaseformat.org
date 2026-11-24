@@ -153,7 +153,7 @@ file = &quot;report.pdf&quot;</code></pre>
 <li>MUST NOT report a container whose <code>slipcase_version</code> it does not recognize as conformant to a version it does recognize;</li>
 <li>MUST NOT report a container as conformant, or as non-conformant, when it cannot read the flyleaf (§2.2).</li>
 </ul>
-<p>The bidirectional requirement is one instance of a general obligation: a name is displayed and never interpreted. Where an implementation renders <code>content.file</code> into a medium that parses what it is handed — markup in a graphical toolkit or a desktop notification, HTML in a generated report — the characters that medium reserves have to be neutralised there as well. That is not stated as a requirement because the medium belongs to the implementation rather than to this specification, and a conformance suite cannot observe it.</p>
+<p>The bidirectional requirement is one instance of a general obligation: a name is displayed and never interpreted. Where an implementation renders <code>content.file</code> into a medium that parses what it is handed — markup in a graphical toolkit or a desktop notification, HTML in a generated report — the characters that medium reserves have to be neutralized there as well. That is not stated as a requirement because the medium belongs to the implementation rather than to this specification, and a conformance suite cannot observe it.</p>
 <p>Several of these are security requirements. The one that is not stated here is in §6, because bounding what a reader spends is something it must do before it knows whether it is holding a container at all.</p>
 <h2 id="4-file-extension-and-media-type">4. File extension and media type</h2>
 <p>The file extension is <code>.slpc</code>. The media type is <a href="https://www.iana.org/assignments/media-types/application/vnd.excelano.slipcase+zip" target="_blank"><code>application/vnd.excelano.slipcase+zip</code></a>, registered in the vendor tree of <a href="https://www.rfc-editor.org/rfc/rfc6838" target="_blank">RFC 6838</a>. It supersedes <code>application/x.slipcase+zip</code>, provisional in the unregistered <code>x.</code> tree, which the registration records as a deprecated alias.</p>
@@ -190,7 +190,7 @@ zip report.pdf.slpc slipcase.flyleaf.toml report.pdf</code></pre>
     </section>
 
     <footer>
-        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase/blob/8797acb34449a484a1127b88b6c3512e1bab920f/SPEC.md" rel="noopener" target="_blank">SPEC.md</a> at commit <code>8797acb</code>, 10 November 2026. The repository is the authority on the format: where this page and it differ, it is right and this page is stale.</p>
+        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase/blob/18e1463e2fddd68f37abad16fc31c797b7ba29c3/SPEC.md" rel="noopener" target="_blank">SPEC.md</a> at commit <code>18e1463</code>, 10 November 2026. The repository is the authority on the format: where this page and it differ, it is right and this page is stale.</p>
         <p><small>The specification is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener" target="_blank">CC0 1.0</a>. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener" target="_blank">open to pull requests</a>, though not this page — it is generated.</small></p>
     </footer>
 
