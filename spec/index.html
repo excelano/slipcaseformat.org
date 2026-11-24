@@ -37,7 +37,7 @@
         <li><a href="/spec/">Specification</a></li>
         <li><a href="/design/">Design</a></li>
         <li><a href="/implementations/">Implementations</a></li>
-        <li><a href="https://github.com/excelano/slipcase" rel="noopener">GitHub</a></li>
+        <li><a href="https://github.com/excelano/slipcase" rel="noopener" target="_blank">GitHub</a></li>
         <li class="nav-right"><button class="theme-toggle" aria-label="Toggle theme"></button></li>
     </ul>
 </nav>
@@ -70,7 +70,7 @@
 <strong>Status:</strong> final</p>
 <p>A Slipcase container is a ZIP archive that binds a single content file to a flyleaf describing it, so that the two travel as one file.</p>
 <h2 id="1-terminology">1. Terminology</h2>
-<p>The key words <strong>MUST</strong>, <strong>MUST NOT</strong>, and <strong>MAY</strong> are to be interpreted as described in BCP 14 (<a href="https://www.rfc-editor.org/rfc/rfc2119">RFC 2119</a>, <a href="https://www.rfc-editor.org/rfc/rfc8174">RFC 8174</a>) when, and only when, they appear in capitals.</p>
+<p>The key words <strong>MUST</strong>, <strong>MUST NOT</strong>, and <strong>MAY</strong> are to be interpreted as described in BCP 14 (<a href="https://www.rfc-editor.org/rfc/rfc2119" target="_blank">RFC 2119</a>, <a href="https://www.rfc-editor.org/rfc/rfc8174" target="_blank">RFC 8174</a>) when, and only when, they appear in capitals.</p>
 <p><strong>Container</strong> — a ZIP archive conforming to §2.<br />
 <strong>Flyleaf</strong> — the archive member named <code>slipcase.flyleaf.toml</code>.<br />
 <strong>Content file</strong> — the archive member named by the <code>content.file</code> key.<br />
@@ -89,7 +89,7 @@
 <p>That record MUST also end the file, its own comment included, and MUST describe a single-disk archive: the count of records on this disk and the count in total are equal, and both disk numbers are zero. Where a Zip64 end of central directory record is present, the two MUST agree about how many entries the directory holds and where it begins. Each of these is a field two readers can be made to read differently, and a file whose member list depends on which reader opened it is not a container whatever else it may be.</p>
 <p>Names are decoded before they are compared: as UTF-8 where general purpose bit 11 is set, and as CP437 otherwise. Comparison is then exact over the decoded sequence of code points. It is case-sensitive, and no Unicode normalization is applied to either side. An implementation MUST apply the same decoding and the same comparison when matching <code>content.file</code> against member names.</p>
 <h3 id="22-the-flyleaf">2.2 The flyleaf</h3>
-<p>The flyleaf MUST be a valid <a href="https://toml.io/en/v1.1.0">TOML 1.1.0</a> document, encoded as UTF-8. Where the member is encrypted, this applies to its decrypted bytes.</p>
+<p>The flyleaf MUST be a valid <a href="https://toml.io/en/v1.1.0" target="_blank">TOML 1.1.0</a> document, encoded as UTF-8. Where the member is encrypted, this applies to its decrypted bytes.</p>
 <p>The document MAY begin with a byte order mark (U+FEFF). An implementation MUST skip a leading byte order mark before parsing and MUST NOT treat its presence as an error.</p>
 <p>A container whose flyleaf cannot be read at all — because it is encrypted and the key is not held, or for any other reason — is <strong>undetermined</strong>: its conformance cannot be established from the file. This is not the same as non-conformance, and §2.5 continues to forbid rejecting a container on the grounds that a member is encrypted.</p>
 <p>It MUST contain the following two keys, and MAY contain any others:</p>
@@ -156,7 +156,7 @@ file = &quot;report.pdf&quot;</code></pre>
 <p>The bidirectional requirement is one instance of a general obligation: a name is displayed and never interpreted. Where an implementation renders <code>content.file</code> into a medium that parses what it is handed — markup in a graphical toolkit or a desktop notification, HTML in a generated report — the characters that medium reserves have to be neutralised there as well. That is not stated as a requirement because the medium belongs to the implementation rather than to this specification, and a conformance suite cannot observe it.</p>
 <p>Several of these are security requirements. The one that is not stated here is in §6, because bounding what a reader spends is something it must do before it knows whether it is holding a container at all.</p>
 <h2 id="4-file-extension-and-media-type">4. File extension and media type</h2>
-<p>The file extension is <code>.slpc</code>. The media type is <a href="https://www.iana.org/assignments/media-types/application/vnd.excelano.slipcase+zip"><code>application/vnd.excelano.slipcase+zip</code></a>, registered in the vendor tree of <a href="https://www.rfc-editor.org/rfc/rfc6838">RFC 6838</a>. It supersedes <code>application/x.slipcase+zip</code>, provisional in the unregistered <code>x.</code> tree, which the registration records as a deprecated alias.</p>
+<p>The file extension is <code>.slpc</code>. The media type is <a href="https://www.iana.org/assignments/media-types/application/vnd.excelano.slipcase+zip" target="_blank"><code>application/vnd.excelano.slipcase+zip</code></a>, registered in the vendor tree of <a href="https://www.rfc-editor.org/rfc/rfc6838" target="_blank">RFC 6838</a>. It supersedes <code>application/x.slipcase+zip</code>, provisional in the unregistered <code>x.</code> tree, which the registration records as a deprecated alias.</p>
 <p>Neither appears inside a container. A container is identified by opening it and finding a conformant flyleaf; this specification reserves no magic bytes and defines no identification by content.</p>
 <h2 id="5-out-of-scope-for-this-version">5. Out of scope for this version</h2>
 <p>This version defines no signature or attestation mechanism, no encryption of its own, no aggregation of multiple content files, no checksum or fixity key, and no vocabulary of descriptive metadata keys. It takes no position on whether a container may be modified after it is written.</p>
@@ -184,14 +184,14 @@ zip report.pdf.slpc slipcase.flyleaf.toml report.pdf</code></pre>
 <p>By convention a container is named for its content file with <code>.slpc</code> appended: <code>foo.pdf.slpc</code> holds <code>foo.pdf</code>. This keeps the content file's own extension visible and survives content files with double extensions or none at all.</p>
 <p>It is a convention and nothing more. Nothing enforces it, a container may be named anything, and <code>content.file</code> is the only authority on the content file's name.</p>
 <h2 id="appendix-c-relationship-to-version-10">Appendix C. Relationship to version 1.0</h2>
-<p>A container declaring <code>1.0</code> is governed by <a href="https://github.com/excelano/slipcase/blob/v1.0/SPEC.md">version 1.0</a> of this specification, which names the flyleaf <code>slipcase.metadata.toml</code> and the content file key <code>payload.file</code>. Under this version those names carry no meaning: a member named <code>slipcase.metadata.toml</code> is an additional member under §2.1, and a <code>payload</code> table is an additional key under §2.2.</p>
+<p>A container declaring <code>1.0</code> is governed by <a href="https://github.com/excelano/slipcase/blob/v1.0/SPEC.md" target="_blank">version 1.0</a> of this specification, which names the flyleaf <code>slipcase.metadata.toml</code> and the content file key <code>payload.file</code>. Under this version those names carry no meaning: a member named <code>slipcase.metadata.toml</code> is an additional member under §2.1, and a <code>payload</code> table is an additional key under §2.2.</p>
 <p>A reader establishes which version a container declares by reading its flyleaf, and the flyleaf's name is one of the things that differs. A reader that knows only this version's name finds no flyleaf in a 1.0 container and cannot reach the verdict §2.4 describes; reaching it takes knowing the 1.0 name as well. The name is the one thing in a container a reader has to know before it can learn anything else, and a version that changes it is unreadable, rather than out of scope, to every reader written before it.</p>
 <p>Nothing else differs between the two versions. A conformant 1.0 container becomes a conformant 1.1 container by renaming its flyleaf, renaming the key within it, and changing the value of <code>slipcase_version</code>, and the reverse holds. §2.4 still applies: an implementation that recognizes one version and not the other reports a container declaring the other as outside its conformance question, not as non-conformant.</p>
     </section>
 
     <footer>
-        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase/blob/8797acb34449a484a1127b88b6c3512e1bab920f/SPEC.md" rel="noopener">SPEC.md</a> at commit <code>8797acb</code>, 10 November 2026. The repository is the authority on the format: where this page and it differ, it is right and this page is stale.</p>
-        <p><small>The specification is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener">CC0 1.0</a>. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener">open to pull requests</a>, though not this page — it is generated.</small></p>
+        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase/blob/8797acb34449a484a1127b88b6c3512e1bab920f/SPEC.md" rel="noopener" target="_blank">SPEC.md</a> at commit <code>8797acb</code>, 10 November 2026. The repository is the authority on the format: where this page and it differ, it is right and this page is stale.</p>
+        <p><small>The specification is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener" target="_blank">CC0 1.0</a>. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener" target="_blank">open to pull requests</a>, though not this page — it is generated.</small></p>
     </footer>
 
 </article>

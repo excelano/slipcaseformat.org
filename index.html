@@ -29,7 +29,7 @@
         <li><a href="/spec/">Specification</a></li>
         <li><a href="/design/">Design</a></li>
         <li><a href="/implementations/">Implementations</a></li>
-        <li><a href="https://github.com/excelano/slipcase" rel="noopener">GitHub</a></li>
+        <li><a href="https://github.com/excelano/slipcase" rel="noopener" target="_blank">GitHub</a></li>
         <li class="nav-right"><button class="theme-toggle" aria-label="Toggle theme"></button></li>
     </ul>
 </nav>
@@ -37,7 +37,7 @@
 <main>
 
 <aside class="open-banner">
-    <p>Just want to know how to open a <code>.slpc</code> file? <a id="get-slipcase-open" href="https://excelano.com/slipcase/#open" rel="noopener">Get Slipcase Open</a>.</p>
+    <p>Just want to know how to open a <code>.slpc</code> file? <a id="get-slipcase-open" href="https://excelano.com/slipcase/#open" rel="noopener" target="_blank">Get Slipcase Open</a>.</p>
 </aside>
 <script>
 // Name the visitor's system in the banner link and point it at that system's
@@ -88,7 +88,7 @@
     <section id="opening">
         <h2>How do I open one?</h2>
 
-        <p>The short answer is <a href="https://excelano.com/slipcase/#open" rel="noopener">Slipcase Open</a>: install it, double-click the container, and the content file opens in whatever application you already use for that kind of file. Edit it there, save, and the edit goes back into the container. Its source and installation instructions are at <a href="https://github.com/excelano/slipcase-open" rel="noopener">excelano/slipcase-open</a>. The other programs that read and write containers are on <a href="/implementations/">the implementations page</a>.</p>
+        <p>The short answer is <a href="https://excelano.com/slipcase/#open" rel="noopener" target="_blank">Slipcase Open</a>: install it, double-click the container, and the content file opens in whatever application you already use for that kind of file. Edit it there, save, and the edit goes back into the container. Its source and installation instructions are at <a href="https://github.com/excelano/slipcase-open" rel="noopener" target="_blank">excelano/slipcase-open</a>. The other programs that read and write containers are on <a href="/implementations/">the implementations page</a>.</p>
 
         <p>No tool is required, though. A container is a ZIP archive, so any program that opens one of those opens a container: unzipping it gives you the content file and a small text file beside it. On a command line that is <code>unzip report.pdf.slpc</code>, and nothing has to be renamed for it. In a file manager:</p>
 
@@ -121,7 +121,7 @@ zip report.pdf.slpc slipcase.flyleaf.toml report.pdf</code></pre>
     <section id="inside">
         <h2>What is inside</h2>
 
-        <p>A container is a ZIP archive with exactly one member named <code>slipcase.flyleaf.toml</code> and exactly one member named by the flyleaf's <code>content.file</code> key. It may hold any number of other members, which have no defined meaning and do not make it non-conformant. The flyleaf is <a href="https://toml.io/en/v1.1.0" rel="noopener">TOML 1.1.0</a> in UTF-8, and the specification requires two keys of it:</p>
+        <p>A container is a ZIP archive with exactly one member named <code>slipcase.flyleaf.toml</code> and exactly one member named by the flyleaf's <code>content.file</code> key. It may hold any number of other members, which have no defined meaning and do not make it non-conformant. The flyleaf is <a href="https://toml.io/en/v1.1.0" rel="noopener" target="_blank">TOML 1.1.0</a> in UTF-8, and the specification requires two keys of it:</p>
 
         <dl>
             <dt><code>slipcase_version</code></dt>
@@ -143,7 +143,7 @@ zip report.pdf.slpc slipcase.flyleaf.toml report.pdf</code></pre>
     <section id="identity">
         <h2>Extension and media type</h2>
 
-        <p>The file extension is <code>.slpc</code>. The media type is <a href="https://www.iana.org/assignments/media-types/application/vnd.excelano.slipcase+zip" rel="noopener"><code>application/vnd.excelano.slipcase+zip</code></a>, registered in the vendor tree of <a href="https://www.rfc-editor.org/rfc/rfc6838" rel="noopener">RFC 6838</a>. It supersedes <code>application/x.slipcase+zip</code>, provisional in the unregistered <code>x.</code> tree, which the registration records as a deprecated alias. The <a href="https://github.com/excelano/slipcase/blob/main/IANA-REGISTRATION.md" rel="noopener">registration is in the repository</a>, field for field.</p>
+        <p>The file extension is <code>.slpc</code>. The media type is <a href="https://www.iana.org/assignments/media-types/application/vnd.excelano.slipcase+zip" rel="noopener" target="_blank"><code>application/vnd.excelano.slipcase+zip</code></a>, registered in the vendor tree of <a href="https://www.rfc-editor.org/rfc/rfc6838" rel="noopener" target="_blank">RFC 6838</a>. It supersedes <code>application/x.slipcase+zip</code>, provisional in the unregistered <code>x.</code> tree, which the registration records as a deprecated alias. The <a href="https://github.com/excelano/slipcase/blob/main/IANA-REGISTRATION.md" rel="noopener" target="_blank">registration is in the repository</a>, field for field.</p>
 
         <p>Neither the extension nor the media type appears inside a container. The format reserves no magic bytes: a file is identified as a container by opening it and finding a conformant flyleaf, which is a parse of untrusted input and is why <a href="/spec/#6-security-considerations">§6 of the specification</a> requires a reader to bound what it spends before it knows what it is holding.</p>
     </section>
@@ -160,7 +160,7 @@ zip report.pdf.slpc slipcase.flyleaf.toml report.pdf</code></pre>
                 <h3>Design document</h3>
                 <p>Why each rule is the way it is, and what was considered and rejected. A rule and its reasoning travel together.</p>
             </a>
-            <a href="https://github.com/excelano/slipcase/tree/main/conformance" rel="noopener">
+            <a href="https://github.com/excelano/slipcase/tree/main/conformance" rel="noopener" target="_blank">
                 <h3>Conformance corpus</h3>
                 <p>Test containers with declared verdicts, built by a generator that needs nothing but Python. Not normative: where a case and the specification disagree, the specification wins.</p>
             </a>
@@ -174,13 +174,13 @@ zip report.pdf.slpc slipcase.flyleaf.toml report.pdf</code></pre>
     <section id="license">
         <h2>Using it</h2>
 
-        <p>The specification is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener">CC0 1.0</a>. Anyone can implement it, quote it, fork it, or embed the text, with no obligation to this project and nothing to ask permission for.</p>
+        <p>The specification is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener" target="_blank">CC0 1.0</a>. Anyone can implement it, quote it, fork it, or embed the text, with no obligation to this project and nothing to ask permission for.</p>
 
-        <p>The most useful thing to send back is a question the specification cannot answer. The format is small and its rules are short, which makes it easy to read past a case that neither document decides — and two conforming implementations disagreeing about the same container is the clearest form of that. Open an issue on <a href="https://github.com/excelano/slipcase/issues" rel="noopener">the specification repository</a>; a case the specification leaves open is a specification bug rather than a matter of opinion.</p>
+        <p>The most useful thing to send back is a question the specification cannot answer. The format is small and its rules are short, which makes it easy to read past a case that neither document decides — and two conforming implementations disagreeing about the same container is the clearest form of that. Open an issue on <a href="https://github.com/excelano/slipcase/issues" rel="noopener" target="_blank">the specification repository</a>; a case the specification leaves open is a specification bug rather than a matter of opinion.</p>
     </section>
 
     <footer>
-        <p><small>The specification repository at <a href="https://github.com/excelano/slipcase" rel="noopener">github.com/excelano/slipcase</a> is the authority on the format. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener">open to pull requests</a> and, like the specification, is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener">CC0 1.0</a>.</small></p>
+        <p><small>The specification repository at <a href="https://github.com/excelano/slipcase" rel="noopener" target="_blank">github.com/excelano/slipcase</a> is the authority on the format. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener" target="_blank">open to pull requests</a> and, like the specification, is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener" target="_blank">CC0 1.0</a>.</small></p>
     </footer>
 
 </article>

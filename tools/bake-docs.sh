@@ -108,6 +108,7 @@ for doc in "${DOCS[@]}"; do
         --to=html5 \
         --standalone \
         --template="$TEMPLATE" \
+        --lua-filter="$SITE/tools/external-links.lua" \
         --toc --toc-depth=2 \
         --no-highlight \
         --wrap=none \
