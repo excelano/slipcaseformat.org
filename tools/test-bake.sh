@@ -62,6 +62,14 @@ grep -q '<link rel="canonical" href="https://slipcaseformat.org/profiles/records
 grep -q 'href="/profiles/records/1.0/"' "$WORK/site/profiles/records/index.html" \
     || fail "current Records page does not list 1.0"
 pass "1.0 frozen page pinned and listed"
+grep -q 'where this page and that commit differ' "$FROZEN" \
+    || fail "1.0 page provenance must not call the frozen page stale"
+pass "1.0 frozen page provenance"
+
+SPEC_DATE="$(TZ=UTC git -C "$SPEC_SRC" show -s --date=format-local:'%-d %B %Y' --format=%cd "$SPEC_COMMIT")"
+grep -q "<code>${SPEC_COMMIT:0:7}</code>, $SPEC_DATE\." "$WORK/site/spec/index.html" \
+    || fail "spec page date is not the commit's UTC date ($SPEC_DATE)"
+pass "stamp dates are UTC"
 
 for page in "${PROFILE_PAGES[@]}"; do
     f="$WORK/site/$page/index.html"

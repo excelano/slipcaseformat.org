@@ -977,7 +977,7 @@ title = &quot;Vendor contracts 2024&quot;</code></pre>
   000124.intent.slpc     # unfinished: no final</code></pre>
 <p>Batch N is <strong>final</strong> when <code>N.slpc</code> exists, and <strong>unfinished</strong> when <code>N.intent.slpc</code> exists without it. No file in the register is ever rewritten or removed: both containers are created with create-new semantics, the journal is only appended to, and the lock file is never written. A register therefore only gains files.</p>
 <h3 id="62-the-intent">6.2 The intent</h3>
-<p>The intent is a container of kind <code>disposal-batch</code>, written before any record is destroyed. Creating it is how a run claims its sequence: a run MUST create <code>N.intent.slpc</code> exclusively, and MUST NOT proceed if the create fails. A run MUST NOT claim sequence N unless batch N−1 is final (§6.5).</p>
+<p>The intent is a container of kind <code>disposal-batch</code>, written before any record is destroyed. Creating it is how a run claims its sequence: a run MUST create <code>N.intent.slpc</code> exclusively, and MUST NOT proceed if the create fails. A run MUST NOT claim sequence N unless batch N−1 is final (§6.7).</p>
 <pre class="toml"><code>slipcase_version = &quot;1.1&quot;
 
 [content]
@@ -1440,7 +1440,7 @@ linux = &quot;/mnt/legal&quot;</code></pre>
     </section>
 
     <footer>
-        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase-profiles/blob/035b7d201e4fba1993fd4c07b429f306300e85bc/records/SPEC.md" rel="noopener" target="_blank">records/SPEC.md</a> at commit <code>035b7d2</code>, 27 November 2026. The repository is the authority on profiles: where this page and it differ, it is right and this page is stale.</p>
+        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase-profiles/blob/0887c6000404c665e220b3d28cd9fa8aa6114d28/records/SPEC.md" rel="noopener" target="_blank">records/SPEC.md</a> at commit <code>0887c60</code>, 27 November 2026. The repository is the authority on profiles: where this page and it differ, it is right and this page is stale.</p>
         <p><small>This document is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener" target="_blank">CC0 1.0</a>. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener" target="_blank">open to pull requests</a>, though not this page — it is generated.</small></p>
     </footer>
 

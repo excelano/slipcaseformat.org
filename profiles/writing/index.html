@@ -70,7 +70,7 @@
 
         <p>Identifiers, agents, hashes, dates and instants, and chained logs each have one form, in <a href="/profiles/conventions/">the conventions</a>, and a profile uses those forms rather than defining its own (FRAMEWORK §8). The specification says which conventions it uses. A document's <code>id</code> is an identifier, the people who deliver and accept are agents, a document's content hash is a hash, and <code>issued</code> is a date.</p>
 
-        <p>A chained log needs three decisions the profile makes and states: the entry name, the seed that ties the log to its container, and where the head is recorded so that the last entry is protected too (CONVENTIONS §5.3, §5.5). The handover profile's log is <code>handover/events.toml</code>, entry name <code>event</code>, seeded from the table's <code>id</code>.</p>
+        <p>A profile that defines a chained log states its entry name and the seed that ties the log to its container (FRAMEWORK §10, CONVENTIONS §5.3), and says either where the head is recorded, so that the last entry is protected too, or that it records none (CONVENTIONS §5.5). The handover profile's log is <code>handover/events.toml</code>, entry name <code>event</code>, seeded from the table's <code>id</code>.</p>
     </section>
 
     <section id="conformance">
@@ -82,7 +82,7 @@
     <section id="implementations">
         <h2>5. What an implementation must do</h2>
 
-        <p>The framework already requires an implementation to check the profile and its version before acting, to touch only its own table and prefix, and to report a non-conforming table rather than pass over it (FRAMEWORK §11). A profile states what it requires beyond that: in the handover profile, that an acceptance is recorded only after the hash has been verified.</p>
+        <p>The framework already requires an implementation to check the profile and its version before acting, to touch only its own table and prefix, and, when it acts over a set of containers in which the profile is expected, to report a non-conforming table rather than pass over it (FRAMEWORK §11). A profile states what it requires beyond that: in the handover profile, that an acceptance is recorded only after the hash has been verified.</p>
     </section>
 
     <section id="security">
@@ -94,7 +94,7 @@
     <section id="next">
         <h2>Then</h2>
 
-        <p>Write a design document beside the specification that says why each rule is drawn where it is; the <a href="/profiles/design/">framework's</a> and the <a href="/profiles/records/design/">Records Profile's</a> show the form. Publish both at the profile's URI, add example containers that conform and some that do not, and <a href="/profiles/#adding">list the profile</a>.</p>
+        <p>Write a design document beside the specification that says why each rule is drawn where it is; the <a href="/profiles/design/">framework's</a> and the <a href="/profiles/records/design/">Records Profile's</a> show the form. The profile's URI has to resolve to the specification (FRAMEWORK §3); publishing the design document beside it helps a reader who wants the reasons. Example containers are what an implementation tests against, and an official profile carries them (FRAMEWORK §9); a few that fail to conform, each for one stated reason, are as useful as the ones that pass. Then <a href="/profiles/#adding">list the profile</a>.</p>
     </section>
 
     <footer>

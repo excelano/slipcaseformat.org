@@ -66,6 +66,10 @@ local_src() {
 }
 
 authority() {
+    [ "$2" = "profiles/records/1.0" ] && {
+        echo "This page is version 1.0 as it was released: where this page and that commit differ, the commit is right and this page is stale."
+        return
+    }
     case "$1" in
         slipcase)          echo "The repository is the authority on the format: where this page and it differ, it is right and this page is stale." ;;
         slipcase-profiles) echo "The repository is the authority on profiles: where this page and it differ, it is right and this page is stale." ;;
@@ -88,7 +92,7 @@ resolve() {
     if [ -n "$src" ]; then
         [ -d "$src/.git" ] || { echo "not a git checkout: $src"; exit 1; }
         COMMIT_OF[$key]="$(git -C "$src" rev-parse "$ref^{commit}")"
-        DATE_OF[$key]="$(git -C "$src" show -s --format=%cd --date=format:'%-d %B %Y' "${COMMIT_OF[$key]}")"
+        DATE_OF[$key]="$(TZ=UTC git -C "$src" show -s --format=%cd --date=format-local:'%-d %B %Y' "${COMMIT_OF[$key]}")"
     else
         command -v curl >/dev/null || { echo "curl not found, and no local checkout of $repo"; exit 1; }
         local api="https://api.github.com/repos/excelano/$repo/commits/$ref" json
@@ -156,7 +160,7 @@ for doc in "${DOCS[@]}"; do
         -V "description=$DESCRIPTION" \
         -V "slug=$SLUG" \
         -V "repo=excelano/$REPO" \
-        -V "authority=$(authority "$REPO")" \
+        -V "authority=$(authority "$REPO" "$SLUG")" \
         -V "dedicated=$(dedicated "$REPO")" \
         -V "docfile=$SRC" \
         -V "commit=$COMMIT" \
