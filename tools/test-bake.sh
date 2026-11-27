@@ -21,8 +21,6 @@ PROFILE_PAGES=(
     profiles/records
     profiles/records/1.0
     profiles/records/design
-    profiles/core
-    profiles/core/design
 )
 
 PINNED_PAGES="profiles/framework profiles/conventions profiles/design profiles/records profiles/records/1.0 profiles/records/design"
@@ -30,10 +28,10 @@ PINNED_PAGES="profiles/framework profiles/conventions profiles/design profiles/r
 SPEC_COMMIT="$(grep -o 'excelano/slipcase/blob/[0-9a-f]\{40\}' "$SITE/spec/index.html" | head -1 | sed 's#.*/##')"
 [ -n "$SPEC_COMMIT" ] || fail "no commit stamp in spec/index.html"
 
-printf '%s\n' '[c](../core/SPEC.md#5-conformance) [s](SPEC.md#3-retention-schedules) [f](../FRAMEWORK.md) [l](../LICENSE) [e](examples/register/README.md) [x](https://example.com/) [a](#top)' > "$WORK/links.md"
+printf '%s\n' '[c](../CONVENTIONS.md#3-dates) [s](SPEC.md#3-retention-schedules) [f](../FRAMEWORK.md) [l](../LICENSE) [e](examples/register/README.md) [x](https://example.com/) [a](#top)' > "$WORK/links.md"
 LINKS="$(pandoc "$WORK/links.md" --from=gfm --to=html5 --lua-filter="$SITE/tools/profile-links.lua" \
     -M profile-doc=records/DESIGN.md -M profile-commit=abc123)"
-for want in 'href="/profiles/core/#5-conformance"' 'href="/profiles/records/#3-retention-schedules"' 'href="/profiles/framework/"' \
+for want in 'href="/profiles/conventions/#3-dates"' 'href="/profiles/records/#3-retention-schedules"' 'href="/profiles/framework/"' \
         'href="https://github.com/excelano/slipcase-profiles/blob/abc123/LICENSE"' \
         'href="https://github.com/excelano/slipcase-profiles/blob/abc123/records/examples/register/README.md"' \
         'href="https://example.com/"' 'href="#top"'; do

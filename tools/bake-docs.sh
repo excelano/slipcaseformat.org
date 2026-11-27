@@ -31,7 +31,6 @@ TEMPLATE="$SITE/tools/doc-template.html"
 
 RECORDS_VERSIONS_CURRENT='Versions: <a href="/profiles/records/1.0/">1.0</a> (current).'
 RECORDS_VERSIONS_FROZEN='This is version 1.0, kept as it was released. The current version is at <a href="/profiles/records/">/profiles/records/</a>.'
-CORE_DRAFT='Version 1.0, a draft: it changes without its version number moving until it is declared final.'
 
 DOCS=(
     "slipcase|-|SPEC.md|spec|Slipcase — Specification|What a conformant container is, and what a program that handles one must do.|"
@@ -42,8 +41,6 @@ DOCS=(
     "slipcase-profiles|records-v1.0|records/SPEC.md|profiles/records|Slipcase Records Profile — Specification|A container as a managed record: identity, retention, holds, history, and the register of its destruction.|$RECORDS_VERSIONS_CURRENT"
     "slipcase-profiles|records-v1.0|records/SPEC.md|profiles/records/1.0|Slipcase Records Profile 1.0 — Specification|A container as a managed record: identity, retention, holds, history, and the register of its destruction.|$RECORDS_VERSIONS_FROZEN"
     "slipcase-profiles|records-v1.0|records/DESIGN.md|profiles/records/design|Slipcase Records Profile — Design Document|Why each rule of the Records Profile is the way it is, and what was considered and rejected.|"
-    "slipcase-profiles|main|core/SPEC.md|profiles/core|Slipcase Core Profile — Specification|Dublin Core metadata for Slipcase containers.|$CORE_DRAFT"
-    "slipcase-profiles|main|core/DESIGN.md|profiles/core/design|Slipcase Core Profile — Design Document|Why each rule of the Core Profile is the way it is, and what was considered and rejected.|$CORE_DRAFT"
 )
 
 for arg in "$@"; do
