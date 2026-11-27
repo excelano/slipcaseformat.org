@@ -19,11 +19,10 @@ PROFILE_PAGES=(
     profiles/conventions
     profiles/design
     profiles/records
-    profiles/records/1.0
     profiles/records/design
 )
 
-PINNED_PAGES="profiles/framework profiles/conventions profiles/design profiles/records profiles/records/1.0 profiles/records/design"
+PINNED_PAGES="profiles/framework profiles/conventions profiles/design"
 
 SPEC_COMMIT="$(grep -o 'excelano/slipcase/blob/[0-9a-f]\{40\}' "$SITE/spec/index.html" | head -1 | sed 's#.*/##')"
 [ -n "$SPEC_COMMIT" ] || fail "no commit stamp in spec/index.html"
@@ -54,19 +53,6 @@ for page in "${PROFILE_PAGES[@]}"; do
     [ -s "$WORK/site/$page/index.html" ] || fail "$page/index.html missing"
 done
 pass "profile pages present"
-
-RECORDS_COMMIT="$(git -C "$PROFILES_SRC" rev-parse 'records-v1.0^{commit}')"
-FROZEN="$WORK/site/profiles/records/1.0/index.html"
-grep -q "slipcase-profiles/blob/$RECORDS_COMMIT/records/SPEC.md" "$FROZEN" \
-    || fail "1.0 page not stamped with records-v1.0 ($RECORDS_COMMIT)"
-grep -q '<link rel="canonical" href="https://slipcaseformat.org/profiles/records/1.0/">' "$FROZEN" \
-    || fail "1.0 page canonical"
-grep -q 'href="/profiles/records/1.0/"' "$WORK/site/profiles/records/index.html" \
-    || fail "current Records page does not list 1.0"
-pass "1.0 frozen page pinned and listed"
-grep -q 'where this page and that commit differ' "$FROZEN" \
-    || fail "1.0 page provenance must not call the frozen page stale"
-pass "1.0 frozen page provenance"
 
 SPEC_DATE="$(TZ=UTC git -C "$SPEC_SRC" show -s --date=format-local:'%-d %B %Y' --format=%cd "$SPEC_COMMIT")"
 grep -q "<code>${SPEC_COMMIT:0:7}</code>, $SPEC_DATE\." "$WORK/site/spec/index.html" \

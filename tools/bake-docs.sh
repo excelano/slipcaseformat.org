@@ -29,8 +29,7 @@ CHECK=0
 SITE="$(cd "$(dirname "$0")/.." && pwd)"
 TEMPLATE="$SITE/tools/doc-template.html"
 
-RECORDS_VERSIONS_CURRENT='Versions: <a href="/profiles/records/1.0/">1.0</a> (current).'
-RECORDS_VERSIONS_FROZEN='This is version 1.0, kept as it was released. The current version is at <a href="/profiles/records/">/profiles/records/</a>.'
+RECORDS_DRAFT='Version 1.0, a draft: it changes without its version number moving until it is declared final.'
 
 DOCS=(
     "slipcase|-|SPEC.md|spec|Slipcase — Specification|What a conformant container is, and what a program that handles one must do.|"
@@ -38,9 +37,8 @@ DOCS=(
     "slipcase-profiles|framework-v1.0.1|FRAMEWORK.md|profiles/framework|Slipcase Profiles — Framework|What every profile has in common: the table it owns, the directory its members live under, and how it is versioned.|"
     "slipcase-profiles|framework-v1.0.1|CONVENTIONS.md|profiles/conventions|Slipcase Profiles — Shared Conventions|How every profile writes an identifier, an agent, a hash, a date, and a log that shows when it has been edited.|"
     "slipcase-profiles|framework-v1.0.1|DESIGN.md|profiles/design|Slipcase Profiles — Design Document|Why each rule of the framework and the conventions is drawn where it is.|"
-    "slipcase-profiles|records-v1.0|records/SPEC.md|profiles/records|Slipcase Records Profile — Specification|A container as a managed record: identity, retention, holds, history, and the register of its destruction.|$RECORDS_VERSIONS_CURRENT"
-    "slipcase-profiles|records-v1.0|records/SPEC.md|profiles/records/1.0|Slipcase Records Profile 1.0 — Specification|A container as a managed record: identity, retention, holds, history, and the register of its destruction.|$RECORDS_VERSIONS_FROZEN"
-    "slipcase-profiles|records-v1.0|records/DESIGN.md|profiles/records/design|Slipcase Records Profile — Design Document|Why each rule of the Records Profile is the way it is, and what was considered and rejected.|"
+    "slipcase-profiles|main|records/SPEC.md|profiles/records|Slipcase Records Profile — Specification|A container as a managed record: identity, retention, holds, history, and the register of its destruction.|$RECORDS_DRAFT"
+    "slipcase-profiles|main|records/DESIGN.md|profiles/records/design|Slipcase Records Profile — Design Document|Why each rule of the Records Profile is the way it is, and what was considered and rejected.|$RECORDS_DRAFT"
 )
 
 for arg in "$@"; do
@@ -66,10 +64,6 @@ local_src() {
 }
 
 authority() {
-    [ "$2" = "profiles/records/1.0" ] && {
-        echo "This page is version 1.0 as it was released: where this page and that commit differ, the commit is right and this page is stale."
-        return
-    }
     case "$1" in
         slipcase)          echo "The repository is the authority on the format: where this page and it differ, it is right and this page is stale." ;;
         slipcase-profiles) echo "The repository is the authority on profiles: where this page and it differ, it is right and this page is stale." ;;

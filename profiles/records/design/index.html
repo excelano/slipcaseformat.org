@@ -49,6 +49,7 @@
     <header>
         <h1>Slipcase Records Profile — Design Document</h1>
         <p class="lede">Why each rule of the Records Profile is the way it is, and what was considered and rejected.</p>
+        <p class="versions">Version 1.0, a draft: it changes without its version number moving until it is declared final.</p>
     </header>
 
     <section class="contents" aria-label="Contents">
@@ -73,7 +74,7 @@
     </section>
 
     <section id="document">
-<p><strong>Specification version:</strong> 1.0</p>
+<p><strong>Specification version:</strong> 1.0 (draft)</p>
 <p><code>SPEC.md</code> states the rules. This document says why each one is drawn where it is, and what was considered and rejected. Nothing here is normative. This profile's rules are cited as <strong>RECORDS §2.4</strong>; the framework, the conventions, and the Slipcase specification as <strong>FRAMEWORK §n</strong>, <strong>CONVENTIONS §n</strong>, and <strong>SPEC §n</strong>, as they are everywhere else in this repository.</p>
 <hr />
 <h2 id="1-what-a-record-is-here">1. What a record is here</h2>
@@ -155,14 +156,14 @@
 <p><strong>No secure erasure.</strong> Overwriting is unreliable on SSDs, copy-on-write filesystems, SMB shares with snapshots, and synced folders, and claiming it would be a false assurance. The scope statement says what happened and names backups; crypto-shredding is the one technique that would make destruction verifiable in backups too, and it is a possible later feature, not something this profile pretends to.</p>
 <h2 id="15-implementation-requirements-and-security">15. Implementation requirements and security</h2>
 <p><strong>The never-destroy list is in the implementation section (RECORDS §9)</strong>, restating §8.5 from the other side, because the one place a reader of an implementation looks for "what will this refuse" should hold the answer without a derivation.</p>
-<p><strong>A sweep report in the records root, exceptions in the record (RECORDS §9).</strong> NARA requires a documented integrity check; a report per sweep is that document. The record's own log gets only what the sweep found wrong, for the reason §7 of this document gives.</p>
+<p><strong>A sweep report in the records root, exceptions in the record (RECORDS §9).</strong> NARA requires integrity controls, "such as audit trails, to ensure records are complete and unaltered" (36 CFR 1236.10(c)); a report per sweep documents that the control ran. The record's own log gets only what the sweep found wrong, for the reason §7 of this document gives.</p>
 <p><strong>Paths in logs are never opened (RECORDS §10).</strong> A log is data that anyone who can write a container can write. Treating a path from it as a place to delete would make the register a weapon.</p>
 <p><strong>What the profile protects and what it detects.</strong> Anyone with write access can delete records and can delete the register. The profile makes both detectable, by fixity and by the chain, and does not pretend to prevent either; prevention is the file share's job and the organization's.</p>
 <p><strong>A verified operator is a setting, not a lock (RECORDS §7.1, §9, §10).</strong> An organization that signs its operators in wants every tool that writes in its root to refuse an operator who is not, and the setting is where every tool can read that. It is advisory by nature: the file is editable, the tool is patchable, and the profile says so rather than letting the key read as a control. What it prevents is the good-faith accident, a script run with nobody behind it; what prevents the rest is who may write the files. The profile names no identity provider, because a provider is a vendor and the profile is nobody's.</p>
     </section>
 
     <footer>
-        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase-profiles/blob/eeceeff5000fe0c377cc135b78a89e25166e5143/records/DESIGN.md" rel="noopener" target="_blank">records/DESIGN.md</a> at commit <code>eeceeff</code>, 27 November 2026. The repository is the authority on profiles: where this page and it differ, it is right and this page is stale.</p>
+        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase-profiles/blob/687ad09fe1429ac2f066d2b6654877f4b1abe82c/records/DESIGN.md" rel="noopener" target="_blank">records/DESIGN.md</a> at commit <code>687ad09</code>, 27 November 2026. The repository is the authority on profiles: where this page and it differ, it is right and this page is stale.</p>
         <p><small>This document is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener" target="_blank">CC0 1.0</a>. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener" target="_blank">open to pull requests</a>, though not this page — it is generated.</small></p>
     </footer>
 
