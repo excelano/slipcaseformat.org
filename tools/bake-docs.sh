@@ -1,48 +1,55 @@
 #!/usr/bin/env bash
-#
 # Author: David M. Anderson
 # Built with AI assistance (Claude, Anthropic)
-#
-# Render the specification and the design document into the two pages that
-# carry them, /spec/ and /design/.
-#
-# The text is not kept here. It is fetched from excelano/slipcase, which is the
-# authority on the format, and the page it produces is stamped with the exact
-# commit it came from — so a reader can tell what revision they are looking at
-# and a maintainer can tell when the site has fallen behind. The output is
-# committed, so deploying the site needs neither pandoc nor a network.
-#
-#   tools/bake-docs.sh              # re-render from the tip of main
-#   tools/bake-docs.sh --ref=v1.0   # from a tag
-#   tools/bake-docs.sh --check      # exit 1 if the committed pages are stale
-#   SPEC_SRC=~/repos/slipcase/slipcase tools/bake-docs.sh   # from a local checkout
-#
-# Needs pandoc, and curl unless SPEC_SRC names a checkout.
-#
+
 set -euo pipefail
 
-REPO=excelano/slipcase
-REF=main
+usage() {
+    cat <<'EOF'
+Usage: bake-docs.sh [--ref=<git-ref>] [--check]
+
+Render the documents this site carries from the repositories that are their
+authority, each page stamped with the repository and commit it came from. The
+output is committed, so a deploy needs neither pandoc nor a network.
+
+  --ref=<ref>   the excelano/slipcase ref for /spec/ and /design/ (default main);
+                the profile pages bake from the tags in the document list
+  --check       exit 1 if any committed page differs from a fresh bake
+
+  SPEC_SRC=<dir>      read excelano/slipcase from a local checkout
+  PROFILES_SRC=<dir>  read excelano/slipcase-profiles from a local checkout
+
+Needs pandoc, and curl for any repository without a local checkout.
+EOF
+}
+
+SLIPCASE_REF=main
 CHECK=0
 
 SITE="$(cd "$(dirname "$0")/.." && pwd)"
 TEMPLATE="$SITE/tools/doc-template.html"
 
-# Each document: source file, output directory, page title, and the one line
-# that sits under it. The lede is written here rather than lifted from the
-# markdown, because neither document opens with a sentence that works as a
-# subtitle and neither should be edited so that it does.
+RECORDS_VERSIONS_CURRENT='Versions: <a href="/profiles/records/1.0/">1.0</a> (current).'
+RECORDS_VERSIONS_FROZEN='This is version 1.0, kept as it was released. The current version is at <a href="/profiles/records/">/profiles/records/</a>.'
+
 DOCS=(
-    "SPEC.md|spec|Slipcase — Specification|What a conformant container is, and what a program that handles one must do."
-    "DESIGN.md|design|Slipcase — Design Document|Why each rule is the way it is, and what was considered and rejected."
+    "slipcase|-|SPEC.md|spec|Slipcase — Specification|What a conformant container is, and what a program that handles one must do.|"
+    "slipcase|-|DESIGN.md|design|Slipcase — Design Document|Why each rule is the way it is, and what was considered and rejected.|"
+    "slipcase-profiles|framework-v1.0|FRAMEWORK.md|profiles/framework|Slipcase Profiles — Framework|What every profile has in common: the table it owns, the directory its members live under, and how it is versioned.|"
+    "slipcase-profiles|framework-v1.0|CONVENTIONS.md|profiles/conventions|Slipcase Profiles — Shared Conventions|How every profile writes an identifier, an agent, a hash, a date, and a log that shows when it has been edited.|"
+    "slipcase-profiles|framework-v1.0|DESIGN.md|profiles/design|Slipcase Profiles — Design Document|Why each rule of the framework and the conventions is drawn where it is.|"
+    "slipcase-profiles|records-v1.0|records/SPEC.md|profiles/records|Slipcase Records Profile — Specification|A container as a managed record: identity, retention, holds, history, and the register of its destruction.|$RECORDS_VERSIONS_CURRENT"
+    "slipcase-profiles|records-v1.0|records/SPEC.md|profiles/records/1.0|Slipcase Records Profile 1.0 — Specification|A container as a managed record: identity, retention, holds, history, and the register of its destruction.|$RECORDS_VERSIONS_FROZEN"
+    "slipcase-profiles|records-v1.0|records/DESIGN.md|profiles/records/design|Slipcase Records Profile — Design Document|Why each rule of the Records Profile is the way it is, and what was considered and rejected.|"
 )
 
 for arg in "$@"; do
     case "$arg" in
         --check) CHECK=1 ;;
         --ref)   echo "--ref takes its value as --ref=<ref>"; exit 1 ;;
-        --ref=*) REF="${arg#--ref=}" ;;
-        *) echo "Usage: bake-docs.sh [--ref=<git-ref>] [--check]"; exit 1 ;;
+        --ref=*) SLIPCASE_REF="${arg#--ref=}" ;;
+        -h|--help) usage; exit 0 ;;
+        *) usage; exit 1 ;;
     esac
 done
 
@@ -51,90 +58,124 @@ command -v pandoc >/dev/null || { echo "pandoc not found"; exit 1; }
 WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 
-# Resolve the ref to a commit before fetching anything, so both documents come
-# from the same revision even if something lands upstream between the two
-# fetches, and so the stamp names a commit rather than a moving branch.
-if [ -n "${SPEC_SRC:-}" ]; then
-    [ -d "$SPEC_SRC/.git" ] || { echo "SPEC_SRC is not a git checkout: $SPEC_SRC"; exit 1; }
-    # ^{commit} rather than the ref alone, because an annotated tag resolves to
-    # the tag object, and the stamp has to name a commit for its link to lead
-    # anywhere.
-    COMMIT="$(git -C "$SPEC_SRC" rev-parse "$REF^{commit}")"
-    COMMITDATE="$(git -C "$SPEC_SRC" show -s --format=%cd --date=format:'%-d %B %Y' "$COMMIT")"
-    # The text comes out of the commit and never out of the working tree, so a
-    # page holds what its stamp says. Uncommitted edits are therefore not baked,
-    # and a maintainer who has some is told so rather than left to notice.
-    if ! git -C "$SPEC_SRC" diff --quiet HEAD -- SPEC.md DESIGN.md; then
-        echo "Note: SPEC.md or DESIGN.md is modified in $SPEC_SRC." >&2
-        echo "Baking ${COMMIT:0:7}, which does not include those edits." >&2
-    fi
-    fetch() { git -C "$SPEC_SRC" show "$COMMIT:$1"; }
-else
-    command -v curl >/dev/null || { echo "curl not found, and SPEC_SRC is unset"; exit 1; }
-    API="https://api.github.com/repos/$REPO/commits/$REF"
-    COMMIT="$(curl -fsSL -H 'Accept: application/vnd.github+json' "$API" | sed -n 's/^  "sha": "\([0-9a-f]*\)".*/\1/p' | head -1)"
-    [ -n "$COMMIT" ] || { echo "Could not resolve $REPO@$REF"; exit 1; }
-    COMMITDATE="$(curl -fsSL -H 'Accept: application/vnd.github+json' "$API" \
-        | sed -n 's/.*"date": "\([0-9-]*\)T.*/\1/p' | tail -1)"
-    COMMITDATE="$(date -d "$COMMITDATE" '+%-d %B %Y')"
-    fetch() { curl -fsSL "https://raw.githubusercontent.com/$REPO/$COMMIT/$1"; }
-fi
+local_src() {
+    case "$1" in
+        slipcase)          echo "${SPEC_SRC:-}" ;;
+        slipcase-profiles) echo "${PROFILES_SRC:-}" ;;
+    esac
+}
 
-STALE=0
+authority() {
+    case "$1" in
+        slipcase)          echo "The repository is the authority on the format: where this page and it differ, it is right and this page is stale." ;;
+        slipcase-profiles) echo "The repository is the authority on profiles: where this page and it differ, it is right and this page is stale." ;;
+    esac
+}
+
+dedicated() {
+    case "$1" in
+        slipcase)          echo "The specification" ;;
+        slipcase-profiles) echo "This document" ;;
+    esac
+}
+
+declare -A COMMIT_OF DATE_OF
+
+resolve() {
+    local repo="$1" ref="$2" key="$1@$2" src
+    [ -n "${COMMIT_OF[$key]:-}" ] && return
+    src="$(local_src "$repo")"
+    if [ -n "$src" ]; then
+        [ -d "$src/.git" ] || { echo "not a git checkout: $src"; exit 1; }
+        COMMIT_OF[$key]="$(git -C "$src" rev-parse "$ref^{commit}")"
+        DATE_OF[$key]="$(git -C "$src" show -s --format=%cd --date=format:'%-d %B %Y' "${COMMIT_OF[$key]}")"
+    else
+        command -v curl >/dev/null || { echo "curl not found, and no local checkout of $repo"; exit 1; }
+        local api="https://api.github.com/repos/excelano/$repo/commits/$ref" json
+        json="$(curl -fsSL -H 'Accept: application/vnd.github+json' "$api")"
+        COMMIT_OF[$key]="$(sed -n 's/^  "sha": "\([0-9a-f]*\)".*/\1/p' <<< "$json" | head -1)"
+        [ -n "${COMMIT_OF[$key]}" ] || { echo "Could not resolve excelano/$repo@$ref"; exit 1; }
+        DATE_OF[$key]="$(date -d "$(sed -n 's/.*"date": "\([0-9-]*\)T.*/\1/p' <<< "$json" | tail -1)" '+%-d %B %Y')"
+    fi
+}
+
+fetch() {
+    local repo="$1" commit="$2" file="$3" src
+    src="$(local_src "$repo")"
+    if [ -n "$src" ]; then
+        git -C "$src" show "$commit:$file"
+    else
+        curl -fsSL "https://raw.githubusercontent.com/excelano/$repo/$commit/$file"
+    fi
+}
 
 for doc in "${DOCS[@]}"; do
-    IFS='|' read -r SRC SLUG TITLE LEDE <<< "$doc"
+    IFS='|' read -r REPO REF SRC SLUG TITLE LEDE VERSIONS <<< "$doc"
+    [ "$REF" = "-" ] && REF="$SLIPCASE_REF"
+    resolve "$REPO" "$REF"
+    COMMIT="${COMMIT_OF[$REPO@$REF]}"
+    COMMITDATE="${DATE_OF[$REPO@$REF]}"
 
-    fetch "$SRC" > "$WORK/$SRC"
+    src="$(local_src "$REPO")"
+    if [ -n "$src" ] && [ "$(git -C "$src" rev-parse HEAD)" = "$COMMIT" ] \
+        && ! git -C "$src" diff --quiet HEAD -- "$SRC"; then
+        echo "Note: $SRC is modified in $src; baking ${COMMIT:0:7}, which does not include those edits." >&2
+    fi
 
-    # The document's own H1 becomes the page header, so it is dropped from the
-    # body rather than rendered twice. Anything else on line one is a change to
-    # the source that this script should not paper over.
-    case "$(sed -n '1p' "$WORK/$SRC")" in
+    fetch "$REPO" "$COMMIT" "$SRC" > "$WORK/source.md"
+
+    case "$(sed -n '1p' "$WORK/source.md")" in
         '# '*) ;;
-        *) echo "$SRC does not begin with an H1"; exit 1 ;;
+        *) echo "$REPO/$SRC does not begin with an H1"; exit 1 ;;
     esac
-    tail -n +2 "$WORK/$SRC" > "$WORK/body.md"
+    tail -n +2 "$WORK/source.md" > "$WORK/body.md"
 
-    # A description for search results and link previews: the first line of
-    # prose, flattened. Blank lines, headings, tables, quotes and the bold
-    # Version/Status pair at the top of SPEC.md are not a sentence.
     DESCRIPTION="$(awk '/^[[:space:]]*$/ || /^[#>*|_-]/ || /^\*\*/ { next }
                         { print; exit }' "$WORK/body.md" \
         | sed 's/\[\([^]]*\)\]([^)]*)/\1/g; s/[`*_]//g; s/"/\&quot;/g')"
+
+    FILTERS=()
+    [ "$REPO" = "slipcase-profiles" ] && FILTERS+=(--lua-filter="$SITE/tools/profile-links.lua")
+    FILTERS+=(--lua-filter="$SITE/tools/external-links.lua")
 
     pandoc "$WORK/body.md" \
         --from=gfm \
         --to=html5 \
         --standalone \
         --template="$TEMPLATE" \
-        --lua-filter="$SITE/tools/external-links.lua" \
+        "${FILTERS[@]}" \
         --toc --toc-depth=2 \
         --no-highlight \
         --wrap=none \
+        -M "profile-doc=$SRC" \
+        -M "profile-commit=$COMMIT" \
         -V "title=$TITLE" \
         -V "pagetitle=$TITLE" \
         -V "lede=$LEDE" \
+        -V "versions=$VERSIONS" \
         -V "description=$DESCRIPTION" \
         -V "slug=$SLUG" \
+        -V "repo=excelano/$REPO" \
+        -V "authority=$(authority "$REPO")" \
+        -V "dedicated=$(dedicated "$REPO")" \
         -V "docfile=$SRC" \
         -V "commit=$COMMIT" \
         -V "shortcommit=${COMMIT:0:7}" \
         -V "commitdate=$COMMITDATE" \
-        > "$WORK/$SLUG.html"
+        > "$WORK/page.html"
 
     if [ "$CHECK" = 1 ]; then
-        if ! diff -q "$WORK/$SLUG.html" "$SITE/$SLUG/index.html" >/dev/null 2>&1; then
+        if cmp -s "$WORK/page.html" "$SITE/$SLUG/index.html"; then
+            echo "current: $SLUG/index.html"
+        else
             echo "stale: $SLUG/index.html"
             STALE=1
-        else
-            echo "current: $SLUG/index.html"
         fi
     else
         mkdir -p "$SITE/$SLUG"
-        mv "$WORK/$SLUG.html" "$SITE/$SLUG/index.html"
-        echo "wrote $SLUG/index.html from $SRC at ${COMMIT:0:7}"
+        mv "$WORK/page.html" "$SITE/$SLUG/index.html"
+        echo "wrote $SLUG/index.html from $REPO/$SRC at ${COMMIT:0:7}"
     fi
 done
 
-exit "$STALE"
+exit "${STALE:-0}"

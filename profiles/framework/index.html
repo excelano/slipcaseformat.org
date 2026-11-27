@@ -1,0 +1,200 @@
+<!--
+    GENERATED FILE — do not edit.
+
+    Produced by tools/bake-docs.sh from FRAMEWORK.md in the specification
+    repository. Edits made here are lost the next time it runs, and the
+    specification is not something a website gets to amend: change it at
+    https://github.com/excelano/slipcase-profiles and re-bake.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slipcase Profiles — Framework</title>
+    <meta name="description" content="A profile defines how Slipcase containers are used for one purpose. It gives meaning to keys in the flyleaf and to additional members, and it changes nothing in Slipcase itself. This document states what every profile has in common, so that a profile specification need only state what is particular to it, and so that a flyleaf can carry several profiles without any of them knowing about the others.">
+    <link rel="canonical" href="https://slipcaseformat.org/profiles/framework/">
+    <link rel="icon" href="/img/slipcase-icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Slipcase">
+    <meta property="og:title" content="Slipcase Profiles — Framework">
+    <meta property="og:description" content="A profile defines how Slipcase containers are used for one purpose. It gives meaning to keys in the flyleaf and to additional members, and it changes nothing in Slipcase itself. This document states what every profile has in common, so that a profile specification need only state what is particular to it, and so that a flyleaf can carry several profiles without any of them knowing about the others.">
+    <meta property="og:url" content="https://slipcaseformat.org/profiles/framework/">
+    <meta property="og:image" content="https://slipcaseformat.org/img/og-card.png">
+    <meta property="og:image:alt" content="The Slipcase icon beside the words Slipcase and the line: a container file format that attaches metadata to a file.">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="/axe/default.css">
+    <link rel="stylesheet" href="/brand.css"><!-- site brand override; cascades over default.css -->
+    <link rel="stylesheet" href="/axe/axe.css">
+    <script src="/axe/theme.js"></script>
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="/">Slipcase</a></li>
+        <li><a href="/spec/">Specification</a></li>
+        <li><a href="/design/">Design</a></li>
+        <li><a href="/implementations/">Implementations</a></li>
+        <li><a href="https://github.com/excelano/slipcase" rel="noopener" target="_blank">GitHub</a></li>
+        <li class="nav-right"><button class="theme-toggle" aria-label="Toggle theme"></button></li>
+    </ul>
+</nav>
+
+<main>
+<article>
+
+    <header>
+        <h1>Slipcase Profiles — Framework</h1>
+        <p class="lede">What every profile has in common: the table it owns, the directory its members live under, and how it is versioned.</p>
+    </header>
+
+    <section class="contents" aria-label="Contents">
+        <h2>Contents</h2>
+<ul>
+<li><a href="#1-terminology" id="toc-1-terminology">1. Terminology</a></li>
+<li><a href="#2-relationship-to-slipcase" id="toc-2-relationship-to-slipcase">2. Relationship to Slipcase</a></li>
+<li><a href="#3-the-profile-table" id="toc-3-the-profile-table">3. The profile table</a></li>
+<li><a href="#4-the-profile-prefix" id="toc-4-the-profile-prefix">4. The profile prefix</a></li>
+<li><a href="#5-kinds" id="toc-5-kinds">5. Kinds</a></li>
+<li><a href="#6-versioning" id="toc-6-versioning">6. Versioning</a></li>
+<li><a href="#7-independence" id="toc-7-independence">7. Independence</a></li>
+<li><a href="#8-shared-conventions" id="toc-8-shared-conventions">8. Shared conventions</a></li>
+<li><a href="#9-official-profiles" id="toc-9-official-profiles">9. Official profiles</a></li>
+<li><a href="#10-what-a-profile-specification-states" id="toc-10-what-a-profile-specification-states">10. What a profile specification states</a></li>
+<li><a href="#11-implementation-requirements" id="toc-11-implementation-requirements">11. Implementation requirements</a></li>
+<li><a href="#12-security-considerations" id="toc-12-security-considerations">12. Security considerations</a></li>
+<li><a href="#appendix-a-a-second-profile-described-against-this-framework-non-normative" id="toc-appendix-a-a-second-profile-described-against-this-framework-non-normative">Appendix A. A second profile, described against this framework (non-normative)</a></li>
+</ul>
+    </section>
+
+    <section id="document">
+<p><strong>Version:</strong> 1.0<br />
+<strong>Status:</strong> final<br />
+<strong>Slipcase version:</strong> 1.1</p>
+<p>A profile defines how Slipcase containers are used for one purpose. It gives meaning to keys in the flyleaf and to additional members, and it changes nothing in Slipcase itself. This document states what every profile has in common, so that a profile specification need only state what is particular to it, and so that a flyleaf can carry several profiles without any of them knowing about the others.</p>
+<h2 id="1-terminology">1. Terminology</h2>
+<p>The key words <strong>MUST</strong>, <strong>MUST NOT</strong>, and <strong>MAY</strong> are to be interpreted as described in BCP 14 (<a href="https://www.rfc-editor.org/rfc/rfc2119" target="_blank">RFC 2119</a>, <a href="https://www.rfc-editor.org/rfc/rfc8174" target="_blank">RFC 8174</a>) when, and only when, they appear in capitals.</p>
+<p><strong>Slipcase</strong> — the container specification at <a href="https://github.com/excelano/slipcase" target="_blank">https://github.com/excelano/slipcase</a>, cited as SPEC §n.<br />
+<strong>Profile</strong> — a specification, written against this framework, giving meaning to a container for one purpose.<br />
+<strong>Profile table</strong> — the one top-level table in the flyleaf that a profile owns (§3).<br />
+<strong>Profile prefix</strong> — the one directory under which a profile's additional members live (§4).<br />
+<strong>Kind</strong> — what a container is within a profile, named by the <code>kind</code> key (§5).<br />
+<strong>Implementation of a profile</strong> — a program that reads or writes containers according to that profile.</p>
+<p>A container is conformant to a profile, or not, in the same way that it is conformant to Slipcase or not: the profile's specification states properties that can be checked against the file. This framework states the properties every profile shares.</p>
+<h2 id="2-relationship-to-slipcase">2. Relationship to Slipcase</h2>
+<p>A container conforming to a profile MUST be a conformant Slipcase container. A profile MUST NOT redefine, constrain, or assign meaning to any key or member that Slipcase defines, and MUST NOT state a rule under which a Slipcase-conformant container would need to change to remain Slipcase-conformant.</p>
+<p>Slipcase requires an implementation to preserve keys and members it does not recognize (SPEC §3). That requirement is what carries a profile's data through tools that know nothing of the profile, and a profile relies on it rather than restating it.</p>
+<p>A container that Slipcase calls undetermined (SPEC §2.2) is undetermined for every profile: no profile can be read from it and none can be said to apply.</p>
+<h2 id="3-the-profile-table">3. The profile table</h2>
+<p>A profile owns exactly one top-level table in the flyleaf, and everything the profile defines in the flyleaf lives inside that table. The table's name is the profile's use-case word (§9), in lowercase ASCII letters.</p>
+<p>The table MUST contain these three keys:</p>
+<pre class="toml"><code>[records]
+profile = &quot;https://slipcaseformat.org/profiles/records&quot;
+profile_version = &quot;1.0&quot;
+kind = &quot;record&quot;</code></pre>
+<ul>
+<li><strong><code>profile</code></strong> — string. A URI that identifies the profile and resolves to its specification. It is the profile's identity: it is the same for every version of the profile, and two tables carrying different <code>profile</code> values belong to different profiles whatever their table names.</li>
+<li><strong><code>profile_version</code></strong> — string. The version of the profile's specification that the table conforms to. §6.</li>
+<li><strong><code>kind</code></strong> — string. What this container is within the profile. §5.</li>
+</ul>
+<p>A table carrying a <code>profile</code> key is a profile table. An implementation MUST identify a profile by the <code>profile</code> value and MUST NOT take a table's name as evidence of which profile it is. A profile's specification fixes its table name (§9), so a table whose name is not the one its <code>profile</code> value's specification fixes is non-conformant to that profile.</p>
+<p>A flyleaf MAY carry any number of profile tables, each for a different profile. They are independent: a profile's specification governs its own table and nothing in any other, and an implementation of one profile MUST NOT read, change, or depend on another profile's table. A container is conformant to each profile it carries separately.</p>
+<p>Keys inside a profile table that the profile's specification does not define are permitted and MUST be preserved, unless that specification says otherwise for a particular table or key. A profile MAY close a table or a value to a defined set; where it does, a value outside the set is non-conformant to the profile, never silently accepted.</p>
+<h2 id="4-the-profile-prefix">4. The profile prefix</h2>
+<p>A profile's additional members live under a directory named for its table, with a trailing <code>/</code>: the Records Profile's members are <code>records/...</code>. A profile MUST NOT define a member outside its prefix, and an implementation of a profile MUST NOT write a member outside that profile's prefix except as a Slipcase implementation writing the flyleaf or the content file.</p>
+<p>A member name under a prefix MUST satisfy SPEC §3's rule for members an implementation writes: segments separated by <code>/</code>, each non-empty and neither <code>.</code> nor <code>..</code>, and no <code>\</code>, <code>:</code>, or character in U+0000 to U+001F or U+007F.</p>
+<p>Slipcase permits additional members of any name (SPEC §2.1). Members under a prefix that no profile table in the flyleaf claims have no meaning under any profile, and an implementation MUST preserve them.</p>
+<h2 id="5-kinds">5. Kinds</h2>
+<p><code>kind</code> names what the container is within the profile, so that one profile can describe several kinds of container: a record and the batch that destroyed it, a document and the manifest that delivered it. A profile's specification defines its kinds, and for each kind the keys and members the container MUST and MAY carry.</p>
+<p>The set of kinds is closed for each version of a profile. A <code>kind</code> value that the named <code>profile_version</code> does not define is non-conformant to that version.</p>
+<h2 id="6-versioning">6. Versioning</h2>
+<p><code>profile_version</code> names the version of the profile's specification, and it follows the rules SPEC §2.4 sets for <code>slipcase_version</code>, restated here because they govern profiles independently of Slipcase's own version:</p>
+<ul>
+<li>Conformance is relative to a version. A profile's specification states whether a table declaring that version conforms to it, and states nothing about a table declaring any other value.</li>
+<li>A table declaring a version an implementation does not implement is outside that implementation's conformance question rather than failing it. The implementation MAY read and report the table, and MUST NOT act on it: it MUST NOT change the table or the profile's members, and MUST NOT take any decision the profile defines (such as whether a record may be destroyed) from it.</li>
+<li>The value implies no compatibility, at any level. An implementation written against one version cannot assume it can read a table declaring a higher one.</li>
+<li>Editorial revisions to a profile's specification do not change its version. It changes only when what counts as a conformant container under the profile changes.</li>
+</ul>
+<p>A profile is versioned independently of this framework and of every other profile. A profile's specification names the version of this framework and the version of Slipcase it is written against.</p>
+<h2 id="7-independence">7. Independence</h2>
+<p>Under this version of the framework, no profile may require another. A profile's specification MUST be implementable from a container that carries only that profile, and MUST NOT reference another profile's table, prefix, or kinds.</p>
+<p>A later version of this framework may let a profile declare that it requires another. Nothing in a profile written against this version should be read as that declaration.</p>
+<h2 id="8-shared-conventions">8. Shared conventions</h2>
+<p>Identifiers, agents, hashes, dates and instants, and chained logs are defined once, in <code>CONVENTIONS.md</code>, and are versioned with this framework. A profile MUST state which conventions it uses and MUST NOT define its own form for anything a convention defines. A profile MAY leave a convention unused.</p>
+<h2 id="9-official-profiles">9. Official profiles</h2>
+<p>An official profile is one specified in this repository. Its name is <strong>Slipcase <em>Use</em> Profile</strong>, where <em>Use</em> is one word naming the purpose, and that word is the same everywhere the profile is referred to:</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Slipcase Records Profile</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>profile</code> URI</td>
+<td><code>https://slipcaseformat.org/profiles/records</code></td>
+</tr>
+<tr class="even">
+<td>Profile table</td>
+<td><code>[records]</code></td>
+</tr>
+<tr class="odd">
+<td>Profile prefix</td>
+<td><code>records/</code></td>
+</tr>
+<tr class="even">
+<td>Directory in this repository</td>
+<td><code>records/</code></td>
+</tr>
+</tbody>
+</table>
+<p>The table name and the prefix are the last segment of the URI. A profile's specification states all four and they MUST agree.</p>
+<p>Each official profile lives in its own directory, holding its specification, a design document recording the reasoning behind its rules, and example files, and is versioned on its own. Everything in this repository is dedicated to the public domain under CC0 1.0.</p>
+<p>A profile specified elsewhere is not made less valid by that: a <code>profile</code> URI under any origin identifies a profile, and this framework governs it the same way. Reserved for official profiles are the name form in this section, the directory in this repository, and URIs under <code>https://slipcaseformat.org/profiles/</code>, which the maintainers of slipcaseformat.org assign. A profile specified elsewhere takes its URI from an origin its author controls.</p>
+<p>A table name is not reserved by anything in this framework, and two profiles that fix the same table name cannot be carried in one flyleaf. An author choosing a table name avoids one already used by a profile listed at <a href="https://slipcaseformat.org/profiles/">https://slipcaseformat.org/profiles/</a>, which records the table names in use.</p>
+<h2 id="10-what-a-profile-specification-states">10. What a profile specification states</h2>
+<p>A profile's specification MUST state:</p>
+<ol type="1">
+<li>its name, <code>profile</code> URI, table name, prefix, and version, and the versions of this framework and of Slipcase it is written against;</li>
+<li>its kinds, and for each kind the keys the table MUST and MAY contain, with each key's type, and the members the container MUST and MAY carry under the prefix;</li>
+<li>which shared conventions it uses, and for any chained log it defines, the entry name and the seed (CONVENTIONS §5);</li>
+<li>the properties a container must have to conform to the profile, stated so that each can be checked against the file;</li>
+<li>the requirements it places on an implementation beyond those of this framework;</li>
+<li>its security considerations.</li>
+</ol>
+<h2 id="11-implementation-requirements">11. Implementation requirements</h2>
+<p>An implementation of a profile:</p>
+<ul>
+<li>MUST identify the profile by the <code>profile</code> value and MUST check <code>profile_version</code> before acting (§3, §6);</li>
+<li>MUST read and write only its own profile's table and prefix, and MUST preserve every other key and member, as SPEC §3 requires;</li>
+<li>MUST NOT act on a table declaring a <code>profile_version</code> it does not implement, and MUST NOT report such a table as conformant or non-conformant to the version it does implement;</li>
+<li>MUST report, rather than pass over, a container whose profile table is non-conformant, where the implementation is acting over a set of containers in which that profile is expected;</li>
+<li>MUST treat an undetermined container as Slipcase requires, and MUST NOT act on it under the profile;</li>
+<li>MUST apply SPEC §3's display rule to any member name or string value it displays: the Unicode bidirectional formatting characters are rendered escaped, never applied.</li>
+</ul>
+<h2 id="12-security-considerations">12. Security considerations</h2>
+<p>A profile gives a container meaning, and with meaning comes the possibility of a container that lies. A profile that drives an action (destroying a record, accepting a delivery) MUST state what an implementation checks before acting and MUST NOT let a value in the flyleaf alone authorize an action the profile calls irreversible.</p>
+<p>The profile table is data under the control of whoever wrote the container. A profile's specification MUST NOT define a key whose value is interpreted as a path outside the container, a command, or an address to be fetched without the implementation's own decision to do so.</p>
+<p>Slipcase's security considerations (SPEC §6) apply to every container a profile is read from: an implementation bounds what it spends reading the flyleaf before it knows what the container is.</p>
+<h2 id="appendix-a-a-second-profile-described-against-this-framework-non-normative">Appendix A. A second profile, described against this framework (non-normative)</h2>
+<p>This appendix exists to show that the framework is general: a profile unrelated to records management is stated against it without a change to any section above. The profile is hypothetical, and is described as an official profile would be, which is why its URI is under slipcaseformat.org (§9).</p>
+<p><strong>Slipcase Handover Profile</strong>, for delivering a set of engineering documents from a contractor to an owner. URI <code>https://slipcaseformat.org/profiles/handover</code>, table <code>[handover]</code>, prefix <code>handover/</code>, written against Framework 1.0 and Slipcase 1.1.</p>
+<p>Kinds: <code>document</code> (one delivered document; the content file is the document) and <code>manifest</code> (the delivery itself; the content file is the transmittal, and <code>handover/manifest.csv</code> lists every document delivered with its identifier and content hash).</p>
+<p>A <code>document</code> table carries <code>id</code> (an identifier, CONVENTIONS §1), <code>delivery</code> (the identifier of the manifest it was delivered under), <code>document_number</code> and <code>revision</code> (strings, the owner's numbering), <code>fixity.content_sha256</code> (CONVENTIONS §3), and <code>issued</code> (a date, CONVENTIONS §4). A <code>manifest</code> table carries <code>id</code>, <code>from</code> and <code>to</code> (agents, CONVENTIONS §2), <code>delivered</code> (an instant), and <code>document_count</code>. Both kinds carry a chained log at <code>handover/events.toml</code> with entry name <code>event</code>, seeded from the table's <code>id</code>, recording <code>delivered</code>, <code>accepted</code>, and <code>rejected</code> events.</p>
+<p>A document that is also a managed record carries both <code>[handover]</code> and <code>[records]</code>, each with its own prefix and its own log, and a records tool and a handover tool each read their own table and preserve the other's. Neither profile names the other, as §7 requires.</p>
+<p>The specification would go on to state the conformance properties (every document named in a manifest's CSV exists with the hash stated; <code>revision</code> is non-empty), the implementation requirements (an acceptance is recorded only after the hash is verified), and the security considerations (a manifest's CSV names files by identifier, never by path).</p>
+    </section>
+
+    <footer>
+        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase-profiles/blob/035b7d201e4fba1993fd4c07b429f306300e85bc/FRAMEWORK.md" rel="noopener" target="_blank">FRAMEWORK.md</a> at commit <code>035b7d2</code>, 27 November 2026. The repository is the authority on profiles: where this page and it differ, it is right and this page is stale.</p>
+        <p><small>This document is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener" target="_blank">CC0 1.0</a>. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener" target="_blank">open to pull requests</a>, though not this page — it is generated.</small></p>
+    </footer>
+
+</article>
+</main>
+
+</body>
+</html>

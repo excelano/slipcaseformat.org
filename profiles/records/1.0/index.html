@@ -1,0 +1,1450 @@
+<!--
+    GENERATED FILE — do not edit.
+
+    Produced by tools/bake-docs.sh from records/SPEC.md in the specification
+    repository. Edits made here are lost the next time it runs, and the
+    specification is not something a website gets to amend: change it at
+    https://github.com/excelano/slipcase-profiles and re-bake.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slipcase Records Profile 1.0 — Specification</title>
+    <meta name="description" content="The Records Profile makes a Slipcase container a managed record: a thing with an identity, a custodian, a retention schedule, holds that can stop its destruction, a history that cannot be edited without the edit showing, and, at the end, a place in a register that says it was destroyed and how. It also defines the containers a records-management system keeps beside its records: hold matters, aggregations, and disposal batches.">
+    <link rel="canonical" href="https://slipcaseformat.org/profiles/records/1.0/">
+    <link rel="icon" href="/img/slipcase-icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Slipcase">
+    <meta property="og:title" content="Slipcase Records Profile 1.0 — Specification">
+    <meta property="og:description" content="The Records Profile makes a Slipcase container a managed record: a thing with an identity, a custodian, a retention schedule, holds that can stop its destruction, a history that cannot be edited without the edit showing, and, at the end, a place in a register that says it was destroyed and how. It also defines the containers a records-management system keeps beside its records: hold matters, aggregations, and disposal batches.">
+    <meta property="og:url" content="https://slipcaseformat.org/profiles/records/1.0/">
+    <meta property="og:image" content="https://slipcaseformat.org/img/og-card.png">
+    <meta property="og:image:alt" content="The Slipcase icon beside the words Slipcase and the line: a container file format that attaches metadata to a file.">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="/axe/default.css">
+    <link rel="stylesheet" href="/brand.css"><!-- site brand override; cascades over default.css -->
+    <link rel="stylesheet" href="/axe/axe.css">
+    <script src="/axe/theme.js"></script>
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="/">Slipcase</a></li>
+        <li><a href="/spec/">Specification</a></li>
+        <li><a href="/design/">Design</a></li>
+        <li><a href="/implementations/">Implementations</a></li>
+        <li><a href="https://github.com/excelano/slipcase" rel="noopener" target="_blank">GitHub</a></li>
+        <li class="nav-right"><button class="theme-toggle" aria-label="Toggle theme"></button></li>
+    </ul>
+</nav>
+
+<main>
+<article>
+
+    <header>
+        <h1>Slipcase Records Profile 1.0 — Specification</h1>
+        <p class="lede">A container as a managed record: identity, retention, holds, history, and the register of its destruction.</p>
+        <p class="versions">This is version 1.0, kept as it was released. The current version is at <a href="/profiles/records/">/profiles/records/</a>.</p>
+    </header>
+
+    <section class="contents" aria-label="Contents">
+        <h2>Contents</h2>
+<ul>
+<li><a href="#1-identity-and-terminology" id="toc-1-identity-and-terminology">1. Identity and terminology</a></li>
+<li><a href="#2-records" id="toc-2-records">2. Records</a></li>
+<li><a href="#3-retention-schedules" id="toc-3-retention-schedules">3. Retention schedules</a></li>
+<li><a href="#4-hold-matters" id="toc-4-hold-matters">4. Hold matters</a></li>
+<li><a href="#5-aggregations" id="toc-5-aggregations">5. Aggregations</a></li>
+<li><a href="#6-the-disposition-register" id="toc-6-the-disposition-register">6. The disposition register</a></li>
+<li><a href="#7-the-records-root" id="toc-7-the-records-root">7. The records root</a></li>
+<li><a href="#8-eligibility" id="toc-8-eligibility">8. Eligibility</a></li>
+<li><a href="#9-implementation-requirements" id="toc-9-implementation-requirements">9. Implementation requirements</a></li>
+<li><a href="#10-security-considerations" id="toc-10-security-considerations">10. Security considerations</a></li>
+</ul>
+    </section>
+
+    <section id="document">
+<p><strong>Version:</strong> 1.0<br />
+<strong>Status:</strong> final<br />
+<strong>Framework:</strong> 1.0 · <strong>Conventions:</strong> 1.0 · <strong>Slipcase:</strong> 1.1</p>
+<p>The Records Profile makes a Slipcase container a managed record: a thing with an identity, a custodian, a retention schedule, holds that can stop its destruction, a history that cannot be edited without the edit showing, and, at the end, a place in a register that says it was destroyed and how. It also defines the containers a records-management system keeps beside its records: hold matters, aggregations, and disposal batches.</p>
+<p>Everything a record says about itself is in its own container. There is no index that the files depend on; any index is a cache rebuilt from the files.</p>
+<h2 id="1-identity-and-terminology">1. Identity and terminology</h2>
+<p>The key words <strong>MUST</strong>, <strong>MUST NOT</strong>, <strong>SHOULD</strong>, and <strong>MAY</strong> are to be interpreted as described in BCP 14 when, and only when, they appear in capitals. <strong>FRAMEWORK</strong>, <strong>CONVENTIONS</strong>, and <strong>SPEC</strong> cite the profiles framework, the shared conventions, and the Slipcase specification.</p>
+<table>
+<tbody>
+<tr class="odd">
+<td>Name</td>
+<td>Slipcase Records Profile</td>
+</tr>
+<tr class="even">
+<td><code>profile</code></td>
+<td><code>https://slipcaseformat.org/profiles/records</code></td>
+</tr>
+<tr class="odd">
+<td>Profile table</td>
+<td><code>[records]</code></td>
+</tr>
+<tr class="even">
+<td>Profile prefix</td>
+<td><code>records/</code></td>
+</tr>
+<tr class="odd">
+<td>Kinds</td>
+<td><code>record</code>, <code>hold</code>, <code>aggregation</code>, <code>disposal-batch</code></td>
+</tr>
+<tr class="even">
+<td>Conventions used</td>
+<td>identifiers, agents, hashes, dates and instants, chained logs</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Record</strong> — a container of kind <code>record</code>.<br />
+<strong>Records root</strong> — the directory holding a records-management system's central state: its schedule, register, hold matters, and aggregations (§7).<br />
+<strong>Series</strong> — a line of a retention schedule, identified by the organization's code for it, that governs how long a record is kept.<br />
+<strong>Unclassified</strong> — a container carrying no <code>[records]</code> table, or one whose <code>kind</code> is not <code>record</code>, considered as a candidate record. An unclassified container is not a record and nothing in this profile acts on it.</p>
+<p>A container that Slipcase calls undetermined is never passed over silently where records are expected: an undetermined container can hide a record (§9).</p>
+<h2 id="2-records">2. Records</h2>
+<p>A record is a container whose <code>[records]</code> table has <code>kind = "record"</code>. Its content file is the record's primary document. Its parts, where it has several, are components (§2.7). Its history is the event log (§2.8).</p>
+<h3 id="21-example">2.1 Example</h3>
+<pre class="toml"><code>slipcase_version = &quot;1.1&quot;
+
+[content]
+file = &quot;invoice-2024-0117.pdf&quot;
+
+[records]
+profile = &quot;https://slipcaseformat.org/profiles/records&quot;
+profile_version = &quot;1.0&quot;
+kind = &quot;record&quot;
+id = &quot;01927c3e-8b2a-7d41-9f3c-2a6e5b1c4d7f&quot;
+created = 2024-01-17
+captured = 2024-02-03T15:04:11Z
+mime_type = &quot;application/pdf&quot;
+size = 48213
+essential = false
+marking = &quot;Confidential&quot;
+events_head = &quot;9140413d6cd39affadb3669cb7b09cf05ca2a4cd12f3129049e7736d694f5d8a&quot;
+
+[records.creator]
+email = &quot;jdoe@example.com&quot;
+id = &quot;8f1c2b9e-1d4a-4e5f-9a0b-6c7d8e9f0a1b&quot;
+
+[records.custodian]
+email = &quot;jdoe@example.com&quot;
+id = &quot;8f1c2b9e-1d4a-4e5f-9a0b-6c7d8e9f0a1b&quot;
+
+[records.fixity]
+content_sha256 = &quot;51ab0e6a6f3f1b0a9c8d7e6f5a4b3c2d1e0f9a8b7c6d5e4f3a2b1c0d9e8f7a6b&quot;
+
+[[records.series]]
+code = &quot;FIN-200&quot;
+trigger = 2024-01-17
+[records.series.snapshot]
+title = &quot;Accounts Payable&quot;
+retention = &quot;6&quot;
+retention_type = &quot;Event_Age&quot;
+event_type = &quot;Final action&quot;
+disposition = &quot;Temporary&quot;
+schedule_version = &quot;20261005T140211Z-3fa9c2e1b7d0&quot;
+
+[[records.holds]]
+matter = &quot;01927d01-4c2e-7a3b-8d5f-1e2a3b4c5d6e&quot;
+type = &quot;legal&quot;
+applied = 2026-03-12
+
+[[records.relations]]
+type = &quot;member-of&quot;
+target = &quot;01927a55-2b1c-7e4d-9f6a-3c4d5e6f7a8b&quot;
+title = &quot;Vendor contract C-4471&quot;</code></pre>
+<h3 id="22-keys">2.2 Keys</h3>
+<p>A record's <code>[records]</code> table MUST contain the three framework keys (FRAMEWORK §3) and the following. Types are TOML types; <strong>identifier</strong>, <strong>agent</strong>, <strong>hash</strong>, <strong>date</strong>, and <strong>instant</strong> are CONVENTIONS §1 to §4.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>id</code></td>
+<td>identifier</td>
+<td>The record's identity. Assigned at capture and never changed, including when the container is copied: a copy is the same record. A new record made from an existing one gets a new <code>id</code> and a <code>related</code> relation to the original (§2.6).</td>
+</tr>
+<tr class="even">
+<td><code>created</code></td>
+<td>date</td>
+<td>The date of the content: when the document came into being, not when it became a record.</td>
+</tr>
+<tr class="odd">
+<td><code>captured</code></td>
+<td>instant</td>
+<td>When the container became a record.</td>
+</tr>
+<tr class="even">
+<td><code>mime_type</code></td>
+<td>string</td>
+<td>The content file's media type, determined at capture.</td>
+</tr>
+<tr class="odd">
+<td><code>size</code></td>
+<td>integer</td>
+<td>The content file's length in bytes, determined at capture.</td>
+</tr>
+<tr class="even">
+<td><code>essential</code></td>
+<td>boolean</td>
+<td>Whether the record is one the organization has designated essential (vital) for continuity. Informational in this version.</td>
+</tr>
+<tr class="odd">
+<td><code>events_head</code></td>
+<td>hash</td>
+<td>The head of the event log (§2.8).</td>
+</tr>
+<tr class="even">
+<td><code>creator</code></td>
+<td>agent</td>
+<td>Who created the content. Fixed at capture.</td>
+</tr>
+<tr class="odd">
+<td><code>custodian</code></td>
+<td>agent</td>
+<td>Who is responsible for the record now. Changes over time, and is what holds are matched against.</td>
+</tr>
+<tr class="even">
+<td><code>fixity</code></td>
+<td>table</td>
+<td>§2.3.</td>
+</tr>
+<tr class="odd">
+<td><code>series</code></td>
+<td>array of tables</td>
+<td>§2.4. MAY be empty: a record with no series is captured and unclassified as to retention.</td>
+</tr>
+</tbody>
+</table>
+<p>And MAY contain:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>marking</code></td>
+<td>string</td>
+<td>A security or handling marking, as the organization writes it. Informational: it never controls access and never changes what this profile does with the record.</td>
+</tr>
+<tr class="even">
+<td><code>holds</code></td>
+<td>array of tables</td>
+<td>§2.5. Absent and empty mean the same: no holds.</td>
+</tr>
+<tr class="odd">
+<td><code>relations</code></td>
+<td>array of tables</td>
+<td>§2.6.</td>
+</tr>
+<tr class="even">
+<td><code>components</code></td>
+<td>array of tables</td>
+<td>§2.7.</td>
+</tr>
+</tbody>
+</table>
+<p>Keys this section does not define are permitted in the table and MUST be preserved (FRAMEWORK §3). A later version of this profile may define <code>pronom</code> for a format identifier; an implementation of this version MUST NOT interpret it.</p>
+<h3 id="23-fixity">2.3 Fixity</h3>
+<pre class="toml"><code>[records.fixity]
+content_sha256 = &quot;51ab...&quot;</code></pre>
+<p><code>content_sha256</code> is a hash (CONVENTIONS §3) of the content file, taken at capture and whenever the content file is replaced (§2.9). An implementation verifying fixity compares it with the content file's bytes as read; a difference means the content has changed since it was last written under this profile, and §9 says what an implementation does about that.</p>
+<h3 id="24-series">2.4 Series</h3>
+<p>Each entry of <code>series</code> names one line of the organization's retention schedule that governs the record:</p>
+<pre class="toml"><code>[[records.series]]
+code = &quot;FIN-200&quot;
+trigger = 2024-01-17
+[records.series.snapshot]
+title = &quot;Accounts Payable&quot;
+retention = &quot;6&quot;
+retention_type = &quot;Event_Age&quot;
+event_type = &quot;Final action&quot;
+disposition = &quot;Temporary&quot;
+schedule_version = &quot;20261005T140211Z-3fa9c2e1b7d0&quot;</code></pre>
+<ul>
+<li><strong><code>code</code></strong> — string, non-empty. The organization's code for the series, as it appears in the schedule (§3). Never a vendor's identifier. Two entries MUST NOT carry the same <code>code</code>.</li>
+<li><strong><code>trigger</code></strong> — date, optional. The date retention is measured from. Absent while the record is awaiting the event that starts its retention; present once that event has been recorded (§2.8, <code>event_applied</code>).</li>
+<li><strong><code>snapshot</code></strong> — table, optional. What the schedule said about the series when the entry was written, for a reader with no schedule to hand. Every key in it is a string, and every key is optional. It is informational: no decision under this profile is taken from a snapshot, and a snapshot that differs from the schedule is reported, never acted on (§8). It is written with its entry, and changes only in an operation that appends a <code>classified</code>, <code>reclassified</code>, or <code>renumbered</code> event for that series (§2.8).</li>
+</ul>
+<p>Most records have one series. A record MAY have several, and §8 defines what that means for its retention.</p>
+<h3 id="25-holds">2.5 Holds</h3>
+<p>Each entry of <code>holds</code> records that a hold matter (§4) applies to the record:</p>
+<pre class="toml"><code>[[records.holds]]
+matter = &quot;01927d01-4c2e-7a3b-8d5f-1e2a3b4c5d6e&quot;
+type = &quot;legal&quot;
+applied = 2026-03-12</code></pre>
+<ul>
+<li><strong><code>matter</code></strong> — identifier. The hold matter's <code>id</code>. Two entries MUST NOT carry the same <code>matter</code>.</li>
+<li><strong><code>type</code></strong> — string, <code>legal</code> or <code>extension</code>. Copied from the matter when applied.</li>
+<li><strong><code>applied</code></strong> — date. When the hold was applied to this record.</li>
+</ul>
+<p>A record under any hold MUST NOT be destroyed, and MUST NOT have its content file replaced or a component removed (§2.9). An entry is removed when its matter is released, leaving other entries intact.</p>
+<h3 id="26-relations">2.6 Relations</h3>
+<p>Each entry of <code>relations</code> links the record to another record or to an aggregation (§5):</p>
+<pre class="toml"><code>[[records.relations]]
+type = &quot;member-of&quot;
+target = &quot;01927a55-2b1c-7e4d-9f6a-3c4d5e6f7a8b&quot;
+title = &quot;Vendor contract C-4471&quot;</code></pre>
+<ul>
+<li><strong><code>type</code></strong> — string, one of the following. Any other value is non-conformant.</li>
+<li><strong><code>target</code></strong> — identifier. The <code>id</code> of the other record or aggregation.</li>
+<li><strong><code>title</code></strong> — string, optional. The target's title when the relation was written, for a reader who cannot reach the target.</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th><code>type</code></th>
+<th>Meaning</th>
+<th>Consequence under this profile</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>member-of</code></td>
+<td>The record belongs to the aggregation <code>target</code> names</td>
+<td>Holds and events may be applied to an aggregation's members (§4, §5)</td>
+</tr>
+<tr class="even">
+<td><code>version-of</code></td>
+<td>The record is an earlier or later version of <code>target</code></td>
+<td>None in this version</td>
+</tr>
+<tr class="odd">
+<td><code>supersedes</code></td>
+<td>The record replaces <code>target</code></td>
+<td>None in this version</td>
+</tr>
+<tr class="even">
+<td><code>related</code></td>
+<td>Any other connection</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<p>Relations link separate records. The parts of one record are components, never relations.</p>
+<h3 id="27-components">2.7 Components</h3>
+<p>A record that has several parts and no native format holding them together (a form and its supporting documents, where an email and its attachments would be one <code>.eml</code> file) keeps its primary document as the content file and each further part as a member under <code>records/components/</code>:</p>
+<pre class="toml"><code>[[records.components]]
+member = &quot;records/components/01-invoice.pdf&quot;
+filename = &quot;invoice.pdf&quot;
+mime_type = &quot;application/pdf&quot;
+size = 20311
+sha256 = &quot;a9f2c1d0e8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1&quot;</code></pre>
+<ul>
+<li><strong><code>member</code></strong> — string. The member's name, which MUST begin with <code>records/components/</code> and MUST satisfy FRAMEWORK §4. Two entries MUST NOT name the same member.</li>
+<li><strong><code>filename</code></strong> — string, non-empty. The part's original filename, for display and for extraction.</li>
+<li><strong><code>mime_type</code></strong>, <strong><code>size</code></strong>, <strong><code>sha256</code></strong> — as for the content file (§2.2, §2.3), determined when the component was added.</li>
+</ul>
+<p>Every member of the container under <code>records/components/</code> MUST be named by one entry, and every entry MUST name a member the container holds. A container failing either is non-conformant.</p>
+<p>Components are destroyed with their container, and a component is never shared between containers.</p>
+<h3 id="28-the-event-log">2.8 The event log</h3>
+<p>Every record carries its own history as a chained log (CONVENTIONS §5):</p>
+<table>
+<tbody>
+<tr class="odd">
+<td>Member</td>
+<td><code>records/events.toml</code></td>
+</tr>
+<tr class="even">
+<td>Entry name</td>
+<td><code>event</code></td>
+</tr>
+<tr class="odd">
+<td>Seed</td>
+<td>The UTF-8 bytes of the record's <code>id</code></td>
+</tr>
+<tr class="even">
+<td>Head</td>
+<td><code>events_head</code> in the <code>[records]</code> table (§2.2)</td>
+</tr>
+</tbody>
+</table>
+<p>A record MUST carry the log, the log MUST be intact, and <code>events_head</code> MUST equal the hash of its last entry. The first entry MUST have <code>type = "captured"</code>.</p>
+<p>Every change to the <code>[records]</code> table appends an entry describing it, and the two are written in one operation: a rewrite of the container that changes the table and appends the entry, so that a change and its record can never be separated. <code>events_head</code> is updated in that same operation.</p>
+<p>Each entry carries the keys CONVENTIONS §5.1 requires and:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>type</code></td>
+<td>string</td>
+<td>What happened, from the table below.</td>
+</tr>
+<tr class="even">
+<td><code>actor</code></td>
+<td>agent</td>
+<td>Who did it, or on whose authority a tool did it.</td>
+</tr>
+<tr class="odd">
+<td><code>tool</code></td>
+<td>string</td>
+<td>The program that wrote the entry and its version, as <code>name version</code>.</td>
+</tr>
+<tr class="even">
+<td><code>location</code></td>
+<td>table</td>
+<td>Where the container was when the entry was written (§2.8.1).</td>
+</tr>
+<tr class="odd">
+<td><code>detail</code></td>
+<td>table, optional</td>
+<td>What the type requires, below.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th><code>type</code></th>
+<th>Meaning</th>
+<th><code>detail</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>captured</code></td>
+<td>The container became a record</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td><code>classified</code></td>
+<td>A series was added</td>
+<td><code>code</code></td>
+</tr>
+<tr class="odd">
+<td><code>reclassified</code></td>
+<td>A series was removed or replaced</td>
+<td><code>from</code> (code), <code>to</code> (code or absent)</td>
+</tr>
+<tr class="even">
+<td><code>renumbered</code></td>
+<td>A series code changed under a renumbering of the schedule</td>
+<td><code>from</code>, <code>to</code></td>
+</tr>
+<tr class="odd">
+<td><code>custodian_changed</code></td>
+<td><code>custodian</code> changed</td>
+<td><code>from</code> (agent), <code>to</code> (agent)</td>
+</tr>
+<tr class="even">
+<td><code>hold_applied</code></td>
+<td>A hold was applied</td>
+<td><code>matter</code></td>
+</tr>
+<tr class="odd">
+<td><code>hold_released</code></td>
+<td>A hold was released</td>
+<td><code>matter</code></td>
+</tr>
+<tr class="even">
+<td><code>event_applied</code></td>
+<td>A series' trigger date was set</td>
+<td><code>code</code>, <code>trigger</code> (date)</td>
+</tr>
+<tr class="odd">
+<td><code>reviewed</code></td>
+<td>A review fell due and was decided (§8.4)</td>
+<td><code>code</code>, <code>decision</code> (<code>reclassify</code>, <code>extend</code>, or <code>destroy</code>), <code>comment</code> (non-empty)</td>
+</tr>
+<tr class="even">
+<td><code>relation_added</code></td>
+<td>A relation was added</td>
+<td><code>type</code>, <code>target</code></td>
+</tr>
+<tr class="odd">
+<td><code>relation_removed</code></td>
+<td>A relation was removed</td>
+<td><code>type</code>, <code>target</code></td>
+</tr>
+<tr class="even">
+<td><code>component_added</code></td>
+<td>A component was added</td>
+<td><code>member</code>, <code>sha256</code></td>
+</tr>
+<tr class="odd">
+<td><code>component_removed</code></td>
+<td>A component was removed</td>
+<td><code>member</code>, <code>sha256</code>, <code>reason</code></td>
+</tr>
+<tr class="even">
+<td><code>content_replaced</code></td>
+<td>The content file was replaced</td>
+<td><code>from_sha256</code>, <code>to_sha256</code>, <code>reason</code></td>
+</tr>
+<tr class="odd">
+<td><code>marking_changed</code></td>
+<td><code>marking</code> changed</td>
+<td><code>from</code>, <code>to</code></td>
+</tr>
+<tr class="even">
+<td><code>fixity_failed</code></td>
+<td>A fixity check found the content or a component changed (§9)</td>
+<td><code>member</code>, <code>expected</code>, <code>found</code></td>
+</tr>
+<tr class="odd">
+<td><code>moved_detected</code></td>
+<td>A fixity check found the container at a different location (§2.8.1)</td>
+<td><code>from</code> (location table)</td>
+</tr>
+</tbody>
+</table>
+<p>A <code>type</code> not in this table is non-conformant. A successful fixity check is not an event: it is recorded in the sweep's own report (§7), so that a log does not grow with every sweep.</p>
+<p>The log is destroyed with the record. What survives destruction is the record's row in the disposal batch that destroyed it (§6).</p>
+<h4 id="281-location">2.8.1 Location</h4>
+<p>Every entry records where the container was when the entry was written. The same share is reached by a different path from every platform (<code>\\files\legal</code>, <code>Z:\</code>, <code>/Volumes/legal</code>, <code>/mnt/legal</code>), so a path alone does not say whether a container has moved. The location is a table of three keys:</p>
+<pre class="toml"><code>location = { root = &quot;legal&quot;, path = &quot;contracts/C-4471/invoice-2024-0117.pdf.slpc&quot;, raw = &#39;\\files\legal\contracts\C-4471\invoice-2024-0117.pdf.slpc&#39; }</code></pre>
+<ul>
+<li><strong><code>root</code></strong> — string, optional. The name of a share root declared in the records root's settings (§7) under which the container was found. Absent when the container was under no declared root.</li>
+<li><strong><code>path</code></strong> — string. The container's path relative to <code>root</code>, with <code>/</code> separators, NFC-normalized. Present when and only when <code>root</code> is.</li>
+<li><strong><code>raw</code></strong> — string. The path as the operating system reported it, always present.</li>
+</ul>
+<p>A root is matched against the container's canonical path: on Windows a mapped drive letter resolves to the UNC path it stands for, so a container reached as <code>Z:\contracts\...</code> is under a root declared as <code>\\files\legal</code>.</p>
+<p>Two locations are the same when their <code>root</code> and <code>path</code> are equal, compared exactly and case-sensitively: a rename that changes only case is a move. Two locations of which either lacks <code>root</code> are not comparable, and an implementation MUST NOT record a move between them.</p>
+<h3 id="29-changes-after-capture">2.9 Changes after capture</h3>
+<p>The content file and the components MAY change after capture. Every change is logged in the same operation (§2.8):</p>
+<ul>
+<li>Adding a component appends <code>component_added</code>.</li>
+<li>Removing a component, or replacing the content file, is a partial destruction outside disposition. It MUST NOT be done while the record is under any hold (§2.5). The entry (<code>component_removed</code>, <code>content_replaced</code>) records the old hash and a reason, and <code>fixity</code>, <code>mime_type</code>, and <code>size</code> are updated in the same operation.</li>
+</ul>
+<p>A record never loses its <code>id</code>, and nothing in this profile edits an earlier entry of the log.</p>
+<h2 id="3-retention-schedules">3. Retention schedules</h2>
+<p>A schedule says, for each series, how long records under it are kept and what happens then. The records manager maintains it elsewhere; this profile defines the form in which it is stored in the records root and read by every implementation.</p>
+<h3 id="31-form">3.1 Form</h3>
+<p>A schedule is a CSV file in the layout NARA publishes the General Records Schedules in ("machine-implementable format"; <a href="https://www.archives.gov/records-mgmt/grs/machine-implementable-grs" target="_blank">https://www.archives.gov/records-mgmt/grs/machine-implementable-grs</a>). NARA's own file MUST load under this section with no mapping and no error; <code>examples/schedule/grs-transmittal36.csv</code> is that file as published and is the test.</p>
+<ul>
+<li>UTF-8, with or without a byte order mark. Lines end with LF or CRLF. Fields are quoted and escaped as RFC 4180 describes, and a quoted field MAY contain line breaks.</li>
+<li>The first row names the columns. Column order is free. A column whose name is empty is ignored, as are the cells under it. A column this section does not name is ignored and MUST be preserved by any implementation that rewrites the file.</li>
+<li>Column names and the values of controlled columns are compared after trimming leading and trailing whitespace and without regard to ASCII case. Values are stored as written.</li>
+<li>A row whose cells are all empty is ignored.</li>
+</ul>
+<h3 id="32-columns">3.2 Columns</h3>
+<p>These columns MUST be present:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Column</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>GRS ID</code></td>
+<td>The series code: the organization's own code (<code>FIN-200</code>), or NARA's where the GRS is used as is. Non-empty.</td>
+</tr>
+<tr class="even">
+<td><code>Record Title</code></td>
+<td>The series' title.</td>
+</tr>
+<tr class="odd">
+<td><code>Disposition</code></td>
+<td><code>Temporary</code> or <code>Permanent</code>.</td>
+</tr>
+<tr class="even">
+<td><code>Retention (Years)</code>, or <code>Retention</code></td>
+<td>The retention period (§3.3). NARA's FAQ names this column <code>Retention</code> and its file names it <code>Retention (Years)</code>; either name is this column, and a file MUST NOT carry both.</td>
+</tr>
+<tr class="odd">
+<td><code>Retention Type</code></td>
+<td><code>Creation_Age</code> (measured from the record's <code>created</code>) or <code>Event_Age</code> (measured from an event).</td>
+</tr>
+<tr class="even">
+<td><code>Event Type (General)</code></td>
+<td>For <code>Event_Age</code>, the event retention is measured from (§3.3).</td>
+</tr>
+<tr class="odd">
+<td><code>Longer Retention Authorized?</code></td>
+<td><code>Yes</code>: the period is a minimum. <code>No</code>: the period is fixed.</td>
+</tr>
+</tbody>
+</table>
+<p>These NARA columns MAY be present and are informational, except as noted:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Column</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Classification (General)</code></td>
+<td>A grouping, for display.</td>
+</tr>
+<tr class="even">
+<td><code>Legal Citation</code></td>
+<td>The citation the period rests on.</td>
+</tr>
+<tr class="odd">
+<td><code>Deviations Allowed?</code></td>
+<td><code>Yes</code> or <code>No</code>.</td>
+</tr>
+<tr class="even">
+<td><code>Disposition Authority</code></td>
+<td>The authority reference.</td>
+</tr>
+<tr class="odd">
+<td><code>Superseded by</code></td>
+<td>Non-empty when the row is retired in favor of the series it names (§3.3).</td>
+</tr>
+<tr class="even">
+<td><code>Last Updated</code></td>
+<td>When NARA last changed the row.</td>
+</tr>
+<tr class="odd">
+<td><code>Comments</code></td>
+<td>Free text.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="33-values-and-what-a-row-means">3.3 Values, and what a row means</h3>
+<p>In a controlled NARA column, the values <code>N/A</code>, <code>NA</code>, <code>[Variable]</code>, and an empty cell all mean <strong>not stated</strong>. The column's vocabulary is NARA's: a value outside it is not an error in the file, and it is not stated either. (Extension columns, §3.4, are this profile's, and their vocabularies are closed.)</p>
+<p><strong>The period</strong> is the <code>Retention (Years)</code> value, read as:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Form</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>An unsigned integer, <code>0</code> included</td>
+<td>That many years. <code>0</code> means the record is eligible as soon as its trigger, after any cutoff, has passed.</td>
+</tr>
+<tr class="even">
+<td>An unsigned integer followed by <code>m</code></td>
+<td>That many months.</td>
+</tr>
+<tr class="odd">
+<td>An unsigned integer followed by <code>d</code></td>
+<td>That many days.</td>
+</tr>
+<tr class="even">
+<td>Anything else</td>
+<td>Not stated. NARA's file carries ranges (<code>4-7</code>), hours (<code>72h</code>), and <code>[Variable]</code>; this profile computes no period from them.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The event</strong> is the <code>Event Type (General)</code> value. Four values are general events with meaning under this profile; any other stated value is a named event, which an organization records when it happens (§2.8, <code>event_applied</code>), and which this profile treats like <code>Final action</code>:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Value</th>
+<th>The trigger is</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>End of FY</code></td>
+<td>The record's <code>created</code>, with the fiscal-year cutoff applied (§8.2). Stated for a <code>Creation_Age</code> row, it adds the cutoff; stated for an <code>Event_Age</code> row, it is the event.</td>
+</tr>
+<tr class="even">
+<td><code>Final action</code></td>
+<td>The date the matter the record belongs to was closed, as recorded by <code>event_applied</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>No longer needed</code></td>
+<td>The date the organization decided it no longer needed the record, as recorded by <code>event_applied</code>.</td>
+</tr>
+<tr class="even">
+<td><code>Superseded or obsolete</code></td>
+<td>The date the record was superseded or became obsolete, as recorded by <code>event_applied</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>A row is <strong>permanent</strong> when <code>Disposition</code> is <code>Permanent</code>, whatever else it says. Records under a permanent series are never destroyed under this profile (§8).</p>
+<p>A row is <strong>retired</strong> when <code>Superseded by</code> is non-empty. A retired row stays in the schedule so that records already under it can be read; an implementation MUST NOT classify a record under a retired series, and evaluation of a record already under one reports the successor (§8).</p>
+<p>A row that is neither permanent nor retired is <strong>computable</strong> when its <code>Disposition</code> is <code>Temporary</code>, its <code>Retention Type</code> is stated, its period is stated, and, for <code>Event_Age</code>, its event is stated. Otherwise it is <strong>descriptive</strong>: it loads, it can be looked up and displayed, and a record under it cannot be evaluated (§8). NARA's file has rows of every kind, and loads.</p>
+<h3 id="34-extension-columns">3.4 Extension columns</h3>
+<p>What NARA's layout lacks goes in columns whose names begin with <code>x_</code>. A file using none is a NARA-layout file; a file using them is still one, since the extra columns are ignored by anything that does not know them. Extension columns are never folded into NARA's columns, and an extension's vocabulary is closed: a value outside it is an error, and the file MUST be refused.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Column</th>
+<th>Values</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>x_disposal_action</code></td>
+<td><code>destroy</code>, <code>transfer</code>, <code>review</code>, <code>retain</code></td>
+<td>What happens when the period elapses. Absent: <code>destroy</code> for <code>Temporary</code>, <code>retain</code> for <code>Permanent</code>. <code>review</code> is MoReq2010's review: a person decides (§8.4). <code>transfer</code> is reserved: records under it are treated as <code>retain</code> in this version.</td>
+</tr>
+<tr class="even">
+<td><code>x_cutoff</code></td>
+<td><code>none</code>, <code>calendar_year</code>, <code>fiscal_year</code>, <code>quarter</code>, <code>month</code></td>
+<td>Retention starts at the end of the cutoff period containing the trigger (§8.2). Absent: <code>fiscal_year</code> where the event is <code>End of FY</code>, otherwise <code>none</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>x_period_kind</code></td>
+<td><code>minimum</code>, <code>maximum</code>, <code>fixed</code></td>
+<td>Absent: <code>minimum</code> where <code>Longer Retention Authorized?</code> is <code>Yes</code>, <code>fixed</code> where it is <code>No</code>, and <code>minimum</code> where it is not stated. A <code>maximum</code> is a deadline (§8.3).</td>
+</tr>
+<tr class="even">
+<td><code>x_maximum</code></td>
+<td>A period, as §3.3 reads one</td>
+<td>A series that has both a minimum and a maximum states the minimum in the period column and the maximum here, on the one row. Where present, <code>x_period_kind</code> MUST be absent or <code>minimum</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>x_citation_defining</code></td>
+<td><code>yes</code>, <code>no</code></td>
+<td>Whether <code>Legal Citation</code> sets the period or only supports it. Informational.</td>
+</tr>
+<tr class="even">
+<td><code>x_jurisdiction</code></td>
+<td>Free text</td>
+<td>For a schedule that carries a baseline and per-jurisdiction variants: one row per variant, same code, different jurisdiction.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="35-uniqueness">3.5 Uniqueness</h3>
+<p>Within a file, no two rows MAY carry the same <code>GRS ID</code> and the same <code>x_jurisdiction</code> (empty counting as a value). A file that does is malformed and MUST be refused, as is a file missing a required column or carrying a row with an empty <code>GRS ID</code>. Refusal reports every problem with the row it is in.</p>
+<h3 id="36-the-store">3.6 The store</h3>
+<p>Schedules live in the records root (§7) as versions that are never edited:</p>
+<pre><code>schedule/
+  current                                   # one line: the current version&#39;s identifier
+  versions/
+    20261005T140211Z-3fa9c2e1b7d0.csv       # the schedule
+    20261005T140211Z-3fa9c2e1b7d0.toml      # about that version</code></pre>
+<ul>
+<li>A <strong>version identifier</strong> is the UTC instant the version was written, as <code>YYYYMMDDThhmmssZ</code>, a hyphen, and the first twelve hexadecimal digits of the CSV's hash.</li>
+<li>The <code>.toml</code> beside a version records <code>imported</code> (instant), <code>imported_by</code> (agent), <code>source</code> (string: where the schedule came from, as a person would say it), <code>tool</code> (string, as §2.8), and <code>sha256</code> (hash of the CSV).</li>
+<li>A version is never changed. A change to the schedule is a new version.</li>
+<li><code>current</code> holds the identifier of the version in force and nothing else, followed by LF. It is replaced by writing a new file beside it and renaming over it, so that a reader sees the old version or the new and never a partial file. A reader reads <code>current</code>, then the version it names.</li>
+<li>Every record's series snapshot and every disposal plan records the version identifier it was taken from or evaluated against, so that any decision traces to the exact schedule in force.</li>
+</ul>
+<h2 id="4-hold-matters">4. Hold matters</h2>
+<p>A hold stops destruction. A <strong>hold matter</strong> is one legal matter or business reason under which records are held, defined once, centrally, as a container of kind <code>hold</code> in the records root's <code>holds/</code> directory, named <code>&lt;id&gt;.slpc</code>. The matter's container describes the hold; it does not hold the records, which stay where they are and carry an entry naming the matter (§2.5).</p>
+<h3 id="41-keys">4.1 Keys</h3>
+<pre class="toml"><code>[records]
+profile = &quot;https://slipcaseformat.org/profiles/records&quot;
+profile_version = &quot;1.0&quot;
+kind = &quot;hold&quot;
+id = &quot;01927d01-4c2e-7a3b-8d5f-1e2a3b4c5d6e&quot;
+title = &quot;Vendor dispute, Acme Corp.&quot;
+type = &quot;legal&quot;
+mandate = &quot;Litigation hold, counsel&#39;s instruction of 2026-03-11&quot;
+placed = 2026-03-12
+status = &quot;active&quot;
+scope = &#39;custodian.email in (&quot;jdoe@example.com&quot;, &quot;asmith@example.com&quot;) and created &gt;= 2023-01-01&#39;
+events_head = &quot;...&quot;
+
+[records.approved_by]
+email = &quot;counsel@example.com&quot;
+id = &quot;7a6b5c4d-3e2f-4a1b-9c8d-7e6f5a4b3c2d&quot;</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>id</code></td>
+<td>identifier</td>
+<td>The matter.</td>
+</tr>
+<tr class="even">
+<td><code>title</code></td>
+<td>string, non-empty</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>type</code></td>
+<td>string</td>
+<td><code>legal</code>: a hold on counsel's instruction. <code>extension</code>: a business reason to keep records past their period.</td>
+</tr>
+<tr class="even">
+<td><code>mandate</code></td>
+<td>string, non-empty</td>
+<td>The authority or reason, as a person would state it.</td>
+</tr>
+<tr class="odd">
+<td><code>approved_by</code></td>
+<td>agent</td>
+<td>Who authorized the hold.</td>
+</tr>
+<tr class="even">
+<td><code>placed</code></td>
+<td>date</td>
+<td>When the hold was placed.</td>
+</tr>
+<tr class="odd">
+<td><code>end_date</code></td>
+<td>date, optional</td>
+<td>For an <code>extension</code>, when it releases itself (§4.3).</td>
+</tr>
+<tr class="even">
+<td><code>scope</code></td>
+<td>string</td>
+<td>A SlipQL <code>where</code> expression, as the grammar of SlipQL 0.3.0 defines it (<a href="https://github.com/excelano/slipql/blob/v0.3.0/GRAMMAR.md" target="_blank">https://github.com/excelano/slipql/blob/v0.3.0/GRAMMAR.md</a>), over a record's <code>[records]</code> table: paths in it are relative to that table, so <code>custodian.email</code> names the custodian's address, and no other profile's table is reachable (FRAMEWORK §7). The hold applies to every record it is true for.</td>
+</tr>
+<tr class="odd">
+<td><code>status</code></td>
+<td>string</td>
+<td><code>active</code> or <code>released</code>.</td>
+</tr>
+<tr class="even">
+<td><code>released</code></td>
+<td>date</td>
+<td>Present when and only when <code>status</code> is <code>released</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>events_head</code></td>
+<td>hash</td>
+<td>§4.2.</td>
+</tr>
+</tbody>
+</table>
+<p>The content file is the hold notice or order, in any format, or an empty content file where there is none.</p>
+<h3 id="42-history">4.2 History</h3>
+<p>A matter carries a chained log at <code>records/events.toml</code>, entry name <code>event</code>, seeded from its <code>id</code>, head in <code>events_head</code>, with the entry keys of §2.8 other than <code>location</code>, and these types:</p>
+<table>
+<thead>
+<tr class="header">
+<th><code>type</code></th>
+<th><code>detail</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>placed</code></td>
+<td>— (the first entry)</td>
+</tr>
+<tr class="even">
+<td><code>scope_changed</code></td>
+<td><code>from</code>, <code>to</code> (the expressions)</td>
+</tr>
+<tr class="odd">
+<td><code>released</code></td>
+<td><code>reason</code></td>
+</tr>
+</tbody>
+</table>
+<p>The log answers who placed, changed, and released the matter, and when.</p>
+<h3 id="43-applying-matching-releasing">4.3 Applying, matching, releasing</h3>
+<ul>
+<li><strong>Applying</strong> a matter to a record adds a <code>holds</code> entry to the record (§2.5) and appends <code>hold_applied</code> to the record's log. An implementation applying a matter MUST evaluate its scope and show the count of records matched before applying, and MUST report a scope that matches no record rather than applying it silently.</li>
+<li><strong>Matching at classification.</strong> Every active matter's scope MUST be evaluated against a record when the record is captured or its <code>[records]</code> table changes, so that a record that comes to match a hold placed earlier is held.</li>
+<li><strong>Matching at destruction.</strong> A record's <code>holds</code> list is what it says; an active matter whose scope matches a record that carries no entry for it is a gap, and §8.5 makes such a record not eligible. An implementation finding one MUST report it as <code>hold_scope_unapplied</code>.</li>
+<li><strong>Releasing</strong> sets <code>status</code> and <code>released</code>, appends <code>released</code> to the matter's log, and removes the matter's entry from each record that carries it, appending <code>hold_released</code> to each. Other matters' entries are untouched.</li>
+<li>An <code>extension</code> with an <code>end_date</code> is released by the implementation when the evaluation date passes it, logged like any release.</li>
+<li>A matter is never deleted. A released matter stays in <code>holds/</code> with its history.</li>
+</ul>
+<h2 id="5-aggregations">5. Aggregations</h2>
+<p>An <strong>aggregation</strong> is a case file, a project file, or any other grouping of records that are managed together. It is a container of kind <code>aggregation</code> in the records root's <code>aggregations/</code> directory, named <code>&lt;id&gt;.slpc</code>. Like a hold matter, it does not hold its members: a record belongs to an aggregation by carrying a <code>member-of</code> relation to it (§2.6), and the members are found by a query.</p>
+<h3 id="51-keys">5.1 Keys</h3>
+<pre class="toml"><code>[records]
+profile = &quot;https://slipcaseformat.org/profiles/records&quot;
+profile_version = &quot;1.0&quot;
+kind = &quot;aggregation&quot;
+id = &quot;01927a55-2b1c-7e4d-9f6a-3c4d5e6f7a8b&quot;
+title = &quot;Vendor contract C-4471&quot;
+status = &quot;open&quot;
+default_series = &quot;LEG-010&quot;
+events_head = &quot;...&quot;
+
+[[records.relations]]
+type = &quot;member-of&quot;
+target = &quot;01927a00-1111-7222-8333-444455556666&quot;
+title = &quot;Vendor contracts 2024&quot;</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>id</code></td>
+<td>identifier</td>
+<td>The aggregation.</td>
+</tr>
+<tr class="even">
+<td><code>title</code></td>
+<td>string, non-empty</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>description</code></td>
+<td>string, optional</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>default_series</code></td>
+<td>string, optional</td>
+<td>A series code. A record joining the aggregation is classified under it (§5.3).</td>
+</tr>
+<tr class="odd">
+<td><code>status</code></td>
+<td>string</td>
+<td><code>open</code> or <code>closed</code>.</td>
+</tr>
+<tr class="even">
+<td><code>closed</code></td>
+<td>date</td>
+<td>Present when and only when <code>status</code> is <code>closed</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>relations</code></td>
+<td>array of tables, optional</td>
+<td>§2.6. A <code>member-of</code> relation makes this aggregation a member of another.</td>
+</tr>
+<tr class="even">
+<td><code>events_head</code></td>
+<td>hash</td>
+<td>§5.2.</td>
+</tr>
+</tbody>
+</table>
+<p>The content file is a cover sheet or an index where one exists, and an empty content file otherwise.</p>
+<h3 id="52-history">5.2 History</h3>
+<p>A chained log at <code>records/events.toml</code>, entry name <code>event</code>, seeded from <code>id</code>, head in <code>events_head</code>, with the entry keys of §2.8 other than <code>location</code>, and these types:</p>
+<table>
+<thead>
+<tr class="header">
+<th><code>type</code></th>
+<th><code>detail</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>created</code></td>
+<td>— (the first entry)</td>
+</tr>
+<tr class="even">
+<td><code>closed</code></td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td><code>reopened</code></td>
+<td><code>reason</code></td>
+</tr>
+<tr class="even">
+<td><code>default_series_changed</code></td>
+<td><code>from</code>, <code>to</code></td>
+</tr>
+<tr class="odd">
+<td><code>relation_added</code>, <code>relation_removed</code></td>
+<td>as §2.8</td>
+</tr>
+</tbody>
+</table>
+<h3 id="53-membership-inheritance-closing">5.3 Membership, inheritance, closing</h3>
+<ul>
+<li>A record joins by having a <code>member-of</code> relation added (§2.6, <code>relation_added</code>). Where the aggregation has a <code>default_series</code> and the record has no entry for that code, a series entry for it is written to the record in the same operation (<code>classified</code>). Inheritance is a copy at joining, never a lookup at evaluation: a record's series are its own.</li>
+<li>Changing <code>default_series</code> changes nothing on existing members by itself. An implementation that offers to reclassify them does so as a previewed rewrite of each member, logged on each.</li>
+<li><strong>Closing</strong> sets <code>status</code> and <code>closed</code>, appends <code>closed</code> to the aggregation's log, and, for every member record, sets the <code>trigger</code> of each <code>Event_Age</code> series whose event is <code>Final action</code> and whose <code>trigger</code> is absent to the closing date, appending <code>event_applied</code> to each. A member under some other event is not triggered by closing.</li>
+<li>A hold applied to an aggregation is a hold whose scope matches <code>member-of</code> that aggregation; the matter is applied to the members as §4.3 says, and the aggregation's own container is not held.</li>
+</ul>
+<h2 id="6-the-disposition-register">6. The disposition register</h2>
+<p>The register is the record of destruction: one entry per <strong>batch</strong>, where a batch is one run that destroyed records under one plan. After a record is destroyed, its row in a batch's manifest is the only evidence it existed. The register lives in the records root's <code>register/</code> directory, and its batches form a hash chain.</p>
+<h3 id="61-files">6.1 Files</h3>
+<p>A batch has up to four files, named by its <strong>sequence</strong>, a six-digit zero-padded decimal starting at <code>000001</code>. The lock file comes first where the run takes one (§6.7), and the journal appears with the batch's first outcome, so an intent with no journal is a run that has not yet touched a record. A batch with no lock file, or no journal, is not made non-conformant by its absence:</p>
+<pre><code>register/
+  000123.lock            # empty; locked while a run or a recovery holds the batch (§6.7)
+  000123.intent.slpc     # the claim and the plan; written once
+  000123.journal         # one entry per record outcome, appended during the run
+  000123.slpc            # the final; written once
+  000124.intent.slpc     # unfinished: no final</code></pre>
+<p>Batch N is <strong>final</strong> when <code>N.slpc</code> exists, and <strong>unfinished</strong> when <code>N.intent.slpc</code> exists without it. No file in the register is ever rewritten or removed: both containers are created with create-new semantics, the journal is only appended to, and the lock file is never written. A register therefore only gains files.</p>
+<h3 id="62-the-intent">6.2 The intent</h3>
+<p>The intent is a container of kind <code>disposal-batch</code>, written before any record is destroyed. Creating it is how a run claims its sequence: a run MUST create <code>N.intent.slpc</code> exclusively, and MUST NOT proceed if the create fails. A run MUST NOT claim sequence N unless batch N−1 is final (§6.5).</p>
+<pre class="toml"><code>slipcase_version = &quot;1.1&quot;
+
+[content]
+file = &quot;intent-000124.txt&quot;
+
+[records]
+profile = &quot;https://slipcaseformat.org/profiles/records&quot;
+profile_version = &quot;1.0&quot;
+kind = &quot;disposal-batch&quot;
+
+[records.disposition]
+sequence = 124
+state = &quot;intent&quot;
+started = 2026-10-05T13:58:40Z
+host = &quot;fs-ops-02&quot;
+user = &quot;svc-fileroom&quot;
+records_planned = 4210
+plan_id = &quot;01929e10-2a3b-7c4d-8e5f-6a7b8c9d0e1f&quot;
+evaluated = 2026-10-01
+schedule_version = &quot;20261005T140211Z-3fa9c2e1b7d0&quot;
+approved_by = [&quot;rm@example.com&quot;]
+scope_statement = &quot;Removed from repository. Backup copies expire under the backup retention policy.&quot;
+
+[records.chain]
+manifest_sha256 = &quot;e07d...&quot;</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>sequence</code></td>
+<td>integer</td>
+<td>The batch's sequence.</td>
+</tr>
+<tr class="even">
+<td><code>state</code></td>
+<td>string</td>
+<td><code>intent</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>started</code></td>
+<td>instant</td>
+<td>When the run began.</td>
+</tr>
+<tr class="even">
+<td><code>host</code>, <code>user</code></td>
+<td>string</td>
+<td>Where and as whom the run is executing, so that an unfinished intent can be traced.</td>
+</tr>
+<tr class="odd">
+<td><code>records_planned</code></td>
+<td>integer</td>
+<td>Rows in the manifest.</td>
+</tr>
+<tr class="even">
+<td><code>plan_id</code></td>
+<td>identifier</td>
+<td>The plan this batch executes.</td>
+</tr>
+<tr class="odd">
+<td><code>evaluated</code></td>
+<td>date</td>
+<td>The evaluation date the plan was made at (§8).</td>
+</tr>
+<tr class="even">
+<td><code>schedule_version</code></td>
+<td>string</td>
+<td>The schedule version the plan was evaluated against (§3.6).</td>
+</tr>
+<tr class="odd">
+<td><code>approved_by</code></td>
+<td>array of strings</td>
+<td>Who approved the plan, as the caller states it. This profile does not authenticate anyone; the certificate says so.</td>
+</tr>
+<tr class="even">
+<td><code>scope_statement</code></td>
+<td>string</td>
+<td>What destruction means here. The default is above; an organization MAY state its own.</td>
+</tr>
+<tr class="odd">
+<td><code>chain.manifest_sha256</code></td>
+<td>hash</td>
+<td>The planned manifest, §6.3.</td>
+</tr>
+</tbody>
+</table>
+<p>The content file is a plain-text statement that the batch is in progress, naming the sequence and the start. The manifest member (§6.3) lists every planned record with its <code>outcome</code> empty.</p>
+<h3 id="63-the-manifest">6.3 The manifest</h3>
+<p><code>records/manifest.csv</code>, in the form of §3.1, one row per record in the batch:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Column</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>id</code></td>
+<td>The record's identifier.</td>
+</tr>
+<tr class="even">
+<td><code>title</code></td>
+<td>The content file's name, or the record's title where the organization keeps one.</td>
+</tr>
+<tr class="odd">
+<td><code>path</code></td>
+<td>The container's location when planned, as <code>root:path</code> where it had a root, else the raw path.</td>
+</tr>
+<tr class="even">
+<td><code>series</code></td>
+<td>The series codes, separated by <code>;</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>custodian_email</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>created</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>content_sha256</code></td>
+<td>The content file's hash as planned.</td>
+</tr>
+<tr class="even">
+<td><code>flyleaf_sha256</code></td>
+<td>The flyleaf member's hash as planned (§6.4).</td>
+</tr>
+<tr class="odd">
+<td><code>outcome</code></td>
+<td>Empty in the intent. In the final: <code>destroyed</code>, <code>skipped</code>, <code>failed</code>, or <code>unknown</code>.</td>
+</tr>
+<tr class="even">
+<td><code>reason</code></td>
+<td>For <code>skipped</code> and <code>failed</code>: why, as §6.4 and §6.6 state.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="64-the-run">6.4 The run</h3>
+<p>For each record, in manifest order, the run:</p>
+<ol type="1">
+<li>reads the container and compares its flyleaf member's hash with <code>flyleaf_sha256</code>; on a difference, the record is <code>skipped</code> with reason <code>changed_since_plan</code>, and nothing else is checked;</li>
+<li>evaluates eligibility as of <code>evaluated</code> against <code>schedule_version</code>, with the hold matters active now (§4.3); if the record is not <code>eligible</code>, it is <code>skipped</code> with the reasons;</li>
+<li>deletes the container, and confirms it is gone; where deletion fails or the file remains, the record is <code>failed</code> with the operating system's error;</li>
+<li>appends the outcome to the journal before touching the next record.</li>
+</ol>
+<p>Deletion is an ordinary filesystem delete. Nothing is overwritten, and nothing written under this profile claims secure erasure or media sanitization: the scope statement describes removal from the repository.</p>
+<h3 id="65-the-journal">6.5 The journal</h3>
+<p><code>N.journal</code> is a chained log (CONVENTIONS §5) beside the containers, entry name <code>outcome</code>, seeded from the UTF-8 bytes of the intent flyleaf's hash (the <code>intent_flyleaf_sha256</code> the final will carry). Each entry carries <code>seq</code>, <code>at</code>, <code>prev</code>, and:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>record</code></td>
+<td>The record's identifier.</td>
+</tr>
+<tr class="even">
+<td><code>outcome</code></td>
+<td><code>destroyed</code>, <code>skipped</code>, or <code>failed</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>reason</code></td>
+<td>For <code>skipped</code> and <code>failed</code>.</td>
+</tr>
+<tr class="even">
+<td><code>error</code></td>
+<td>For <code>failed</code>: the operating system's error text.</td>
+</tr>
+</tbody>
+</table>
+<p>The journal is protected by the final's <code>journal_sha256</code> (§6.6), a hash of the whole file; it is complete when the final is written and is not appended to after. A journal of zero length is one whose writer died between creating the file and storing its first entry; a reader treats it as no journal, and the next outcome written becomes its first entry.</p>
+<h3 id="66-the-final">6.6 The final</h3>
+<p>When every record has an outcome, the run writes <code>N.slpc</code>, also by exclusive create. If the final already exists, another finalizer won and this one fails without writing.</p>
+<pre class="toml"><code>[records.disposition]
+sequence = 124
+state = &quot;final&quot;
+started = 2026-10-05T13:58:40Z
+completed = 2026-10-05T14:02:11Z
+host = &quot;fs-ops-02&quot;
+user = &quot;svc-fileroom&quot;
+records_planned = 4210
+records_destroyed = 4207
+plan_id = &quot;01929e10-2a3b-7c4d-8e5f-6a7b8c9d0e1f&quot;
+evaluated = 2026-10-01
+schedule_version = &quot;20261005T140211Z-3fa9c2e1b7d0&quot;
+component = &quot;fileroom 0.3.1&quot;
+approved_by = [&quot;rm@example.com&quot;]
+scope_statement = &quot;Removed from repository. Backup copies expire under the backup retention policy.&quot;
+
+[records.chain]
+intent_flyleaf_sha256 = &quot;4f20...&quot;
+previous_flyleaf_sha256 = &quot;9c1e...&quot;
+content_sha256 = &quot;51ab...&quot;
+manifest_sha256 = &quot;e07d...&quot;
+journal_sha256 = &quot;b7c4...&quot;</code></pre>
+<p>In addition to the intent's keys: <code>completed</code> (instant), <code>records_destroyed</code> (integer), <code>component</code> (string: the implementation that destroyed, as <code>name version</code>), and, for a batch finished by recovery (§6.7), <code>recovered</code> (instant) and <code>recovered_by</code> (agent). The manifest is the intent's with every <code>outcome</code> filled. The content file is the certificate (§6.8).</p>
+<p><code>[records.chain]</code>:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Hash of</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>intent_flyleaf_sha256</code></td>
+<td>The intent container's flyleaf member.</td>
+</tr>
+<tr class="even">
+<td><code>previous_flyleaf_sha256</code></td>
+<td>The final flyleaf of batch N−1. For batch 1, the <strong>genesis value</strong>: <code>872a5013347fc0dcd51e6fe0af140a92b1881674b002fb2f069b2cbaaa16e88a</code>, the hash of the UTF-8 string <code>https://slipcaseformat.org/profiles/records#register-genesis</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>content_sha256</code></td>
+<td>The certificate.</td>
+</tr>
+<tr class="even">
+<td><code>manifest_sha256</code></td>
+<td>The final manifest.</td>
+</tr>
+<tr class="odd">
+<td><code>journal_sha256</code></td>
+<td>The journal file, or, for a batch recovered before any outcome was journaled, the empty byte string.</td>
+</tr>
+</tbody>
+</table>
+<p>Every hash is over stored bytes (CONVENTIONS §3). A register's chain is <strong>intact</strong> when, walking from batch 1, every final's five hashes are what they should be, every sequence from 1 to the last is present, no sequence is claimed twice, and every final's intent exists and matches. Verification reports the first batch at which any of this fails, and every unfinished intent; it never repairs.</p>
+<p><strong>The register records what happened, never what was planned.</strong> A certificate never claims a destruction that did not occur, and a final is never written until every planned record has an outcome.</p>
+<h3 id="67-one-batch-at-a-time-and-recovery">6.7 One batch at a time, and recovery</h3>
+<p>A run MAY claim sequence N only when N−1 is final: batch N's final chains to N−1's, which does not exist while N−1 is running. A run that finds N−1 unfinished, or that loses the exclusive create for N, MUST refuse and report the unfinished batch: its sequence, host, user, start, and last journal entry.</p>
+<p><strong>The lock.</strong> A run opens <code>N.lock</code>, creating it if absent, takes an exclusive lock on it before it creates <code>N.intent.slpc</code>, and holds the lock until its final is written. A run that cannot take the lock MUST refuse as it would on losing the exclusive create. Recovery takes the same lock before it reads the intent, holds it until the final is written, and MUST refuse while another process holds it. The lock belongs to the operating system and is released when its holder ends, however it ends, so a crashed run leaves nothing to clear. Where the file system cannot lock at all, a run and a recovery proceed without it, and the person's confirmation is the only guard.</p>
+<p>An unfinished intent is finished only by <strong>recovery</strong>, an explicit action that a person confirms, never by a run that happens to find it. A tool cannot always tell a crashed run from one still executing on another machine: the lock tells it where the file system carries locks between machines, and nothing tells it where the file system does not, or where the run predates the batch's lock file. Finishing a live batch would record a partial manifest while destruction continued. Recovery:</p>
+<ol type="1">
+<li>reads the intent and the journal;</li>
+<li>for each planned record, takes the journal's outcome where the journal has one; where it has none, records <code>unknown</code> if the container is gone and <code>skipped</code> with reason <code>not_attempted</code> if it is present; it never assumes a record was destroyed;</li>
+<li>writes the final by exclusive create, with <code>recovered</code> and <code>recovered_by</code>, and a certificate that states the batch was recovered and when.</li>
+</ol>
+<p>Recovery never destroys a record. To continue, a person makes a new plan.</p>
+<h3 id="68-the-certificate">6.8 The certificate</h3>
+<p>The final's content file is the certificate: the human-readable statement of what the batch did. It MUST state the organization, the sequence, the plan identifier, the evaluation date and schedule version, who approved (and that approval was stated to the implementation and not verified by it), when the run started and completed, the host and user, the component, the scope statement, the counts planned and destroyed, and every record's identifier, title, path, series, custodian, created date, and outcome. A recovered batch's certificate states that, and when.</p>
+<p>The certificate SHOULD be a PDF conforming to both PDF/A (for durability) and PDF/UA (for accessibility), PDF/A-4 with PDF/UA-2 or PDF/A-2a with PDF/UA-1, and an implementation producing one SHOULD validate it. An implementation that cannot render one MAY write a plain UTF-8 text certificate whose first line states that it is a text certificate; its content is the same.</p>
+<p>The certificate's name is <code>certificate-&lt;sequence&gt;.pdf</code> or <code>certificate-&lt;sequence&gt;.txt</code>.</p>
+<h2 id="7-the-records-root">7. The records root</h2>
+<p>A records root is a directory holding everything a records-management system keeps centrally, as plain files. Records themselves live anywhere: on any share, in any folder structure. The root is the only central place, and nothing in it is a record.</p>
+<pre><code>records-root/
+  settings.toml
+  schedule/              # §3.6
+  register/              # §6
+  holds/                 # §4
+  aggregations/          # §5
+  fixity/                # sweep reports, §9</code></pre>
+<h3 id="71-settings">7.1 Settings</h3>
+<pre class="toml"><code>organization = &quot;Example Corporation&quot;
+fiscal_year_start_month = 10
+
+[roots.legal]
+windows = &#39;\\files\legal&#39;
+macos = &quot;/Volumes/legal&quot;
+linux = &quot;/mnt/legal&quot;</code></pre>
+<ul>
+<li><strong><code>organization</code></strong> — string. The organization's name, as it appears on a certificate.</li>
+<li><strong><code>fiscal_year_start_month</code></strong> — integer, 1 to 12. The month the fiscal year begins (§8.2).</li>
+<li><strong><code>roots</code></strong> — a table of <strong>share roots</strong>, each a table keyed by platform (<code>windows</code>, <code>macos</code>, <code>linux</code>) giving the path at which that share is mounted there. A root's name is what event locations record (§2.8.1). A platform with no entry cannot resolve that root, and a container found there has a location with no <code>root</code>.</li>
+<li><strong><code>operator_identity</code></strong> — string, optional. The one value is <code>verified</code>: the organization requires that the person operating any implementation that writes in this root has been verified against an identity provider (§9). Absent, nothing is required.</li>
+</ul>
+<p>A root's name is permanent once any event has recorded it: renaming it would orphan every location that names it. A root's mount paths MAY change.</p>
+<h2 id="8-eligibility">8. Eligibility</h2>
+<p>Eligibility is defined here and computed by an implementation of §9. It is a function of a record, the schedule in force, the settings, the active hold matters, and an <strong>evaluation date</strong>, which is always given: nothing in this section reads a clock.</p>
+<h3 id="81-outcome">8.1 Outcome</h3>
+<p>Evaluating a record yields one <strong>outcome</strong>, the <strong>reasons</strong> for it (all that apply), and any <strong>flags</strong>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Outcome</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>eligible</code></td>
+<td>The record MAY be destroyed. §8.5 holds.</td>
+</tr>
+<tr class="even">
+<td><code>not_eligible</code></td>
+<td>It may not, for the reasons given.</td>
+</tr>
+<tr class="odd">
+<td><code>review_due</code></td>
+<td>A <code>review</code> series has fallen due and no <code>reviewed</code> event has decided it (§8.4).</td>
+</tr>
+<tr class="even">
+<td><code>cannot_evaluate</code></td>
+<td>The record, or a series it is under, cannot be read well enough to say.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th>Reason</th>
+<th>With</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>permanent</code></td>
+<td>The series codes</td>
+</tr>
+<tr class="even">
+<td><code>retained</code></td>
+<td>The series codes whose action is <code>retain</code> or <code>transfer</code></td>
+</tr>
+<tr class="odd">
+<td><code>held</code></td>
+<td>The matter identifiers</td>
+</tr>
+<tr class="even">
+<td><code>awaiting_event</code></td>
+<td>The series codes with no trigger</td>
+</tr>
+<tr class="odd">
+<td><code>period_not_elapsed</code></td>
+<td>Each series' due date</td>
+</tr>
+<tr class="even">
+<td><code>no_series</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>unknown_series</code></td>
+<td>The codes the schedule does not carry</td>
+</tr>
+<tr class="even">
+<td><code>series_retired</code></td>
+<td>Each retired code and its successor</td>
+</tr>
+<tr class="odd">
+<td><code>series_not_computable</code></td>
+<td>The descriptive series' codes</td>
+</tr>
+<tr class="even">
+<td><code>undetermined_container</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>malformed_container</code></td>
+<td>The container is not a conformant Slipcase container, so no profile can be read from it</td>
+</tr>
+<tr class="even">
+<td><code>slipcase_version_unsupported</code>, <code>profile_version_unsupported</code>, <code>malformed_profile</code></td>
+<td>What was found</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th>Flag</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>past_maximum</code></td>
+<td>A <code>maximum</code> period has elapsed (§8.3).</td>
+</tr>
+<tr class="even">
+<td><code>max_before_min_conflict</code></td>
+<td>One series' maximum falls before another's minimum (§8.3).</td>
+</tr>
+<tr class="odd">
+<td><code>snapshot_drift</code></td>
+<td>A series snapshot disagrees with the schedule in force (§2.4).</td>
+</tr>
+</tbody>
+</table>
+<p>Where the record can be read, the earliest date it could become eligible is also reported, when it can be computed.</p>
+<h3 id="82-dates">8.2 Dates</h3>
+<p>Dates are civil dates. No time zone takes part.</p>
+<p>A series' <strong>trigger</strong> is <code>created</code> for <code>Creation_Age</code>, and the series entry's <code>trigger</code> for <code>Event_Age</code> (§2.4). An <code>Event_Age</code> series with no trigger is <strong>awaiting its event</strong>.</p>
+<p>The <strong>cutoff</strong> (§3.4, <code>x_cutoff</code>) moves the start of retention to the last day of the period containing the trigger: the calendar year, the fiscal year (which begins on the first day of <code>fiscal_year_start_month</code>), the quarter of the calendar year, or the month. <code>none</code> leaves the trigger as it is.</p>
+<p>The <strong>due date</strong> is the cutoff date plus the period. Adding years or months lands on the same day of the resulting month, or on its last day where that day does not exist: February 29 plus one year is February 28. Adding days is exact.</p>
+<p>A series is <strong>due</strong> when the evaluation date is on or after its due date.</p>
+<h3 id="83-minimum-fixed-maximum">8.3 Minimum, fixed, maximum</h3>
+<p>A <code>minimum</code> or <code>fixed</code> period makes the series due at its due date. A <code>maximum</code> period makes the series due at its due date and sets the <code>past_maximum</code> flag once the evaluation date is past it. A series with both (§3.4, <code>x_maximum</code>) is due at the minimum's date and flagged past the maximum's.</p>
+<p>A hold always wins over a maximum: a held record past its maximum is <code>not_eligible</code> and flagged, and when the hold is released it goes to the head of whatever queue the implementation keeps.</p>
+<p>Where a record has several series and one series' maximum falls before another's minimum, the record is flagged <code>max_before_min_conflict</code> and is <code>not_eligible</code> until a person resolves it. This profile never resolves it.</p>
+<h3 id="84-review">8.4 Review</h3>
+<p>Where a series' action is <code>review</code>, the series falling due makes the record <code>review_due</code>. A person then decides, with a comment, and the decision is recorded as a <code>reviewed</code> event (§2.8) naming the series and one of three decisions. Until then the record is not eligible.</p>
+<table>
+<thead>
+<tr class="header">
+<th><code>decision</code></th>
+<th>What it means</th>
+<th>After it</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>reclassify</code></td>
+<td>The record belongs under a different series.</td>
+<td>A <code>reclassified</code> entry in the same operation replaces the series (§2.4); the review series no longer governs the record.</td>
+</tr>
+<tr class="even">
+<td><code>extend</code></td>
+<td>The record is kept and reviewed again.</td>
+<td>The series' period restarts from the review date, with the series' cutoff applied as for any trigger (§8.2), and the series falls due again at its end.</td>
+</tr>
+<tr class="odd">
+<td><code>destroy</code></td>
+<td>The review confirms destruction.</td>
+<td>The series is due from the review date with action <code>destroy</code>, as if the schedule had said so; the record's other series and holds still apply (§8.5).</td>
+</tr>
+</tbody>
+</table>
+<p>A <code>reviewed</code> entry's <strong>review date</strong> is the date of its <code>at</code> in UTC. A series is <strong>decided</strong> by the latest <code>reviewed</code> entry naming it whose review date is on or after the series' due date; an earlier decision belongs to an earlier review and has no effect on the one now due. A <code>decision</code> outside the three is non-conformant.</p>
+<h3 id="85-eligible">8.5 Eligible</h3>
+<p>A record is <code>eligible</code> when, and only when:</p>
+<ol type="1">
+<li>it has at least one series, and every series is due with action <code>destroy</code>;</li>
+<li>no series is permanent or has action <code>retain</code> or <code>transfer</code>;</li>
+<li>no series is <code>review</code> and undecided;</li>
+<li>it has no holds (§2.5), and no active hold matter's scope (§4) matches it;</li>
+<li>no flag in §8.3 blocks it.</li>
+</ol>
+<p>A record with several series is eligible only when it is eligible under every one of them: the longest retention governs.</p>
+<p>Eligibility is as of the evaluation date and the schedule version evaluated against, and an implementation that destroys re-checks it (§6) at the moment of destruction.</p>
+<h2 id="9-implementation-requirements">9. Implementation requirements</h2>
+<p>Beyond FRAMEWORK §11, an implementation of this profile:</p>
+<ul>
+<li>MUST NOT destroy, under any instruction, a record that §8.5 does not make <code>eligible</code> at the moment of destruction: a permanent record; a held record, or one an active matter's scope matches; one with a review due and undecided, awaiting an event, under a retired, descriptive, or unknown series, or flagged <code>max_before_min_conflict</code>; an unclassified or undetermined container; a container declaring a <code>slipcase_version</code> or <code>profile_version</code> it does not implement; or a record whose flyleaf changed since it was planned (§6.4).</li>
+<li>MUST write a change to a record's <code>[records]</code> table and the event recording it in one operation (§2.8), and MUST NOT reserialize an existing log entry, an existing register container, or an existing schedule version.</li>
+<li>MUST report, where it acts over a set of containers in which records are expected, every undetermined container, every container declaring a version it does not implement, and every malformed profile table, rather than passing over any of them.</li>
+<li>MUST give every evaluation an evaluation date (§8) and record it wherever the result is kept.</li>
+<li>MUST, when applying a hold, show the matching count before applying and report a scope matching nothing (§4.3).</li>
+<li>MUST preview every bulk rewrite of records (renumbering, reclassifying an aggregation's members) as the exact set of containers and changes before performing it.</li>
+<li><strong>Fixity sweep.</strong> An implementation that checks fixity walks a scope and, for each record, verifies <code>fixity.content_sha256</code> against the content file and each component's <code>sha256</code> against its member, and compares the container's location (§2.8.1) with the last location in its log. It writes a report of the sweep in the records root's <code>fixity/</code> directory as a TOML file named by the sweep's start instant, holding <code>started</code>, <code>completed</code>, <code>scope</code>, counts, and every failure, move, and unreadable container; it appends <code>fixity_failed</code> and <code>moved_detected</code> to affected records' logs and nothing to the others; and it never alters a content file, a hash, or a location.</li>
+<li><strong>Verified operators.</strong> Where the settings say <code>operator_identity = "verified"</code> (§7.1), an implementation that has not verified the operating person's identity against an identity provider MUST NOT change a record, a hold matter, an aggregation, or the register in that root, and MUST name the setting when it refuses. It MAY read, check, verify, and evaluate as it otherwise would, and a fixity sweep under it MAY write its report, appending no event and saying in the report that it did not. How identity is verified is the implementation's; this profile defines no provider.</li>
+<li>MUST apply the display rule of FRAMEWORK §11 to paths and titles as well as member names.</li>
+</ul>
+<h2 id="10-security-considerations">10. Security considerations</h2>
+<p>A hold's <code>scope</code> is an expression evaluated against every record. SlipQL has no side effects and no access to anything but the flyleaf, and an implementation MUST bound what it spends evaluating a scope, because a scope is written by a person and a matter's container is a file anyone with write access to the records root can edit.</p>
+<p><code>location.raw</code> is a path as some operating system reported it. It is for a person reading the log; an implementation MUST NOT open, delete, or write to a path taken from a log entry or a manifest. The containers an implementation acts on are the ones it found by walking the scope it was given.</p>
+<p>The register is evidence, and its protection is the chain and the write-once rule. Anyone with write access to <code>register/</code> can delete it; the profile makes that detectable (a missing sequence breaks verification), not impossible. An organization that needs the register to survive its administrators keeps a copy of each final's flyleaf hash somewhere they cannot reach, which this profile does not define.</p>
+<p>A certificate claims what the manifest says and no more. An implementation MUST NOT write a certificate before every outcome is known, and MUST NOT describe deletion as anything but removal from the repository unless it has done more and can state what.</p>
+<p><code>operator_identity</code> is not an access control. Anyone with write access to a records root or a record can change either with any tool, and an implementation can be altered to ignore the setting. It exists so that an implementation written in good faith does not act in a root whose organization requires a verified operator, by accident or by script; who may write at all is decided by the permissions on the files, and an organization that requires verified operators grants write access accordingly.</p>
+<p>The plan a batch executes is a file the caller holds. The intent hashes the planned manifest, so a plan changed after approval is detected at the first record (<code>changed_since_plan</code> for every record whose flyleaf hash the changed plan misstates), but a plan is not signed, and approval is a statement the implementation records, not one it verifies.</p>
+    </section>
+
+    <footer>
+        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase-profiles/blob/035b7d201e4fba1993fd4c07b429f306300e85bc/records/SPEC.md" rel="noopener" target="_blank">records/SPEC.md</a> at commit <code>035b7d2</code>, 27 November 2026. The repository is the authority on profiles: where this page and it differ, it is right and this page is stale.</p>
+        <p><small>This document is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener" target="_blank">CC0 1.0</a>. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener" target="_blank">open to pull requests</a>, though not this page — it is generated.</small></p>
+    </footer>
+
+</article>
+</main>
+
+</body>
+</html>

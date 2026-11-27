@@ -4,7 +4,7 @@
     Produced by tools/bake-docs.sh from $docfile$ in the specification
     repository. Edits made here are lost the next time it runs, and the
     specification is not something a website gets to amend: change it at
-    https://github.com/excelano/slipcase and re-bake.
+    https://github.com/$repo$ and re-bake.
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -48,6 +48,9 @@
     <header>
         <h1>$title$</h1>
         <p class="lede">$lede$</p>
+$if(versions)$
+        <p class="versions">$versions$</p>
+$endif$
     </header>
 
 $if(table-of-contents)$
@@ -62,8 +65,8 @@ $body$
     </section>
 
     <footer>
-        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase/blob/$commit$/$docfile$" rel="noopener" target="_blank">$docfile$</a> at commit <code>$shortcommit$</code>, $commitdate$. The repository is the authority on the format: where this page and it differ, it is right and this page is stale.</p>
-        <p><small>The specification is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener" target="_blank">CC0 1.0</a>. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener" target="_blank">open to pull requests</a>, though not this page — it is generated.</small></p>
+        <p class="provenance">Rendered from <a href="https://github.com/$repo$/blob/$commit$/$docfile$" rel="noopener" target="_blank">$docfile$</a> at commit <code>$shortcommit$</code>, $commitdate$. $authority$</p>
+        <p><small>$dedicated$ is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener" target="_blank">CC0 1.0</a>. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener" target="_blank">open to pull requests</a>, though not this page — it is generated.</small></p>
     </footer>
 
 </article>
