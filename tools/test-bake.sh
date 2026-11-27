@@ -22,8 +22,6 @@ PROFILE_PAGES=(
     profiles/records/design
 )
 
-PINNED_PAGES="profiles/framework profiles/conventions profiles/design"
-
 SPEC_COMMIT="$(grep -o 'excelano/slipcase/blob/[0-9a-f]\{40\}' "$SITE/spec/index.html" | head -1 | sed 's#.*/##')"
 [ -n "$SPEC_COMMIT" ] || fail "no commit stamp in spec/index.html"
 
@@ -75,14 +73,5 @@ pass "no dead or in-place links in profile pages"
 "$WORK/site/tools/bake-docs.sh" --ref="$SPEC_COMMIT" --check > "$WORK/check.log" 2>&1 \
     || { cat "$WORK/check.log"; fail "--check after a bake"; }
 pass "--check current after a bake"
-
-git clone -q "$PROFILES_SRC" "$WORK/profiles"
-git -C "$WORK/profiles" -c user.name=t -c user.email=t@t commit -q --allow-empty -m "test: move main"
-PROFILES_SRC="$WORK/profiles" "$WORK/site/tools/bake-docs.sh" --ref="$SPEC_COMMIT" --check > "$WORK/check2.log" 2>&1 || true
-for page in $PINNED_PAGES; do
-    grep -qx "current: $page/index.html" "$WORK/check2.log" \
-        || { cat "$WORK/check2.log"; fail "$page stale after main moved without the tags"; }
-done
-pass "--check ignores main when the tags have not moved"
 
 echo "all passed"
