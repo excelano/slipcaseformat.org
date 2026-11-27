@@ -1,0 +1,600 @@
+<!--
+    GENERATED FILE — do not edit.
+
+    Produced by tools/bake-docs.sh from core/SPEC.md in the specification
+    repository. Edits made here are lost the next time it runs, and the
+    specification is not something a website gets to amend: change it at
+    https://github.com/excelano/slipcase-profiles and re-bake.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slipcase Core Profile — Specification</title>
+    <meta name="description" content="Dublin Core metadata for Slipcase containers. The Core Profile describes a container's content file: what it is, who made it, when, in what language, and under what rights. It defines no vocabulary of its own. Every key is a term of the DCMI Metadata Terms, maintained by the Dublin Core Metadata Initiative, cited here by its URI and given the meaning DCMI gives it.">
+    <link rel="canonical" href="https://slipcaseformat.org/profiles/core/">
+    <link rel="icon" href="/img/slipcase-icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Slipcase">
+    <meta property="og:title" content="Slipcase Core Profile — Specification">
+    <meta property="og:description" content="Dublin Core metadata for Slipcase containers. The Core Profile describes a container's content file: what it is, who made it, when, in what language, and under what rights. It defines no vocabulary of its own. Every key is a term of the DCMI Metadata Terms, maintained by the Dublin Core Metadata Initiative, cited here by its URI and given the meaning DCMI gives it.">
+    <meta property="og:url" content="https://slipcaseformat.org/profiles/core/">
+    <meta property="og:image" content="https://slipcaseformat.org/img/og-card.png">
+    <meta property="og:image:alt" content="The Slipcase icon beside the words Slipcase and the line: a container file format that attaches metadata to a file.">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="/axe/default.css">
+    <link rel="stylesheet" href="/brand.css"><!-- site brand override; cascades over default.css -->
+    <link rel="stylesheet" href="/axe/axe.css">
+    <script src="/axe/theme.js"></script>
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="/">Slipcase</a></li>
+        <li><a href="/spec/">Specification</a></li>
+        <li><a href="/design/">Design</a></li>
+        <li><a href="/implementations/">Implementations</a></li>
+        <li><a href="/profiles/">Profiles</a></li>
+        <li><a href="https://github.com/excelano/slipcase" rel="noopener" target="_blank">GitHub</a></li>
+        <li class="nav-right"><button class="theme-toggle" aria-label="Toggle theme"></button></li>
+    </ul>
+</nav>
+
+<main>
+<article>
+
+    <header>
+        <h1>Slipcase Core Profile — Specification</h1>
+        <p class="lede">Dublin Core metadata for Slipcase containers.</p>
+        <p class="versions">Version 1.0, a draft: it changes without its version number moving until it is declared final.</p>
+    </header>
+
+    <section class="contents" aria-label="Contents">
+        <h2>Contents</h2>
+<ul>
+<li><a href="#1-identity-and-terminology" id="toc-1-identity-and-terminology">1. Identity and terminology</a></li>
+<li><a href="#2-the-core-table" id="toc-2-the-core-table">2. The core table</a></li>
+<li><a href="#3-value-forms" id="toc-3-value-forms">3. Value forms</a></li>
+<li><a href="#4-filling-from-a-source" id="toc-4-filling-from-a-source">4. Filling from a source</a></li>
+<li><a href="#5-conformance" id="toc-5-conformance">5. Conformance</a></li>
+<li><a href="#6-implementation-requirements" id="toc-6-implementation-requirements">6. Implementation requirements</a></li>
+<li><a href="#7-security-considerations" id="toc-7-security-considerations">7. Security considerations</a></li>
+</ul>
+    </section>
+
+    <section id="document">
+<p><strong>Version:</strong> 1.0<br />
+<strong>Status:</strong> draft<br />
+<strong>Framework:</strong> 1.0 · <strong>Conventions:</strong> 1.0 · <strong>Slipcase:</strong> 1.1</p>
+<p>Dublin Core metadata for Slipcase containers. The Core Profile describes a container's content file: what it is, who made it, when, in what language, and under what rights. It defines no vocabulary of its own. Every key is a term of the DCMI Metadata Terms, maintained by the Dublin Core Metadata Initiative, cited here by its URI and given the meaning DCMI gives it.</p>
+<h2 id="1-identity-and-terminology">1. Identity and terminology</h2>
+<p>The key words <strong>MUST</strong>, <strong>MUST NOT</strong>, and <strong>MAY</strong> are to be interpreted as described in BCP 14 when, and only when, they appear in capitals. <strong>FRAMEWORK</strong>, <strong>CONVENTIONS</strong>, and <strong>SPEC</strong> cite the profiles framework, the shared conventions, and the Slipcase specification.</p>
+<table>
+<tbody>
+<tr class="odd">
+<td>Name</td>
+<td>Slipcase Core Profile</td>
+</tr>
+<tr class="even">
+<td><code>profile</code></td>
+<td><code>https://slipcaseformat.org/profiles/core</code></td>
+</tr>
+<tr class="odd">
+<td>Profile table</td>
+<td><code>[core]</code></td>
+</tr>
+<tr class="even">
+<td>Profile prefix</td>
+<td><code>core/</code> (this version defines no members under it)</td>
+</tr>
+<tr class="odd">
+<td>Kinds</td>
+<td><code>resource</code></td>
+</tr>
+<tr class="even">
+<td>Conventions used</td>
+<td>dates and instants</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Resource</strong> — the content file the container holds, which the <code>[core]</code> table describes. DCMI calls the thing described a resource, and the kind takes its name.</p>
+<p><strong>DCMI term</strong> — a property of the DCMI Metadata Terms, identified by a URI of the form <code>http://purl.org/dc/terms/&lt;name&gt;</code>. Each key in §2.2 names the term it is, and DCMI's definition is the authority on what the term means. The definitions below are summaries for a reader of this document.</p>
+<p><strong>Source</strong> — metadata a content file already carries in its own format: Office document properties, OpenDocument metadata, a PDF's document information or an XMP packet (§4).</p>
+<h2 id="2-the-core-table">2. The core table</h2>
+<p>A container is described under this profile when its flyleaf carries a <code>[core]</code> table with the three framework keys (FRAMEWORK §3) and <code>kind = "resource"</code>. Every other key is optional: a table carrying only the framework keys is conformant and says nothing about the resource.</p>
+<h3 id="21-example">2.1 Example</h3>
+<pre class="toml"><code>slipcase_version = &quot;1.1&quot;
+
+[content]
+file = &quot;site-survey-2024.pdf&quot;
+
+[core]
+profile = &quot;https://slipcaseformat.org/profiles/core&quot;
+profile_version = &quot;1.0&quot;
+kind = &quot;resource&quot;
+title = &quot;Site survey, Lake Charles terminal&quot;
+description = &quot;Geotechnical survey of the north tank farm, with boring logs.&quot;
+subject = [&quot;geotechnical survey&quot;, &quot;tank farm&quot;, &quot;boring logs&quot;]
+type = &quot;Text&quot;
+format = &quot;application/pdf&quot;
+language = [&quot;en-US&quot;]
+created = 2024-03-18
+issued = 2024-04-02
+identifier = [&quot;GS-2024-0117&quot;]
+rights = [&quot;Prepared for the owner under contract C-4471.&quot;]
+
+[[core.creator]]
+name = &quot;Gulf Geotechnical Ltd.&quot;
+lei = &quot;5493001KJTIIGC8Y1R12&quot;
+
+[[core.creator]]
+name = &quot;Jane Doe&quot;
+email = &quot;jdoe@gulfgeo.example&quot;</code></pre>
+<h3 id="22-keys">2.2 Keys</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>DCMI term</th>
+<th>Form (§3)</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>title</code></td>
+<td><code>http://purl.org/dc/terms/title</code></td>
+<td>single text</td>
+<td>The name given to the resource.</td>
+</tr>
+<tr class="even">
+<td><code>alternative</code></td>
+<td><code>http://purl.org/dc/terms/alternative</code></td>
+<td>single text</td>
+<td>Another name for it, such as an abbreviation or a translated title.</td>
+</tr>
+<tr class="odd">
+<td><code>description</code></td>
+<td><code>http://purl.org/dc/terms/description</code></td>
+<td>single text</td>
+<td>An account of the resource: an abstract, a summary, a table of contents.</td>
+</tr>
+<tr class="even">
+<td><code>creator</code></td>
+<td><code>http://purl.org/dc/terms/creator</code></td>
+<td>attribution</td>
+<td>Who is primarily responsible for making it.</td>
+</tr>
+<tr class="odd">
+<td><code>contributor</code></td>
+<td><code>http://purl.org/dc/terms/contributor</code></td>
+<td>attribution</td>
+<td>Who contributed to it.</td>
+</tr>
+<tr class="even">
+<td><code>publisher</code></td>
+<td><code>http://purl.org/dc/terms/publisher</code></td>
+<td>attribution</td>
+<td>Who made it available.</td>
+</tr>
+<tr class="odd">
+<td><code>rightsHolder</code></td>
+<td><code>http://purl.org/dc/terms/rightsHolder</code></td>
+<td>attribution</td>
+<td>Who owns or manages rights over it.</td>
+</tr>
+<tr class="even">
+<td><code>subject</code></td>
+<td><code>http://purl.org/dc/terms/subject</code></td>
+<td>repeatable text</td>
+<td>Its topics: keywords, key phrases, or classification codes.</td>
+</tr>
+<tr class="odd">
+<td><code>identifier</code></td>
+<td><code>http://purl.org/dc/terms/identifier</code></td>
+<td>repeatable text</td>
+<td>Unambiguous references to it in some context: a document number, an ISBN, a DOI, a URI.</td>
+</tr>
+<tr class="even">
+<td><code>source</code></td>
+<td><code>http://purl.org/dc/terms/source</code></td>
+<td>repeatable text</td>
+<td>Resources it is derived from.</td>
+</tr>
+<tr class="odd">
+<td><code>relation</code></td>
+<td><code>http://purl.org/dc/terms/relation</code></td>
+<td>repeatable text</td>
+<td>Related resources.</td>
+</tr>
+<tr class="even">
+<td><code>isPartOf</code></td>
+<td><code>http://purl.org/dc/terms/isPartOf</code></td>
+<td>repeatable text</td>
+<td>Resources it is physically or logically included in.</td>
+</tr>
+<tr class="odd">
+<td><code>coverage</code></td>
+<td><code>http://purl.org/dc/terms/coverage</code></td>
+<td>repeatable text</td>
+<td>Its spatial or temporal topic, or the jurisdiction it applies to.</td>
+</tr>
+<tr class="even">
+<td><code>rights</code></td>
+<td><code>http://purl.org/dc/terms/rights</code></td>
+<td>repeatable text</td>
+<td>Statements about rights held in and over it.</td>
+</tr>
+<tr class="odd">
+<td><code>language</code></td>
+<td><code>http://purl.org/dc/terms/language</code></td>
+<td>language (§3.7)</td>
+<td>The languages of its content.</td>
+</tr>
+<tr class="even">
+<td><code>license</code></td>
+<td><code>http://purl.org/dc/terms/license</code></td>
+<td>license (§3.8)</td>
+<td>Legal documents giving permission to do something with it.</td>
+</tr>
+<tr class="odd">
+<td><code>type</code></td>
+<td><code>http://purl.org/dc/terms/type</code></td>
+<td>type (§3.5)</td>
+<td>Its nature or genre.</td>
+</tr>
+<tr class="even">
+<td><code>format</code></td>
+<td><code>http://purl.org/dc/terms/format</code></td>
+<td>format (§3.6)</td>
+<td>Its file format.</td>
+</tr>
+<tr class="odd">
+<td><code>date</code></td>
+<td><code>http://purl.org/dc/terms/date</code></td>
+<td>date (§3.4)</td>
+<td>A date associated with an event in its life cycle, where none of the three below is meant.</td>
+</tr>
+<tr class="even">
+<td><code>created</code></td>
+<td><code>http://purl.org/dc/terms/created</code></td>
+<td>date</td>
+<td>When it was created.</td>
+</tr>
+<tr class="odd">
+<td><code>modified</code></td>
+<td><code>http://purl.org/dc/terms/modified</code></td>
+<td>date</td>
+<td>When it was last changed.</td>
+</tr>
+<tr class="even">
+<td><code>issued</code></td>
+<td><code>http://purl.org/dc/terms/issued</code></td>
+<td>date</td>
+<td>When it was formally issued or published.</td>
+</tr>
+</tbody>
+</table>
+<p>Key names are DCMI's own, case included, so that <code>rightsHolder</code> here is <code>rightsHolder</code> in every DCMI serialization. Keys this section does not define are permitted in the table and MUST be preserved (FRAMEWORK §3). A later version of this profile may add DCMI terms; it never adds a key that is not one.</p>
+<h2 id="3-value-forms">3. Value forms</h2>
+<h3 id="31-attribution">3.1 Attribution</h3>
+<p><code>creator</code>, <code>contributor</code>, <code>publisher</code>, and <code>rightsHolder</code> are arrays of tables, one table per person or organization, in the order they are credited:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>name</code></td>
+<td>string, non-empty</td>
+<td>The name as the resource credits it. Required.</td>
+</tr>
+<tr class="even">
+<td><code>email</code></td>
+<td>string, optional</td>
+<td>An address for the party.</td>
+</tr>
+<tr class="odd">
+<td><code>uri</code></td>
+<td>string, optional</td>
+<td>A URI identifying the party.</td>
+</tr>
+<tr class="even">
+<td><code>orcid</code></td>
+<td>string, optional</td>
+<td>An ORCID iD, for a person.</td>
+</tr>
+<tr class="odd">
+<td><code>lei</code></td>
+<td>string, optional</td>
+<td>A Legal Entity Identifier (ISO 17442), for an organization.</td>
+</tr>
+</tbody>
+</table>
+<p>Attribution names whoever the resource credits, inside the organization that wrote the container or not. Nothing in it is checked against a directory, and it says nothing about who is accountable for the container.</p>
+<h3 id="32-repeatable-text">3.2 Repeatable text</h3>
+<p><code>subject</code>, <code>identifier</code>, <code>source</code>, <code>relation</code>, <code>isPartOf</code>, <code>coverage</code>, and <code>rights</code> are arrays of strings. A single value is an array of one: a bare string is non-conformant, so a reader has one shape to handle. No entry is an empty string.</p>
+<h3 id="33-single-text">3.3 Single text</h3>
+<p><code>title</code>, <code>alternative</code>, and <code>description</code> are strings, non-empty. Dublin Core allows a term to repeat; this profile does not repeat these three, because every source in §4 carries one of each.</p>
+<h3 id="34-dates">3.4 Dates</h3>
+<p><code>date</code>, <code>created</code>, <code>modified</code>, and <code>issued</code> are dates (CONVENTIONS §3): TOML local dates, never instants. A person describing a document knows the day it was made far more often than the moment, and CONVENTIONS §3 fixes one form per key.</p>
+<h3 id="35-type">3.5 Type</h3>
+<p><code>type</code> is a string, one of the twelve terms of the DCMI Type Vocabulary: <code>Collection</code>, <code>Dataset</code>, <code>Event</code>, <code>Image</code>, <code>InteractiveResource</code>, <code>MovingImage</code>, <code>PhysicalObject</code>, <code>Service</code>, <code>Software</code>, <code>Sound</code>, <code>StillImage</code>, <code>Text</code>. Any other value is non-conformant. Each names the term <code>http://purl.org/dc/dcmitype/&lt;value&gt;</code>.</p>
+<h3 id="36-format">3.6 Format</h3>
+<p><code>format</code> is a string: the content file's media type, written as RFC 6838 §4.2 defines a type and subtype name (<code>application/pdf</code>), without parameters.</p>
+<h3 id="37-language">3.7 Language</h3>
+<p><code>language</code> is an array of strings, each a well-formed language tag under BCP 47 (RFC 5646 §2.1), such as <code>en-US</code> or <code>de</code>. A tag is checked for form, not against the language subtag registry.</p>
+<h3 id="38-license">3.8 License</h3>
+<p><code>license</code> is an array of strings, each an absolute URI naming a license: a Creative Commons deed, an SPDX license page, an organization's own terms. Free-text statements belong in <code>rights</code>.</p>
+<h2 id="4-filling-from-a-source">4. Filling from a source</h2>
+<p>An implementation that fills <code>[core]</code> from metadata the content file already carries MUST map it as this section states, so that two implementations reading the same file write the same table. An implementation MAY fill some keys and not others; a key it fills, it fills this way. A person writing the table by hand is not bound by this section.</p>
+<h3 id="41-office-open-xml">4.1 Office Open XML</h3>
+<p>The core properties part (<code>docProps/core.xml</code> in a Word, Excel, or PowerPoint file):</p>
+<table>
+<thead>
+<tr class="header">
+<th>Source</th>
+<th>Key</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>dc:title</code></td>
+<td><code>title</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>dc:subject</code></td>
+<td><code>subject</code></td>
+<td>First entry. Office's Subject field is a topic phrase.</td>
+</tr>
+<tr class="odd">
+<td><code>cp:keywords</code></td>
+<td><code>subject</code></td>
+<td>Further entries: the value split on <code>;</code> and <code>,</code>, each part trimmed, empty parts dropped.</td>
+</tr>
+<tr class="even">
+<td><code>dc:creator</code></td>
+<td><code>creator</code></td>
+<td>One attribution table (§4.5).</td>
+</tr>
+<tr class="odd">
+<td><code>dc:description</code></td>
+<td><code>description</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>dc:language</code></td>
+<td><code>language</code></td>
+<td>One entry.</td>
+</tr>
+<tr class="odd">
+<td><code>dc:identifier</code></td>
+<td><code>identifier</code></td>
+<td>One entry.</td>
+</tr>
+<tr class="even">
+<td><code>dcterms:created</code></td>
+<td><code>created</code></td>
+<td>§4.5 for an instant.</td>
+</tr>
+<tr class="odd">
+<td><code>dcterms:modified</code></td>
+<td><code>modified</code></td>
+<td>§4.5 for an instant.</td>
+</tr>
+</tbody>
+</table>
+<p><code>cp:lastModifiedBy</code>, <code>cp:revision</code>, <code>cp:category</code>, <code>cp:contentStatus</code>, <code>cp:lastPrinted</code>, and <code>cp:version</code> are not Dublin Core and map to nothing.</p>
+<h3 id="42-opendocument">4.2 OpenDocument</h3>
+<p>The metadata of an OpenDocument file (<code>meta.xml</code>):</p>
+<table>
+<thead>
+<tr class="header">
+<th>Source</th>
+<th>Key</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>dc:title</code></td>
+<td><code>title</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>dc:description</code></td>
+<td><code>description</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>dc:subject</code></td>
+<td><code>subject</code></td>
+<td>First entry.</td>
+</tr>
+<tr class="even">
+<td><code>meta:keyword</code></td>
+<td><code>subject</code></td>
+<td>Further entries, one per element, in document order.</td>
+</tr>
+<tr class="odd">
+<td><code>meta:initial-creator</code></td>
+<td><code>creator</code></td>
+<td>One attribution table (§4.5).</td>
+</tr>
+<tr class="even">
+<td><code>meta:creation-date</code></td>
+<td><code>created</code></td>
+<td>§4.5 for an instant.</td>
+</tr>
+<tr class="odd">
+<td><code>dc:date</code></td>
+<td><code>modified</code></td>
+<td>§4.5 for an instant.</td>
+</tr>
+<tr class="even">
+<td><code>dc:language</code></td>
+<td><code>language</code></td>
+<td>One entry.</td>
+</tr>
+</tbody>
+</table>
+<p>OpenDocument's <code>dc:creator</code> names whoever last modified the file, not its author, and maps to nothing; <code>meta:initial-creator</code> is the author. <code>meta:generator</code> maps to nothing.</p>
+<h3 id="43-pdf-document-information">4.3 PDF document information</h3>
+<p>The document information dictionary of a PDF:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Source</th>
+<th>Key</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>/Title</code></td>
+<td><code>title</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>/Author</code></td>
+<td><code>creator</code></td>
+<td>One attribution table (§4.5).</td>
+</tr>
+<tr class="odd">
+<td><code>/Subject</code></td>
+<td><code>description</code></td>
+<td>A PDF's Subject is a sentence about the document, not a topic.</td>
+</tr>
+<tr class="even">
+<td><code>/Keywords</code></td>
+<td><code>subject</code></td>
+<td>The value split on <code>;</code> and <code>,</code>, each part trimmed, empty parts dropped.</td>
+</tr>
+<tr class="odd">
+<td><code>/CreationDate</code></td>
+<td><code>created</code></td>
+<td>§4.5 for an instant.</td>
+</tr>
+<tr class="even">
+<td><code>/ModDate</code></td>
+<td><code>modified</code></td>
+<td>§4.5 for an instant.</td>
+</tr>
+</tbody>
+</table>
+<p><code>/Creator</code> names the application that made the original document and <code>/Producer</code> the one that wrote the PDF; neither maps.</p>
+<h3 id="44-xmp">4.4 XMP</h3>
+<p>An XMP packet: a PDF's metadata stream, or the metadata embedded in an image.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Source</th>
+<th>Key</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>dc:title</code></td>
+<td><code>title</code></td>
+<td>The <code>x-default</code> alternative, else the first.</td>
+</tr>
+<tr class="even">
+<td><code>dc:creator</code></td>
+<td><code>creator</code></td>
+<td>One attribution table per sequence item, in order.</td>
+</tr>
+<tr class="odd">
+<td><code>dc:description</code></td>
+<td><code>description</code></td>
+<td>The <code>x-default</code> alternative, else the first.</td>
+</tr>
+<tr class="even">
+<td><code>dc:subject</code></td>
+<td><code>subject</code></td>
+<td>One entry per bag item.</td>
+</tr>
+<tr class="odd">
+<td><code>dc:rights</code></td>
+<td><code>rights</code></td>
+<td>One entry: the <code>x-default</code> alternative, else the first.</td>
+</tr>
+<tr class="even">
+<td><code>dc:format</code></td>
+<td><code>format</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>dc:language</code></td>
+<td><code>language</code></td>
+<td>One entry per bag item.</td>
+</tr>
+<tr class="even">
+<td><code>xmp:CreateDate</code></td>
+<td><code>created</code></td>
+<td>§4.5 for an instant.</td>
+</tr>
+<tr class="odd">
+<td><code>xmp:ModifyDate</code></td>
+<td><code>modified</code></td>
+<td>§4.5 for an instant.</td>
+</tr>
+<tr class="even">
+<td><code>xmpRights:WebStatement</code></td>
+<td><code>license</code></td>
+<td>One entry, when the value is an absolute URI.</td>
+</tr>
+</tbody>
+</table>
+<p>Where a PDF carries both an XMP packet and a document information dictionary, they are combined key by key: each key takes the XMP value where XMP yields one, and the dictionary's where it does not.</p>
+<h3 id="45-rules-for-every-source">4.5 Rules for every source</h3>
+<ul>
+<li>A value is trimmed of leading and trailing whitespace. A value that is then empty maps to nothing, and a key with nothing mapped to it is left absent, never written as an empty string or an empty array.</li>
+<li>An author string becomes one attribution table whose <code>name</code> is the string, whatever separators it contains: <code>Doe, J.; Roe, R.</code> is one name. Only the keyword fields of §4.1 and §4.3 are split. A source never yields an <code>email</code>, <code>uri</code>, <code>orcid</code>, or <code>lei</code> the file does not state as one.</li>
+<li>An instant becomes its date in UTC. A timestamp that states no offset is read as UTC. A date that gives only a year or a year and month maps to nothing, since a date key holds a whole day.</li>
+<li>Subject entries keep their first occurrence and drop later exact duplicates.</li>
+<li><code>format</code>, where the source does not state it, is the content file's media type as the implementation determines it, or absent.</li>
+</ul>
+<h2 id="5-conformance">5. Conformance</h2>
+<p>A container conforms to this version when its <code>[core]</code> table satisfies FRAMEWORK §3 and §5 and each of the following, where the key is present:</p>
+<ol type="1">
+<li>Every attribution key (§3.1) is an array of tables, each with a non-empty string <code>name</code>, and each of its other §3.1 keys present is a string.</li>
+<li>Every repeatable-text key (§3.2) is an array of non-empty strings.</li>
+<li>Every single-text key (§3.3) is a non-empty string.</li>
+<li>Every date key (§3.4) is a TOML local date (CONVENTIONS §3).</li>
+<li><code>type</code> is one of the twelve values of §3.5.</li>
+<li><code>format</code> is a media type in the form of §3.6.</li>
+<li>Every <code>language</code> entry is a well-formed BCP 47 tag, in an array (§3.7).</li>
+<li>Every <code>license</code> entry is an absolute URI, in an array (§3.8).</li>
+</ol>
+<p>Nothing in this section depends on anything but the flyleaf, and nothing in it depends on the content file: whether a title is accurate is not a conformance question.</p>
+<h2 id="6-implementation-requirements">6. Implementation requirements</h2>
+<p>Beyond FRAMEWORK §11, an implementation of this profile:</p>
+<ul>
+<li>MUST preserve keys in <code>[core]</code> it does not recognize, and the order of entries in every array it does not change;</li>
+<li>MUST NOT write an empty string, an empty array, or an attribution table without a <code>name</code>;</li>
+<li>MUST, when it fills the table from a source, follow §4.</li>
+</ul>
+<h2 id="7-security-considerations">7. Security considerations</h2>
+<p>Every value in <code>[core]</code> is text written by whoever wrote the container, for a person to read. <code>uri</code>, <code>license</code>, and <code>identifier</code> entries are not fetched, opened, or resolved on the container's say-so: an implementation that offers to follow one does so only at a person's request (FRAMEWORK §12). FRAMEWORK §11's display rule applies to every string in the table. A name, a title, or an identifier can claim anything, and nothing in this profile verifies it.</p>
+    </section>
+
+    <footer>
+        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase-profiles/blob/e5ad4cca0113bfff545f9023312c347f41ccad74/core/SPEC.md" rel="noopener" target="_blank">core/SPEC.md</a> at commit <code>e5ad4cc</code>, 27 November 2026. The repository is the authority on profiles: where this page and it differ, it is right and this page is stale.</p>
+        <p><small>This document is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener" target="_blank">CC0 1.0</a>. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener" target="_blank">open to pull requests</a>, though not this page — it is generated.</small></p>
+    </footer>
+
+</article>
+</main>
+
+</body>
+</html>

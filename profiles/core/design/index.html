@@ -1,0 +1,109 @@
+<!--
+    GENERATED FILE — do not edit.
+
+    Produced by tools/bake-docs.sh from core/DESIGN.md in the specification
+    repository. Edits made here are lost the next time it runs, and the
+    specification is not something a website gets to amend: change it at
+    https://github.com/excelano/slipcase-profiles and re-bake.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slipcase Core Profile — Design Document</title>
+    <meta name="description" content="SPEC.md states the rules. This document says why each one is drawn where it is, and what was considered and rejected. Nothing here is normative. This profile's rules are cited as CORE §3.4; the framework, the conventions, and the Slipcase specification as FRAMEWORK §n, CONVENTIONS §n, and SPEC §n.">
+    <link rel="canonical" href="https://slipcaseformat.org/profiles/core/design/">
+    <link rel="icon" href="/img/slipcase-icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Slipcase">
+    <meta property="og:title" content="Slipcase Core Profile — Design Document">
+    <meta property="og:description" content="SPEC.md states the rules. This document says why each one is drawn where it is, and what was considered and rejected. Nothing here is normative. This profile's rules are cited as CORE §3.4; the framework, the conventions, and the Slipcase specification as FRAMEWORK §n, CONVENTIONS §n, and SPEC §n.">
+    <meta property="og:url" content="https://slipcaseformat.org/profiles/core/design/">
+    <meta property="og:image" content="https://slipcaseformat.org/img/og-card.png">
+    <meta property="og:image:alt" content="The Slipcase icon beside the words Slipcase and the line: a container file format that attaches metadata to a file.">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="/axe/default.css">
+    <link rel="stylesheet" href="/brand.css"><!-- site brand override; cascades over default.css -->
+    <link rel="stylesheet" href="/axe/axe.css">
+    <script src="/axe/theme.js"></script>
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="/">Slipcase</a></li>
+        <li><a href="/spec/">Specification</a></li>
+        <li><a href="/design/">Design</a></li>
+        <li><a href="/implementations/">Implementations</a></li>
+        <li><a href="/profiles/">Profiles</a></li>
+        <li><a href="https://github.com/excelano/slipcase" rel="noopener" target="_blank">GitHub</a></li>
+        <li class="nav-right"><button class="theme-toggle" aria-label="Toggle theme"></button></li>
+    </ul>
+</nav>
+
+<main>
+<article>
+
+    <header>
+        <h1>Slipcase Core Profile — Design Document</h1>
+        <p class="lede">Why each rule of the Core Profile is the way it is, and what was considered and rejected.</p>
+        <p class="versions">Version 1.0, a draft: it changes without its version number moving until it is declared final.</p>
+    </header>
+
+    <section class="contents" aria-label="Contents">
+        <h2>Contents</h2>
+<ul>
+<li><a href="#1-borrowed-not-invented" id="toc-1-borrowed-not-invented">1. Borrowed, not invented</a></li>
+<li><a href="#2-which-terms" id="toc-2-which-terms">2. Which terms</a></li>
+<li><a href="#3-attribution-not-accountability" id="toc-3-attribution-not-accountability">3. Attribution, not accountability</a></li>
+<li><a href="#4-shapes" id="toc-4-shapes">4. Shapes</a></li>
+<li><a href="#5-filling-from-a-source" id="toc-5-filling-from-a-source">5. Filling from a source</a></li>
+<li><a href="#6-one-kind-no-members" id="toc-6-one-kind-no-members">6. One kind, no members</a></li>
+<li><a href="#7-why-a-draft" id="toc-7-why-a-draft">7. Why a draft</a></li>
+</ul>
+    </section>
+
+    <section id="document">
+<p><strong>Specification version:</strong> 1.0 (draft)</p>
+<p><code>SPEC.md</code> states the rules. This document says why each one is drawn where it is, and what was considered and rejected. Nothing here is normative. This profile's rules are cited as <strong>CORE §3.4</strong>; the framework, the conventions, and the Slipcase specification as <strong>FRAMEWORK §n</strong>, <strong>CONVENTIONS §n</strong>, and <strong>SPEC §n</strong>.</p>
+<h2 id="1-borrowed-not-invented">1. Borrowed, not invented</h2>
+<p>Slipcase gives meaning to two keys and leaves the rest of the flyleaf to whoever writes it, which means containers from different producers describe the same thing as <code>title</code>, <code>Title</code>, and <code>doc_title</code>. The fix is a vocabulary, and the vocabulary already exists. Dublin Core has been the common denominator of document description for decades: Office's document properties are Dublin Core underneath, so are OpenDocument's and XMP's, and every archive and repository system maps to it. A profile with its own vocabulary would be one more set of names to map; a profile that is Dublin Core needs no mapping at all to anything that already speaks it.</p>
+<p><strong>Key names are DCMI's own (CORE §2.2), case included.</strong> <code>rightsHolder</code> breaks the snake case the rest of a flyleaf tends to use, on purpose: the key is the term, and anyone who knows Dublin Core reads it without a table. Each key cites its term's URI, so a program that wants RDF can have it without the profile defining any.</p>
+<p><strong>The definitions are summaries, and DCMI's are the authority.</strong> DCMI publishes its term definitions under CC BY 4.0, and this repository is CC0, so the profile writes its own short definitions and cites each term by URI rather than copying DCMI's text. Where the two read differently, DCMI's meaning is the term's meaning.</p>
+<p><strong>The name says Core, and the page says Dublin Core.</strong> FRAMEWORK §9 fixes an official name as one use word, the same as the table, the prefix, and the last segment of the URI. <code>core</code> keeps the table short and matches what Office calls the same properties. Every place a person reads the profile says that it is Dublin Core, so that nobody takes it for a vocabulary of Excelano's.</p>
+<h2 id="2-which-terms">2. Which terms</h2>
+<p><strong>The fifteen elements, and the refinements real files carry.</strong> The DCMI Metadata Terms define more than fifty properties. A profile carrying all of them would offer keys nobody fills. The set is the fifteen classic elements plus the terms Office, OpenDocument, PDF, or XMP actually record: <code>alternative</code>, <code>created</code>, <code>modified</code>, <code>issued</code>, <code>license</code>, <code>rightsHolder</code>, <code>isPartOf</code>. A term outside the set can be written in the table and is preserved (FRAMEWORK §3); a later version adds terms when files or people turn out to carry them.</p>
+<p><strong>Nothing that is not Dublin Core.</strong> Office records who last modified a file, its revision number, a category, and a status, and none of these are Dublin Core terms. Mapping them in would give the profile keys of its own, which is the one thing it exists not to do.</p>
+<h2 id="3-attribution-not-accountability">3. Attribution, not accountability</h2>
+<p><strong>A creator is whoever the document credits (CORE §3.1).</strong> A report written by a consultant, a datasheet from a vendor, a paper with three authors: the people named are mostly outside the organization holding the file, and many are organizations. So an attribution is a name, required, with whatever identifiers are known beside it, and nothing in it is checked against any directory. It answers who the document says made it, not who in the organization answers for it.</p>
+<p><strong>Identifiers are optional and never invented (CORE §4.5).</strong> An ORCID iD identifies a researcher and an LEI a company, and either makes a name unambiguous. A tool filling the table from a file writes one only when the file states it, because a guessed identifier is worse than none: it looks authoritative.</p>
+<p><strong>An author string stays whole.</strong> <code>Doe, J.; Roe, R.</code> looks like two people, and splitting it looks helpful. But the separators in author strings are not standardized (a comma separates surname from initials as often as it separates people), and two tools splitting differently would write different tables from the same file, which CORE §4 exists to prevent. The keyword fields are split because Office and PDF define them as lists.</p>
+<h2 id="4-shapes">4. Shapes</h2>
+<p><strong>Repeatable keys are always arrays (CORE §3.2).</strong> Dublin Core lets any term repeat, so a reader of a repeatable key has to handle several values in any case. Allowing a bare string as well would make every reader handle two shapes for one key, and every query test two forms. One value is an array of one.</p>
+<p><strong>Title, alternative title, and description are single (CORE §3.3).</strong> Every source carries one of each, and a list of titles has no order a reader agrees on. A second title is what <code>alternative</code> is for.</p>
+<p><strong>Dates, never instants (CORE §3.4).</strong> CONVENTIONS §3 requires a profile to say which form each key takes and to refuse the other. A person describing a document knows the day it was made far more often than the time, and a document's date is a civil date with no zone. Sources record instants; a tool takes the UTC date, which is the one choice two tools in different zones agree on, at the cost of an evening's document in the Americas carrying the next day's date. The Word example shows that case on purpose.</p>
+<p><strong>A closed type list, an open language registry (CORE §3.5, §3.7).</strong> DCMI's Type Vocabulary has twelve terms and changes rarely, so <code>type</code> is closed and a misspelling is caught. BCP 47 tags are checked for form only: the subtag registry grows, and a checker that consulted it would need the network and would fail on a tag registered last month.</p>
+<h2 id="5-filling-from-a-source">5. Filling from a source</h2>
+<p><strong>The mapping is normative for whoever fills the table (CORE §4).</strong> The value of a shared vocabulary is that two tools describe the same file the same way. Left to each implementation, the same Word document would come out with Keywords as one subject or four, an author split or whole, a creation time in one zone or another. A person typing a table is free; a program reading a source follows the table.</p>
+<p><strong>Each source's traps are named.</strong> OpenDocument's <code>dc:creator</code> is whoever last saved the file, and its author is <code>meta:initial-creator</code>; reading the obvious field gets the wrong person. PDF's <code>/Creator</code> is the application, not the author. A PDF's <code>/Subject</code> is a sentence and goes to <code>description</code>, while Office's Subject is a topic and goes to <code>subject</code>. These are where implementations would diverge, and each has a row of its own.</p>
+<p><strong>XMP wins key by key (CORE §4.4).</strong> ISO 32000-2 deprecates the PDF document information dictionary in favor of XMP, so XMP takes precedence. But many PDFs carry an XMP packet with a title and nothing else beside a dictionary with an author, and replacing the dictionary wholesale would throw the author away. Key by key keeps everything either source states and still gives one answer.</p>
+<p><strong>Partial dates map to nothing.</strong> A source date of <code>2024</code> or <code>2024-03</code> cannot become a TOML local date without inventing a day, and an invented first of January would read as a fact.</p>
+<h2 id="6-one-kind-no-members">6. One kind, no members</h2>
+<p><strong><code>resource</code> is the only kind (CORE §1).</strong> A description describes the content file, and there is nothing else for a Core container to be. The framework requires a kind, and DCMI's word for the thing described is resource.</p>
+<p><strong>The prefix is reserved and empty.</strong> Dublin Core describes; it carries no parts. The prefix is the framework's, held so that a later version can define members without colliding with anything.</p>
+<h2 id="7-why-a-draft">7. Why a draft</h2>
+<p>The mapping table is the part most likely to meet a file it did not anticipate, and no implementation has run it yet. The profile stays a draft, with changes landing without moving its number, until a tool fills tables from real files and the table has met them.</p>
+    </section>
+
+    <footer>
+        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase-profiles/blob/e5ad4cca0113bfff545f9023312c347f41ccad74/core/DESIGN.md" rel="noopener" target="_blank">core/DESIGN.md</a> at commit <code>e5ad4cc</code>, 27 November 2026. The repository is the authority on profiles: where this page and it differ, it is right and this page is stale.</p>
+        <p><small>This document is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener" target="_blank">CC0 1.0</a>. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener" target="_blank">open to pull requests</a>, though not this page — it is generated.</small></p>
+    </footer>
+
+</article>
+</main>
+
+</body>
+</html>

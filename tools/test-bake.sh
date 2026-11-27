@@ -21,15 +21,19 @@ PROFILE_PAGES=(
     profiles/records
     profiles/records/1.0
     profiles/records/design
+    profiles/core
+    profiles/core/design
 )
+
+PINNED_PAGES="profiles/framework profiles/conventions profiles/design profiles/records profiles/records/1.0 profiles/records/design"
 
 SPEC_COMMIT="$(grep -o 'excelano/slipcase/blob/[0-9a-f]\{40\}' "$SITE/spec/index.html" | head -1 | sed 's#.*/##')"
 [ -n "$SPEC_COMMIT" ] || fail "no commit stamp in spec/index.html"
 
-printf '%s\n' '[s](SPEC.md#3-retention-schedules) [f](../FRAMEWORK.md) [l](../LICENSE) [e](examples/register/README.md) [x](https://example.com/) [a](#top)' > "$WORK/links.md"
+printf '%s\n' '[c](../core/SPEC.md#5-conformance) [s](SPEC.md#3-retention-schedules) [f](../FRAMEWORK.md) [l](../LICENSE) [e](examples/register/README.md) [x](https://example.com/) [a](#top)' > "$WORK/links.md"
 LINKS="$(pandoc "$WORK/links.md" --from=gfm --to=html5 --lua-filter="$SITE/tools/profile-links.lua" \
     -M profile-doc=records/DESIGN.md -M profile-commit=abc123)"
-for want in 'href="/profiles/records/#3-retention-schedules"' 'href="/profiles/framework/"' \
+for want in 'href="/profiles/core/#5-conformance"' 'href="/profiles/records/#3-retention-schedules"' 'href="/profiles/framework/"' \
         'href="https://github.com/excelano/slipcase-profiles/blob/abc123/LICENSE"' \
         'href="https://github.com/excelano/slipcase-profiles/blob/abc123/records/examples/register/README.md"' \
         'href="https://example.com/"' 'href="#top"'; do
@@ -90,8 +94,11 @@ pass "--check current after a bake"
 
 git clone -q "$PROFILES_SRC" "$WORK/profiles"
 git -C "$WORK/profiles" -c user.name=t -c user.email=t@t commit -q --allow-empty -m "test: move main"
-PROFILES_SRC="$WORK/profiles" "$WORK/site/tools/bake-docs.sh" --ref="$SPEC_COMMIT" --check > "$WORK/check2.log" 2>&1 \
-    || { cat "$WORK/check2.log"; fail "--check stale after main moved without the tags"; }
+PROFILES_SRC="$WORK/profiles" "$WORK/site/tools/bake-docs.sh" --ref="$SPEC_COMMIT" --check > "$WORK/check2.log" 2>&1 || true
+for page in $PINNED_PAGES; do
+    grep -qx "current: $page/index.html" "$WORK/check2.log" \
+        || { cat "$WORK/check2.log"; fail "$page stale after main moved without the tags"; }
+done
 pass "--check ignores main when the tags have not moved"
 
 echo "all passed"

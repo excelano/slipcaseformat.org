@@ -67,8 +67,16 @@
                     <td><a href="/profiles/records/1.0/">1.0</a>, final</td>
                     <td><a href="https://excelano.com/slipcase-fileroom/" rel="noopener" target="_blank">Slipcase Fileroom</a>; <a href="https://github.com/excelano/fileroom" rel="noopener" target="_blank">fileroom</a> (MIT library and command-line tool)</td>
                 </tr>
+                <tr>
+                    <td><a href="/profiles/core/">Slipcase Core Profile</a><br><small><a href="/profiles/core/design/">design document</a></small></td>
+                    <td><code>[core]</code></td>
+                    <td>1.0, draft</td>
+                    <td>None yet</td>
+                </tr>
             </tbody>
         </table>
+
+        <p>The <strong>Slipcase Core Profile</strong> is Dublin Core for containers: title, creator, subject, dates, language, rights and the rest of the DCMI terms that documents already carry, under their DCMI names, with no vocabulary of its own. It says how a tool fills the table from a Word, LibreOffice or PDF file's own metadata, so that two tools describe the same file the same way. It is a draft until something implements that mapping.</p>
 
         <p>The <strong>Slipcase Records Profile</strong> makes a container a managed record: an identity that survives copying, a custodian, the retention series that decide how long it is kept, holds that stop its destruction, a history that cannot be edited without the edit showing, and a register that records its destruction in a hash chain anyone can verify. Each version has a page of its own that does not change, so a record can always be read against the version it declares.</p>
     </section>
