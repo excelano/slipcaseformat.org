@@ -39,6 +39,8 @@ DOCS=(
     "slipcase-profiles|main|DESIGN.md|profiles/design|Slipcase Profiles — Design Document|Why each rule of the framework and the conventions is drawn where it is.|$DRAFT"
     "slipcase-profiles|main|records/SPEC.md|profiles/records|Slipcase Records Profile — Specification|A container as a managed record: identity, retention, holds, history, and the register of its destruction.|$DRAFT"
     "slipcase-profiles|main|records/DESIGN.md|profiles/records/design|Slipcase Records Profile — Design Document|Why each rule of the Records Profile is the way it is, and what was considered and rejected.|$DRAFT"
+    "slipcase-profiles|main|dublin/SPEC.md|profiles/dublin|Slipcase Dublin Profile — Specification|A description of the resource a container holds, in fifteen elements from title to rights.|$DRAFT"
+    "slipcase-profiles|main|dublin/DESIGN.md|profiles/dublin/design|Slipcase Dublin Profile — Design Document|Why each rule of the Dublin Profile is the way it is.|$DRAFT"
 )
 
 for arg in "$@"; do

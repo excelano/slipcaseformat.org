@@ -20,6 +20,8 @@ PROFILE_PAGES=(
     profiles/design
     profiles/records
     profiles/records/design
+    profiles/dublin
+    profiles/dublin/design
 )
 
 SPEC_COMMIT="$(grep -o 'excelano/slipcase/blob/[0-9a-f]\{40\}' "$SITE/spec/index.html" | head -1 | sed 's#.*/##')"

@@ -1,0 +1,251 @@
+<!--
+    GENERATED FILE — do not edit.
+
+    Produced by tools/bake-docs.sh from dublin/SPEC.md in the specification
+    repository. Edits made here are lost the next time it runs, and the
+    specification is not something a website gets to amend: change it at
+    https://github.com/excelano/slipcase-profiles and re-bake.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slipcase Dublin Profile — Specification</title>
+    <meta name="description" content="The Dublin Profile describes the resource a Slipcase container holds, in fifteen elements: what it is called, who made it, what it is about, when, in what language, and under what rights. It describes and does nothing more. No value in it drives an action, and no value is interpreted.">
+    <link rel="canonical" href="https://slipcaseformat.org/profiles/dublin/">
+    <link rel="icon" href="/img/slipcase-icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Slipcase">
+    <meta property="og:title" content="Slipcase Dublin Profile — Specification">
+    <meta property="og:description" content="The Dublin Profile describes the resource a Slipcase container holds, in fifteen elements: what it is called, who made it, what it is about, when, in what language, and under what rights. It describes and does nothing more. No value in it drives an action, and no value is interpreted.">
+    <meta property="og:url" content="https://slipcaseformat.org/profiles/dublin/">
+    <meta property="og:image" content="https://slipcaseformat.org/img/og-card.png">
+    <meta property="og:image:alt" content="The Slipcase icon beside the words Slipcase and the line: a container file format that attaches metadata to a file.">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="/axe/default.css">
+    <link rel="stylesheet" href="/brand.css"><!-- site brand override; cascades over default.css -->
+    <link rel="stylesheet" href="/axe/axe.css">
+    <script src="/axe/theme.js"></script>
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="/">Slipcase</a></li>
+        <li><a href="/spec/">Specification</a></li>
+        <li><a href="/design/">Design</a></li>
+        <li><a href="/implementations/">Implementations</a></li>
+        <li><a href="/profiles/">Profiles</a></li>
+        <li><a href="https://github.com/excelano/slipcase" rel="noopener" target="_blank">GitHub</a></li>
+        <li class="nav-right"><button class="theme-toggle" aria-label="Toggle theme"></button></li>
+    </ul>
+</nav>
+
+<main>
+<article>
+
+    <header>
+        <h1>Slipcase Dublin Profile — Specification</h1>
+        <p class="lede">A description of the resource a container holds, in fifteen elements from title to rights.</p>
+        <p class="versions">Version 1.0, a draft: it changes without its version number moving until it is declared final.</p>
+    </header>
+
+    <section class="contents" aria-label="Contents">
+        <h2>Contents</h2>
+<ul>
+<li><a href="#1-identity-and-terminology" id="toc-1-identity-and-terminology">1. Identity and terminology</a></li>
+<li><a href="#2-resources" id="toc-2-resources">2. Resources</a></li>
+<li><a href="#3-conformance" id="toc-3-conformance">3. Conformance</a></li>
+<li><a href="#4-implementation-requirements" id="toc-4-implementation-requirements">4. Implementation requirements</a></li>
+<li><a href="#5-security-considerations" id="toc-5-security-considerations">5. Security considerations</a></li>
+</ul>
+    </section>
+
+    <section id="document">
+<p><strong>Version:</strong> 1.0<br />
+<strong>Status:</strong> draft<br />
+<strong>Framework:</strong> 1.0 · <strong>Conventions:</strong> 1.0 · <strong>Slipcase:</strong> 1.1</p>
+<p>The Dublin Profile describes the resource a Slipcase container holds, in fifteen elements: what it is called, who made it, what it is about, when, in what language, and under what rights. It describes and does nothing more. No value in it drives an action, and no value is interpreted.</p>
+<h2 id="1-identity-and-terminology">1. Identity and terminology</h2>
+<p>The key words <strong>MUST</strong>, <strong>MUST NOT</strong>, and <strong>MAY</strong> are to be interpreted as described in BCP 14 when, and only when, they appear in capitals. <strong>FRAMEWORK</strong>, <strong>CONVENTIONS</strong>, and <strong>SPEC</strong> cite the profiles framework, the shared conventions, and the Slipcase specification.</p>
+<table>
+<tbody>
+<tr class="odd">
+<td>Name</td>
+<td>Slipcase Dublin Profile</td>
+</tr>
+<tr class="even">
+<td><code>profile</code></td>
+<td><code>https://slipcaseformat.org/profiles/dublin</code></td>
+</tr>
+<tr class="odd">
+<td>Profile table</td>
+<td><code>[dublin]</code></td>
+</tr>
+<tr class="even">
+<td>Profile prefix</td>
+<td><code>dublin/</code></td>
+</tr>
+<tr class="odd">
+<td>Kinds</td>
+<td><code>resource</code></td>
+</tr>
+<tr class="even">
+<td>Conventions used</td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Resource</strong> — what a <code>[dublin]</code> table describes: the content file, or what the content file stands for.<br />
+<strong>Element</strong> — one of the fifteen keys of §2.2.</p>
+<h2 id="2-resources">2. Resources</h2>
+<p>A container of kind <code>resource</code> carries a description of its resource in the <code>[dublin]</code> table. The content file is the resource, or stands for it, and this profile places no requirement on it.</p>
+<h3 id="21-example">2.1 Example</h3>
+<pre class="toml"><code>slipcase_version = &quot;1.1&quot;
+
+[content]
+file = &quot;survey-report.txt&quot;
+
+[dublin]
+profile = &quot;https://slipcaseformat.org/profiles/dublin&quot;
+profile_version = &quot;1.0&quot;
+kind = &quot;resource&quot;
+title = [&quot;Survey of the North Field&quot;]
+creator = [&quot;A. Marsh&quot;, &quot;Field Office 3&quot;]
+subject = [&quot;drainage&quot;, &quot;soil survey&quot;]
+date = [&quot;2024-05-02&quot;]
+language = [&quot;en&quot;]
+rights = [&quot;Copyright 2024 Field Office 3. All rights reserved.&quot;]</code></pre>
+<h3 id="22-keys">2.2 Keys</h3>
+<p>The <code>[dublin]</code> table MUST contain the three framework keys (FRAMEWORK §3), with <code>kind = "resource"</code>, and MAY contain any of these elements. Each element's type is an array of strings (§2.3).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Element</th>
+<th>Key</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Title</td>
+<td><code>title</code></td>
+<td>A name given to the resource.</td>
+</tr>
+<tr class="even">
+<td>Creator</td>
+<td><code>creator</code></td>
+<td>An entity primarily responsible for making the resource.</td>
+</tr>
+<tr class="odd">
+<td>Subject</td>
+<td><code>subject</code></td>
+<td>The topic of the resource.</td>
+</tr>
+<tr class="even">
+<td>Description</td>
+<td><code>description</code></td>
+<td>An account of the resource.</td>
+</tr>
+<tr class="odd">
+<td>Publisher</td>
+<td><code>publisher</code></td>
+<td>An entity responsible for making the resource available.</td>
+</tr>
+<tr class="even">
+<td>Contributor</td>
+<td><code>contributor</code></td>
+<td>An entity responsible for making contributions to the resource.</td>
+</tr>
+<tr class="odd">
+<td>Date</td>
+<td><code>date</code></td>
+<td>A point or period of time associated with an event in the resource's lifecycle.</td>
+</tr>
+<tr class="even">
+<td>Type</td>
+<td><code>type</code></td>
+<td>The nature or genre of the resource.</td>
+</tr>
+<tr class="odd">
+<td>Format</td>
+<td><code>format</code></td>
+<td>The file format, physical medium, or dimensions of the resource.</td>
+</tr>
+<tr class="even">
+<td>Identifier</td>
+<td><code>identifier</code></td>
+<td>An unambiguous reference to the resource within a given context.</td>
+</tr>
+<tr class="odd">
+<td>Source</td>
+<td><code>source</code></td>
+<td>A related resource from which the described resource is derived.</td>
+</tr>
+<tr class="even">
+<td>Language</td>
+<td><code>language</code></td>
+<td>The language of the resource.</td>
+</tr>
+<tr class="odd">
+<td>Relation</td>
+<td><code>relation</code></td>
+<td>A related resource.</td>
+</tr>
+<tr class="even">
+<td>Coverage</td>
+<td><code>coverage</code></td>
+<td>The spatial or temporal topic of the resource, spatial applicability, or jurisdiction.</td>
+</tr>
+<tr class="odd">
+<td>Rights</td>
+<td><code>rights</code></td>
+<td>Information about rights held in and over the resource.</td>
+</tr>
+</tbody>
+</table>
+<p>Every element is optional. An absent element states nothing about the resource, and a table carrying no element is conformant.</p>
+<h3 id="23-values">2.3 Values</h3>
+<p>An element that is present MUST be an array of one or more items, and every item MUST be a non-empty string. A bare string, an empty array, an empty string, and an item of any other TOML type (a date, an integer, a table) are non-conformant.</p>
+<p>Every value is text, as the writer states it. This profile assigns no vocabulary, syntax, or format to any element, and an implementation MUST NOT refuse or alter a value for its form beyond the rule above.</p>
+<ul>
+<li><code>date</code> is text. It is not a date or an instant as CONVENTIONS §3 defines them, since a value can name a period, and this profile defines no form of its own for it.</li>
+<li><code>identifier</code> is text. It is not an identifier as CONVENTIONS §1 defines one.</li>
+</ul>
+<p>The items of an element are kept in the order written. The order has no meaning under this profile.</p>
+<h3 id="24-other-keys-and-members">2.4 Other keys and members</h3>
+<p>Keys the table carries that §2.2 does not define are permitted and MUST be preserved (FRAMEWORK §3).</p>
+<p>This profile defines no members. Members under <code>dublin/</code> have no meaning under this version, and an implementation MUST preserve them.</p>
+<h2 id="3-conformance">3. Conformance</h2>
+<p>A container conforms to this version of the profile when it is a conformant Slipcase container and its <code>[dublin]</code> table:</p>
+<ol type="1">
+<li>carries <code>profile = "https://slipcaseformat.org/profiles/dublin"</code> and <code>profile_version = "1.0"</code>, under the table name <code>dublin</code>;</li>
+<li>carries <code>kind = "resource"</code>;</li>
+<li>holds, for every element present, an array of one or more non-empty strings.</li>
+</ol>
+<p>Nothing else about the table or the container bears on conformance to this profile.</p>
+<h2 id="4-implementation-requirements">4. Implementation requirements</h2>
+<p>Beyond FRAMEWORK §11, an implementation of this profile:</p>
+<ul>
+<li>MUST read and write every element value as text, and MUST NOT normalize, translate, or validate a value beyond §2.3;</li>
+<li>MUST, when it rewrites the table, preserve every item of every element it does not change, in the order written;</li>
+<li>MUST apply the display rule of FRAMEWORK §11 to every element value.</li>
+</ul>
+<h2 id="5-security-considerations">5. Security considerations</h2>
+<p>Every value is a claim by whoever wrote the container, and nothing in this profile verifies one. A <code>creator</code> or a <code>rights</code> statement is what the writer said, not evidence of authorship or of a license, and an implementation that presents a value presents it as that.</p>
+<p><code>identifier</code>, <code>source</code>, <code>relation</code>, and <code>rights</code> can hold text that reads as an address or a path. An implementation MUST NOT fetch, open, or follow a value without its own decision to do so (FRAMEWORK §12), and MUST NOT treat any value as a command.</p>
+<p>No value has a length limit under this profile. An implementation bounds what it spends reading and displaying values, as SPEC §6 requires for the flyleaf.</p>
+    </section>
+
+    <footer>
+        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase-profiles/blob/88f10e300baded1b14d5485f519dccfafa16db6f/dublin/SPEC.md" rel="noopener" target="_blank">dublin/SPEC.md</a> at commit <code>88f10e3</code>, 27 November 2026. The repository is the authority on profiles: where this page and it differ, it is right and this page is stale.</p>
+        <p><small>This document is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener" target="_blank">CC0 1.0</a>. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener" target="_blank">open to pull requests</a>, though not this page — it is generated.</small></p>
+    </footer>
+
+</article>
+</main>
+
+</body>
+</html>

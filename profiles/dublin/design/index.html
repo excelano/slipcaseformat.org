@@ -1,0 +1,103 @@
+<!--
+    GENERATED FILE — do not edit.
+
+    Produced by tools/bake-docs.sh from dublin/DESIGN.md in the specification
+    repository. Edits made here are lost the next time it runs, and the
+    specification is not something a website gets to amend: change it at
+    https://github.com/excelano/slipcase-profiles and re-bake.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slipcase Dublin Profile — Design Document</title>
+    <meta name="description" content="SPEC.md states the rules. This document says why each one is drawn where it is. Nothing here is normative. This profile's rules are cited as DUBLIN §2.3; the framework, the conventions, and the Slipcase specification as FRAMEWORK §n, CONVENTIONS §n, and SPEC §n, as they are everywhere else in this repository.">
+    <link rel="canonical" href="https://slipcaseformat.org/profiles/dublin/design/">
+    <link rel="icon" href="/img/slipcase-icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Slipcase">
+    <meta property="og:title" content="Slipcase Dublin Profile — Design Document">
+    <meta property="og:description" content="SPEC.md states the rules. This document says why each one is drawn where it is. Nothing here is normative. This profile's rules are cited as DUBLIN §2.3; the framework, the conventions, and the Slipcase specification as FRAMEWORK §n, CONVENTIONS §n, and SPEC §n, as they are everywhere else in this repository.">
+    <meta property="og:url" content="https://slipcaseformat.org/profiles/dublin/design/">
+    <meta property="og:image" content="https://slipcaseformat.org/img/og-card.png">
+    <meta property="og:image:alt" content="The Slipcase icon beside the words Slipcase and the line: a container file format that attaches metadata to a file.">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="/axe/default.css">
+    <link rel="stylesheet" href="/brand.css"><!-- site brand override; cascades over default.css -->
+    <link rel="stylesheet" href="/axe/axe.css">
+    <script src="/axe/theme.js"></script>
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="/">Slipcase</a></li>
+        <li><a href="/spec/">Specification</a></li>
+        <li><a href="/design/">Design</a></li>
+        <li><a href="/implementations/">Implementations</a></li>
+        <li><a href="/profiles/">Profiles</a></li>
+        <li><a href="https://github.com/excelano/slipcase" rel="noopener" target="_blank">GitHub</a></li>
+        <li class="nav-right"><button class="theme-toggle" aria-label="Toggle theme"></button></li>
+    </ul>
+</nav>
+
+<main>
+<article>
+
+    <header>
+        <h1>Slipcase Dublin Profile — Design Document</h1>
+        <p class="lede">Why each rule of the Dublin Profile is the way it is.</p>
+        <p class="versions">Version 1.0, a draft: it changes without its version number moving until it is declared final.</p>
+    </header>
+
+    <section class="contents" aria-label="Contents">
+        <h2>Contents</h2>
+<ul>
+<li><a href="#1-what-the-profile-is-for" id="toc-1-what-the-profile-is-for">1. What the profile is for</a></li>
+<li><a href="#2-fifteen-elements-and-only-these" id="toc-2-fifteen-elements-and-only-these">2. Fifteen elements, and only these</a></li>
+<li><a href="#3-one-value-shape-for-every-element" id="toc-3-one-value-shape-for-every-element">3. One value shape for every element</a></li>
+<li><a href="#4-text-and-no-interpretation" id="toc-4-text-and-no-interpretation">4. Text, and no interpretation</a></li>
+<li><a href="#5-an-open-table-and-no-members" id="toc-5-an-open-table-and-no-members">5. An open table, and no members</a></li>
+<li><a href="#6-security" id="toc-6-security">6. Security</a></li>
+</ul>
+    </section>
+
+    <section id="document">
+<p><strong>Specification version:</strong> 1.0 (draft)</p>
+<p><code>SPEC.md</code> states the rules. This document says why each one is drawn where it is. Nothing here is normative. This profile's rules are cited as <strong>DUBLIN §2.3</strong>; the framework, the conventions, and the Slipcase specification as <strong>FRAMEWORK §n</strong>, <strong>CONVENTIONS §n</strong>, and <strong>SPEC §n</strong>, as they are everywhere else in this repository.</p>
+<hr />
+<h2 id="1-what-the-profile-is-for">1. What the profile is for</h2>
+<p>A file passed from one person to another loses what its owner knew about it: who made it, what it is about, whose it is to copy. Slipcase gives that knowledge a place that travels with the file, and this profile gives it a shape that any tool can read without agreeing on anything else. The profile describes. It drives no action and makes no decision, which is why it is small.</p>
+<h2 id="2-fifteen-elements-and-only-these">2. Fifteen elements, and only these</h2>
+<p>The elements and their definitions are the profile, stated once in DUBLIN §2.2 and nowhere else. The profile adds no further elements, no sub-keys, and no qualifiers, and its table carries nothing else of its own beyond the three keys every profile carries (FRAMEWORK §3). A writer who needs a finer distinction than an element offers states it in the element's text, or carries another profile beside this one.</p>
+<p><strong>One kind (DUBLIN §2.2).</strong> The framework requires a <code>kind</code>, and every definition speaks of "the resource", so the one kind is <code>resource</code>. A description profile has nothing to distinguish between kinds: a report and a photograph are described with the same fifteen elements.</p>
+<p><strong>Lowercase keys.</strong> The table names and keys of every profile in this repository are lowercase, and the element names become keys by lowercasing alone, so a reader moves between the definition table and a flyleaf without a mapping.</p>
+<h2 id="3-one-value-shape-for-every-element">3. One value shape for every element</h2>
+<p><strong>An array of strings, always (DUBLIN §2.3).</strong> Several elements routinely hold more than one value: a report has two creators, a dataset three subjects, a bilingual document two languages. If some elements were strings and others arrays, every writer would have to remember which, and every reader would have to handle both. One shape means one rule to state, one to check, and one way to write a single value: an array of one.</p>
+<p>The cost is that <code>title = "Survey"</code> is non-conformant where a reader might expect it to pass. It is reported rather than accepted, because a reader that accepted both forms would make the bare string conventional and the rule meaningless.</p>
+<p><strong>Non-empty arrays and strings.</strong> An element is either absent or says something. An empty array and an empty string would both be ways of saying nothing that differ from absence only in bytes, and a reader would have to decide whether they mean "unknown", "none", or "not yet filled in". The profile gives them no meaning by making them non-conformant, so that absence is the only way to state nothing.</p>
+<p><strong>Order is kept and means nothing.</strong> A writer who lists a principal creator first has done something a person reading the flyleaf will notice, so a rewrite preserves the order (DUBLIN §4). The profile does not say the first creator is the principal one, because nothing in the definitions says so and a reader cannot tell a deliberate order from an incidental one.</p>
+<h2 id="4-text-and-no-interpretation">4. Text, and no interpretation</h2>
+<p><strong>No vocabularies, no syntax.</strong> Every value is text as the writer states it. A vocabulary for <code>type</code> or <code>language</code>, or a syntax for <code>date</code>, would be a second specification the profile depends on, and every writer would have to know it before writing anything. The profile defines the elements and leaves their values to the people who know the resource. A community that wants a vocabulary can agree on one without changing what a conformant container is.</p>
+<p><strong><code>date</code> is not a convention date (DUBLIN §2.3).</strong> CONVENTIONS §3 defines a date and an instant, and FRAMEWORK §8 forbids a profile its own form for either. The <code>date</code> element is defined as "a point or period of time", and a period is neither a TOML local date nor an instant, nor is a year on its own, nor a season. Typing <code>date</code> as a convention date would make most real values unwritable; typing it as a mix of convention dates and strings would give a reader two shapes to handle for one element. It is text, and because the profile gives that text no form, it defines nothing that competes with the convention.</p>
+<p><strong><code>identifier</code> is not a convention identifier.</strong> CONVENTIONS §1 uses the word for a UUIDv7 that a profile assigns. The <code>identifier</code> element holds whatever reference the resource already has in some context (an ISBN, a report number, a URL), which the profile neither assigns nor checks. The specification says so in one line, because the shared word invites the wrong reading.</p>
+<p><strong>No mapping from file formats.</strong> Many file formats carry descriptive fields of their own. The profile does not say how those fields fill the elements, because each mapping would be a judgment about another format's semantics that the profile has no basis to make, and a tool that makes one makes it in its own name.</p>
+<h2 id="5-an-open-table-and-no-members">5. An open table, and no members</h2>
+<p><strong>Other keys are preserved (DUBLIN §2.4).</strong> The framework's default is that a key a profile does not define is permitted and kept. Closing the table would turn every addition a writer makes into non-conformance without telling a reader anything about the fifteen elements, which are all a reader of this profile looks at.</p>
+<p><strong>No members.</strong> Everything the profile says fits in the flyleaf. The prefix <code>dublin/</code> exists because the framework reserves one for every profile (FRAMEWORK §4), and this version defines nothing under it.</p>
+<h2 id="6-security">6. Security</h2>
+<p>A description is a claim, and the profile says so (DUBLIN §5) so that no implementation presents a <code>creator</code> as proof of authorship or a <code>rights</code> statement as a grant. Because the profile drives no action, FRAMEWORK §12's requirement to state what is checked before acting has nothing to apply to; what remains is that values are text from an untrusted writer, so none is fetched, opened, or run, and each is displayed under the framework's bidirectional-text rule.</p>
+    </section>
+
+    <footer>
+        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase-profiles/blob/88f10e300baded1b14d5485f519dccfafa16db6f/dublin/DESIGN.md" rel="noopener" target="_blank">dublin/DESIGN.md</a> at commit <code>88f10e3</code>, 27 November 2026. The repository is the authority on profiles: where this page and it differ, it is right and this page is stale.</p>
+        <p><small>This document is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener" target="_blank">CC0 1.0</a>. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener" target="_blank">open to pull requests</a>, though not this page — it is generated.</small></p>
+    </footer>
+
+</article>
+</main>
+
+</body>
+</html>

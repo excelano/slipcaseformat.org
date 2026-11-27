@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profiles — Slipcase</title>
-    <meta name="description" content="A Slipcase profile gives a container's flyleaf meaning for one purpose. The profiles framework, the shared conventions, the Slipcase Records Profile, the table names in use, and how to add a profile.">
+    <meta name="description" content="A Slipcase profile gives a container's flyleaf meaning for one purpose. The profiles framework, the shared conventions, the Records and Dublin profiles, the table names in use, and how to add a profile.">
     <link rel="canonical" href="https://slipcaseformat.org/profiles/">
     <link rel="icon" href="/img/slipcase-icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Slipcase">
     <meta property="og:title" content="Profiles — Slipcase">
-    <meta property="og:description" content="How Slipcase containers are used for a purpose: the profiles framework, the shared conventions, the Slipcase Records Profile, and how to add a profile of your own.">
+    <meta property="og:description" content="How Slipcase containers are used for a purpose: the profiles framework, the shared conventions, the Records and Dublin profiles, and how to add a profile of your own.">
     <meta property="og:url" content="https://slipcaseformat.org/profiles/">
     <meta property="og:image" content="https://slipcaseformat.org/img/og-card.png">
     <meta property="og:image:alt" content="The Slipcase icon beside the words Slipcase and the line: a container file format that attaches metadata to a file.">
@@ -67,10 +67,18 @@
                     <td>1.0, draft</td>
                     <td><a href="https://excelano.com/slipcase-fileroom/" rel="noopener" target="_blank">Slipcase Fileroom</a>; <a href="https://github.com/excelano/fileroom" rel="noopener" target="_blank">fileroom</a> (MIT library and command-line tool)</td>
                 </tr>
+                <tr>
+                    <td><a href="/profiles/dublin/">Slipcase Dublin Profile</a><br><small><a href="/profiles/dublin/design/">design document</a></small></td>
+                    <td><code>[dublin]</code></td>
+                    <td>1.0, draft</td>
+                    <td>None listed</td>
+                </tr>
             </tbody>
         </table>
 
         <p>The <strong>Slipcase Records Profile</strong> makes a container a managed record: an identity that survives copying, a custodian, the retention series that decide how long it is kept, holds that stop its destruction, a history that cannot be edited without the edit showing, and a register that records its destruction in a hash chain anyone can verify. It is a draft: it changes without its version number moving until it is declared final.</p>
+
+        <p>The <strong>Slipcase Dublin Profile</strong> describes the resource a container holds in fifteen elements, from its title and creator to its language and rights. Every value is text as the writer states it, and no tool interprets one. It is a draft on the same terms.</p>
     </section>
 
     <section id="adding">

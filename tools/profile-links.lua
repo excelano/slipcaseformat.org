@@ -7,6 +7,8 @@ local pages = {
   ["DESIGN.md"] = "/profiles/design/",
   ["records/SPEC.md"] = "/profiles/records/",
   ["records/DESIGN.md"] = "/profiles/records/design/",
+  ["dublin/SPEC.md"] = "/profiles/dublin/",
+  ["dublin/DESIGN.md"] = "/profiles/dublin/design/",
 }
 
 local function resolve(dir, target)
