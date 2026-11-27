@@ -96,7 +96,7 @@
 </tr>
 <tr class="even">
 <td>Conventions used</td>
-<td>dates and instants</td>
+<td>dates (CONVENTIONS §3)</td>
 </tr>
 </tbody>
 </table>
@@ -128,7 +128,7 @@ rights = [&quot;Prepared for the owner under contract C-4471.&quot;]
 
 [[core.creator]]
 name = &quot;Gulf Geotechnical Ltd.&quot;
-lei = &quot;5493001KJTIIGC8Y1R12&quot;
+lei = &quot;5493000GULFGEO0EX001&quot;
 
 [[core.creator]]
 name = &quot;Jane Doe&quot;
@@ -166,7 +166,7 @@ email = &quot;jdoe@gulfgeo.example&quot;</code></pre>
 <td><code>creator</code></td>
 <td><code>http://purl.org/dc/terms/creator</code></td>
 <td>attribution</td>
-<td>Who is primarily responsible for making it.</td>
+<td>Who is responsible for making it.</td>
 </tr>
 <tr class="odd">
 <td><code>contributor</code></td>
@@ -220,7 +220,7 @@ email = &quot;jdoe@gulfgeo.example&quot;</code></pre>
 <td><code>coverage</code></td>
 <td><code>http://purl.org/dc/terms/coverage</code></td>
 <td>repeatable text</td>
-<td>Its spatial or temporal topic, or the jurisdiction it applies to.</td>
+<td>Its spatial or temporal topic, where it applies, or the jurisdiction under which it is relevant.</td>
 </tr>
 <tr class="even">
 <td><code>rights</code></td>
@@ -250,13 +250,13 @@ email = &quot;jdoe@gulfgeo.example&quot;</code></pre>
 <td><code>format</code></td>
 <td><code>http://purl.org/dc/terms/format</code></td>
 <td>format (§3.6)</td>
-<td>Its file format.</td>
+<td>Its file format. DCMI's term also covers a physical medium or dimensions; for a content file it is the media type.</td>
 </tr>
 <tr class="odd">
 <td><code>date</code></td>
 <td><code>http://purl.org/dc/terms/date</code></td>
 <td>date (§3.4)</td>
-<td>A date associated with an event in its life cycle, where none of the three below is meant.</td>
+<td>A point or period of time in its life cycle. The refinements below say more where one fits.</td>
 </tr>
 <tr class="even">
 <td><code>created</code></td>
@@ -320,9 +320,9 @@ email = &quot;jdoe@gulfgeo.example&quot;</code></pre>
 </table>
 <p>Attribution names whoever the resource credits, inside the organization that wrote the container or not. Nothing in it is checked against a directory, and it says nothing about who is accountable for the container.</p>
 <h3 id="32-repeatable-text">3.2 Repeatable text</h3>
-<p><code>subject</code>, <code>identifier</code>, <code>source</code>, <code>relation</code>, <code>isPartOf</code>, <code>coverage</code>, and <code>rights</code> are arrays of strings. A single value is an array of one: a bare string is non-conformant, so a reader has one shape to handle. No entry is an empty string.</p>
+<p><code>subject</code>, <code>identifier</code>, <code>source</code>, <code>relation</code>, <code>isPartOf</code>, <code>coverage</code>, and <code>rights</code> are arrays of strings. A single value is an array of one: a bare string is non-conformant, so a reader has one shape to handle. No entry is an empty string, and no array is empty: a key with no value is absent. An <code>identifier</code> entry is any string that refers to the resource, not an identifier in the sense of CONVENTIONS §1.</p>
 <h3 id="33-single-text">3.3 Single text</h3>
-<p><code>title</code>, <code>alternative</code>, and <code>description</code> are strings, non-empty. Dublin Core allows a term to repeat; this profile does not repeat these three, because every source in §4 carries one of each.</p>
+<p><code>title</code>, <code>alternative</code>, and <code>description</code> are strings, non-empty. Dublin Core allows a term to repeat; this profile does not repeat these three, because each source in §4 carries at most one of each.</p>
 <h3 id="34-dates">3.4 Dates</h3>
 <p><code>date</code>, <code>created</code>, <code>modified</code>, and <code>issued</code> are dates (CONVENTIONS §3): TOML local dates, never instants. A person describing a document knows the day it was made far more often than the moment, and CONVENTIONS §3 fixes one form per key.</p>
 <h3 id="35-type">3.5 Type</h3>
@@ -472,7 +472,7 @@ email = &quot;jdoe@gulfgeo.example&quot;</code></pre>
 <tr class="odd">
 <td><code>/Subject</code></td>
 <td><code>description</code></td>
-<td>A PDF's Subject is a sentence about the document, not a topic.</td>
+<td>Where XMP places it (<code>dc:description</code>), so §4.3 and §4.4 agree when combined.</td>
 </tr>
 <tr class="even">
 <td><code>/Keywords</code></td>
@@ -562,19 +562,21 @@ email = &quot;jdoe@gulfgeo.example&quot;</code></pre>
 <li>An author string becomes one attribution table whose <code>name</code> is the string, whatever separators it contains: <code>Doe, J.; Roe, R.</code> is one name. Only the keyword fields of §4.1 and §4.3 are split. A source never yields an <code>email</code>, <code>uri</code>, <code>orcid</code>, or <code>lei</code> the file does not state as one.</li>
 <li>An instant becomes its date in UTC. A timestamp that states no offset is read as UTC. A date that gives only a year or a year and month maps to nothing, since a date key holds a whole day.</li>
 <li>Subject entries keep their first occurrence and drop later exact duplicates.</li>
+<li>A source field this section does not list maps to nothing, even where its name matches a key.</li>
+<li>A value that would not satisfy §5 for its key maps to nothing; the rest of the source is still mapped.</li>
 <li><code>format</code>, where the source does not state it, is the content file's media type as the implementation determines it, or absent.</li>
 </ul>
 <h2 id="5-conformance">5. Conformance</h2>
 <p>A container conforms to this version when its <code>[core]</code> table satisfies FRAMEWORK §3 and §5 and each of the following, where the key is present:</p>
 <ol type="1">
-<li>Every attribution key (§3.1) is an array of tables, each with a non-empty string <code>name</code>, and each of its other §3.1 keys present is a string.</li>
-<li>Every repeatable-text key (§3.2) is an array of non-empty strings.</li>
+<li>Every attribution key (§3.1) is a non-empty array of tables, each with a non-empty string <code>name</code>, and each of its other §3.1 keys present is a string.</li>
+<li>Every repeatable-text key (§3.2) is a non-empty array of non-empty strings.</li>
 <li>Every single-text key (§3.3) is a non-empty string.</li>
 <li>Every date key (§3.4) is a TOML local date (CONVENTIONS §3).</li>
 <li><code>type</code> is one of the twelve values of §3.5.</li>
 <li><code>format</code> is a media type in the form of §3.6.</li>
-<li>Every <code>language</code> entry is a well-formed BCP 47 tag, in an array (§3.7).</li>
-<li>Every <code>license</code> entry is an absolute URI, in an array (§3.8).</li>
+<li><code>language</code> is a non-empty array, and every entry is a well-formed BCP 47 tag (§3.7).</li>
+<li><code>license</code> is a non-empty array, and every entry is an absolute URI (§3.8).</li>
 </ol>
 <p>Nothing in this section depends on anything but the flyleaf, and nothing in it depends on the content file: whether a title is accurate is not a conformance question.</p>
 <h2 id="6-implementation-requirements">6. Implementation requirements</h2>
@@ -589,7 +591,7 @@ email = &quot;jdoe@gulfgeo.example&quot;</code></pre>
     </section>
 
     <footer>
-        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase-profiles/blob/e5ad4cca0113bfff545f9023312c347f41ccad74/core/SPEC.md" rel="noopener" target="_blank">core/SPEC.md</a> at commit <code>e5ad4cc</code>, 27 November 2026. The repository is the authority on profiles: where this page and it differ, it is right and this page is stale.</p>
+        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase-profiles/blob/98351a6afb3e4ccf308af9024b3e9417543b2cf7/core/SPEC.md" rel="noopener" target="_blank">core/SPEC.md</a> at commit <code>98351a6</code>, 27 November 2026. The repository is the authority on profiles: where this page and it differ, it is right and this page is stale.</p>
         <p><small>This document is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener" target="_blank">CC0 1.0</a>. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener" target="_blank">open to pull requests</a>, though not this page — it is generated.</small></p>
     </footer>
 
