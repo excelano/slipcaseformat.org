@@ -29,6 +29,7 @@
         <li><a href="/spec/">Specification</a></li>
         <li><a href="/design/">Design</a></li>
         <li><a href="/implementations/">Implementations</a></li>
+        <li><a href="/profiles/">Profiles</a></li>
         <li><a href="https://github.com/excelano/slipcase" rel="noopener" target="_blank">GitHub</a></li>
         <li class="nav-right"><button class="theme-toggle" aria-label="Toggle theme"></button></li>
     </ul>
@@ -138,6 +139,8 @@ zip report.pdf.slpc slipcase.flyleaf.toml report.pdf</code></pre>
         <h2>What it does not do</h2>
 
         <p>The format defines no signature or attestation mechanism, no encryption of its own, no aggregation of several content files into one container, no checksum or fixity key, and no vocabulary of descriptive metadata keys. A container binds one content file to one description and stops there. The <a href="/design/#5-non-goals">design document</a> records why each of those was left out rather than deferred, which is a different claim and the more useful one to read before proposing that a future version take it on.</p>
+
+        <p>A vocabulary for a purpose lives in a <a href="/profiles/">profile</a> instead: a specification layered on the format that gives one table of the flyleaf a meaning, such as what a records-management tool reads to decide how long a record is kept. The format does not change for it, a container can carry several profiles at once, and a program that knows none of them still preserves them all.</p>
     </section>
 
     <section id="identity">
@@ -163,6 +166,10 @@ zip report.pdf.slpc slipcase.flyleaf.toml report.pdf</code></pre>
             <a href="https://github.com/excelano/slipcase/tree/main/conformance" rel="noopener" target="_blank">
                 <h3>Conformance corpus</h3>
                 <p>Test containers with declared verdicts, built by a generator that needs nothing but Python. Not normative: where a case and the specification disagree, the specification wins.</p>
+            </a>
+            <a href="/profiles/">
+                <h3>Profiles</h3>
+                <p>How containers are used for a purpose: the profiles framework, the shared conventions, the Slipcase Records Profile, and how to write a profile of your own.</p>
             </a>
             <a href="/implementations/">
                 <h3>Implementations</h3>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profiles — Slipcase</title>
+    <meta name="description" content="A Slipcase profile gives a container's flyleaf meaning for one purpose. The profiles framework, the shared conventions, the Slipcase Records Profile, the table names in use, and how to add a profile.">
+    <link rel="canonical" href="https://slipcaseformat.org/profiles/">
+    <link rel="icon" href="/img/slipcase-icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Slipcase">
+    <meta property="og:title" content="Profiles — Slipcase">
+    <meta property="og:description" content="How Slipcase containers are used for a purpose: the profiles framework, the shared conventions, the Slipcase Records Profile, and how to add a profile of your own.">
+    <meta property="og:url" content="https://slipcaseformat.org/profiles/">
+    <meta property="og:image" content="https://slipcaseformat.org/img/og-card.png">
+    <meta property="og:image:alt" content="The Slipcase icon beside the words Slipcase and the line: a container file format that attaches metadata to a file.">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="/axe/default.css">
+    <link rel="stylesheet" href="/brand.css"><!-- site brand override; cascades over default.css -->
+    <link rel="stylesheet" href="/axe/axe.css">
+    <script src="/axe/theme.js"></script>
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="/">Slipcase</a></li>
+        <li><a href="/spec/">Specification</a></li>
+        <li><a href="/design/">Design</a></li>
+        <li><a href="/implementations/">Implementations</a></li>
+        <li><a href="/profiles/">Profiles</a></li>
+        <li><a href="https://github.com/excelano/slipcase" rel="noopener" target="_blank">GitHub</a></li>
+        <li class="nav-right"><button class="theme-toggle" aria-label="Toggle theme"></button></li>
+    </ul>
+</nav>
+
+<main>
+<article>
+
+    <header>
+        <h1>Profiles</h1>
+        <p class="lede">How containers are used for a purpose.</p>
+    </header>
+
+    <section id="what">
+        <h2>What a profile is</h2>
+
+        <p>Slipcase binds a file to a flyleaf describing it and gives meaning to two keys of that flyleaf, <code>slipcase_version</code> and <code>content.file</code>. Everything else in it is left to whoever writes the container. A profile is a specification that gives the rest meaning for one purpose: which keys a records-management tool reads and acts on, what a container is when a set of documents is handed from a contractor to an owner, which additional members belong to whom.</p>
+
+        <p>A profile owns one top-level table of the flyleaf, named for its purpose, and one directory of members with the same name. The table names the profile by a URI, so a program never has to guess whose keys it is reading. A flyleaf can carry several profiles at once, and a tool that understands one of them preserves the others, as Slipcase already requires of every key it does not recognize.</p>
+
+        <p>What every profile has in common is stated once, in <a href="/profiles/framework/">the framework</a>. How every profile writes an identifier, a person, a hash, a date, and a log that shows when it has been edited is stated once, in <a href="/profiles/conventions/">the shared conventions</a>, so that two profiles do not each invent a slightly different form of the same thing. <a href="/profiles/design/">The design document</a> says why each of their rules is drawn where it is.</p>
+    </section>
+
+    <section id="list">
+        <h2>Profiles</h2>
+
+        <table>
+            <thead>
+                <tr><th>Profile</th><th>Table</th><th>Versions</th><th>Implementations</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="/profiles/records/">Slipcase Records Profile</a><br><small><a href="/profiles/records/design/">design document</a></small></td>
+                    <td><code>[records]</code></td>
+                    <td><a href="/profiles/records/1.0/">1.0</a>, final</td>
+                    <td><a href="https://excelano.com/slipcase-fileroom/" rel="noopener" target="_blank">Slipcase Fileroom</a>; <a href="https://github.com/excelano/fileroom" rel="noopener" target="_blank">fileroom</a> (MIT library and command-line tool)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>The <strong>Slipcase Records Profile</strong> makes a container a managed record: an identity that survives copying, a custodian, the retention series that decide how long it is kept, holds that stop its destruction, a history that cannot be edited without the edit showing, and a register that records its destruction in a hash chain anyone can verify. Each version has a page of its own that does not change, so a record can always be read against the version it declares.</p>
+    </section>
+
+    <section id="adding">
+        <h2>Adding a profile</h2>
+
+        <p>Anyone can write a profile, under any URI, and the framework governs it as it governs the profiles listed here. Nothing on this page makes a profile valid or invalid; <a href="/profiles/writing/">writing a profile</a> walks through what the framework asks of one.</p>
+
+        <p>To list a profile, open a pull request against <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener" target="_blank">this site's repository</a> adding a row to the table above. What is wanted is a specification someone can read at the profile's URI, the version it has reached, and, where one exists, a program that implements it.</p>
+
+        <p>The table is also the record of which table names are in use. Two profiles that fix the same table name cannot be carried in one flyleaf, so listing a profile claims its table name for its URI, first come. A pull request naming a table that a listed profile already uses is refused, as is one naming a table too general to leave to a single profile. Check the table before choosing a name.</p>
+
+        <p>URIs under <code>https://slipcaseformat.org/profiles/</code> are for official profiles, which are specified in the <a href="https://github.com/excelano/slipcase-profiles" rel="noopener" target="_blank">slipcase-profiles</a> repository and named <em>Slipcase Use Profile</em> (FRAMEWORK §9). A profile written elsewhere takes its URI from a domain its author controls. To propose that a profile become official, open an issue on that repository.</p>
+    </section>
+
+    <footer>
+        <p><small>The profiles repository at <a href="https://github.com/excelano/slipcase-profiles" rel="noopener" target="_blank">github.com/excelano/slipcase-profiles</a> is the authority on the framework, the conventions and every official profile. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener" target="_blank">open to pull requests</a> and, like every specification it carries, is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener" target="_blank">CC0 1.0</a>.</small></p>
+    </footer>
+
+</article>
+</main>
+
+</body>
+</html>

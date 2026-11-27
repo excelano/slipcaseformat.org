@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writing a profile — Slipcase</title>
+    <meta name="description" content="How to write a Slipcase profile: choosing a table name and a URI, defining kinds and keys, using the shared conventions, and stating what an implementation must check, worked through a hypothetical handover profile.">
+    <link rel="canonical" href="https://slipcaseformat.org/profiles/writing/">
+    <link rel="icon" href="/img/slipcase-icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Slipcase">
+    <meta property="og:title" content="Writing a profile — Slipcase">
+    <meta property="og:description" content="What the Slipcase profiles framework asks of a profile, in the order a specification states it, worked through a hypothetical handover profile.">
+    <meta property="og:url" content="https://slipcaseformat.org/profiles/writing/">
+    <meta property="og:image" content="https://slipcaseformat.org/img/og-card.png">
+    <meta property="og:image:alt" content="The Slipcase icon beside the words Slipcase and the line: a container file format that attaches metadata to a file.">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="/axe/default.css">
+    <link rel="stylesheet" href="/brand.css"><!-- site brand override; cascades over default.css -->
+    <link rel="stylesheet" href="/axe/axe.css">
+    <script src="/axe/theme.js"></script>
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="/">Slipcase</a></li>
+        <li><a href="/spec/">Specification</a></li>
+        <li><a href="/design/">Design</a></li>
+        <li><a href="/implementations/">Implementations</a></li>
+        <li><a href="/profiles/">Profiles</a></li>
+        <li><a href="https://github.com/excelano/slipcase" rel="noopener" target="_blank">GitHub</a></li>
+        <li class="nav-right"><button class="theme-toggle" aria-label="Toggle theme"></button></li>
+    </ul>
+</nav>
+
+<main>
+<article>
+
+    <header>
+        <h1>Writing a profile</h1>
+        <p class="lede">What the framework asks of a profile, in the order a specification states it.</p>
+    </header>
+
+    <section id="preamble">
+        <p>This page is a guide to <a href="/profiles/framework/">the framework</a>, not a second statement of it. Every rule it mentions is cited by section, and where the two differ, the framework is right. The example throughout is the hypothetical Slipcase Handover Profile from the framework's Appendix A, for delivering engineering documents from a contractor to an owner.</p>
+    </section>
+
+    <section id="name">
+        <h2>1. A name, a URI and a table</h2>
+
+        <p>A profile is identified by its <code>profile</code> URI, which is the same for every version and resolves to the specification (FRAMEWORK §3). Choose a URI on a domain you control and expect to keep: it will be written into every container that carries the profile, and a URI that stops resolving leaves those containers pointing at nothing. URIs under <code>slipcaseformat.org/profiles/</code> are kept for official profiles (FRAMEWORK §9), which is why the handover example has one.</p>
+
+        <p>The profile owns one top-level table of the flyleaf and one directory of members, both named with the same lowercase word (FRAMEWORK §3, §4). Choose a word no listed profile uses: the <a href="/profiles/#list">list of profiles</a> records the words taken, and two profiles with one table name cannot share a flyleaf. The handover profile's table is <code>[handover]</code> and its members live under <code>handover/</code>.</p>
+
+        <p>The specification then states its version, and the versions of the framework and of Slipcase it is written against (FRAMEWORK §6, §10).</p>
+    </section>
+
+    <section id="kinds">
+        <h2>2. Kinds, keys and members</h2>
+
+        <p>A profile names what a container is with its <code>kind</code> key (FRAMEWORK §5). The handover profile has two kinds: <code>document</code>, one delivered document, and <code>manifest</code>, the delivery itself, whose <code>handover/manifest.csv</code> lists every document delivered. For each kind the specification lists the keys the table must and may carry, with their types, and the members the container must and may hold under the prefix.</p>
+
+        <p>Keys a specification does not define are permitted and preserved, unless the specification closes a table or a value to a set (FRAMEWORK §3). Close a vocabulary where an unrecognized value would make a tool quietly do the wrong thing, and say so in the specification.</p>
+    </section>
+
+    <section id="conventions">
+        <h2>3. The shared conventions</h2>
+
+        <p>Identifiers, agents, hashes, dates and instants, and chained logs each have one form, in <a href="/profiles/conventions/">the conventions</a>, and a profile uses those forms rather than defining its own (FRAMEWORK §8). The specification says which conventions it uses. A document's <code>id</code> is an identifier, the people who deliver and accept are agents, a document's content hash is a hash, and <code>issued</code> is a date.</p>
+
+        <p>A chained log needs three decisions the profile makes and states: the entry name, the seed that ties the log to its container, and where the head is recorded so that the last entry is protected too (CONVENTIONS §5.3, §5.5). The handover profile's log is <code>handover/events.toml</code>, entry name <code>event</code>, seeded from the table's <code>id</code>.</p>
+    </section>
+
+    <section id="conformance">
+        <h2>4. What a conforming container is</h2>
+
+        <p>State each property a container must have to conform so that it can be checked against the file and nothing else (FRAMEWORK §10). For the handover profile, every document a manifest names exists with the hash stated, and <code>revision</code> is not empty. A rule that depends on something outside the file, such as whether a person approved it, belongs to the implementation requirements, not to conformance.</p>
+    </section>
+
+    <section id="implementations">
+        <h2>5. What an implementation must do</h2>
+
+        <p>The framework already requires an implementation to check the profile and its version before acting, to touch only its own table and prefix, and to report a non-conforming table rather than pass over it (FRAMEWORK §11). A profile states what it requires beyond that: in the handover profile, that an acceptance is recorded only after the hash has been verified.</p>
+    </section>
+
+    <section id="security">
+        <h2>6. Security considerations</h2>
+
+        <p>A profile that drives an action must say what an implementation checks before acting, and must not let a value in the flyleaf alone authorize anything irreversible (FRAMEWORK §12). No key may be read as a path outside the container, a command, or an address to fetch on the container's say-so. The handover manifest names documents by identifier, never by path.</p>
+    </section>
+
+    <section id="next">
+        <h2>Then</h2>
+
+        <p>Write a design document beside the specification that says why each rule is drawn where it is; the <a href="/profiles/design/">framework's</a> and the <a href="/profiles/records/design/">Records Profile's</a> show the form. Publish both at the profile's URI, add example containers that conform and some that do not, and <a href="/profiles/#adding">list the profile</a>.</p>
+    </section>
+
+    <footer>
+        <p><small>The profiles repository at <a href="https://github.com/excelano/slipcase-profiles" rel="noopener" target="_blank">github.com/excelano/slipcase-profiles</a> is the authority on the framework and the conventions. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener" target="_blank">open to pull requests</a> and is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener" target="_blank">CC0 1.0</a>.</small></p>
+    </footer>
+
+</article>
+</main>
+
+</body>
+</html>
