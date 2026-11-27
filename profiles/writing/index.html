@@ -68,7 +68,9 @@
     <section id="conventions">
         <h2>3. The shared conventions</h2>
 
-        <p>Identifiers, agents, hashes, dates and instants, and chained logs each have one form, in <a href="/profiles/conventions/">the conventions</a>, and a profile uses those forms rather than defining its own (FRAMEWORK §8). The specification says which conventions it uses. A document's <code>id</code> is an identifier, the people who deliver and accept are agents, a document's content hash is a hash, and <code>issued</code> is a date.</p>
+        <p>Identifiers, hashes, dates and instants, and chained logs each have one form, in <a href="/profiles/conventions/">the conventions</a>, and a profile uses those forms rather than defining its own (FRAMEWORK §8). The specification says which conventions it uses. A document's <code>id</code> is an identifier, its content hash is a hash, and <code>issued</code> is a date.</p>
+
+        <p>Anything the conventions do not cover is the profile's own to define. The handover profile names the contractor and the owner with a form of its own, a name and an optional LEI, because no convention describes an organization outside the writer's; the Records Profile defines its own agent, an accountable person in the organization's directory, for the same reason. A form moves into the conventions when a second profile needs it.</p>
 
         <p>A profile that defines a chained log states its entry name and the seed that ties the log to its container (FRAMEWORK §10, CONVENTIONS §5.3), and says either where the head is recorded, so that the last entry is protected too, or that it records none (CONVENTIONS §5.5). The handover profile's log is <code>handover/events.toml</code>, entry name <code>event</code>, seeded from the table's <code>id</code>.</p>
     </section>

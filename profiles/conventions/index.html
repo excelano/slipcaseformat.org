@@ -12,14 +12,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Slipcase Profiles — Shared Conventions</title>
-    <meta name="description" content="Things that every profile needs and that would otherwise be defined slightly differently by each: how to write an identifier, an agent, a hash, a date, and a log that cannot be edited without the edit showing. A profile states which of these it uses (FRAMEWORK §8) and defines none of them itself.">
+    <meta name="description" content="Things that every profile needs and that would otherwise be defined slightly differently by each: how to write an identifier, a hash, a date, and a log that cannot be edited without the edit showing. A profile states which of these it uses (FRAMEWORK §8) and defines none of them itself.">
     <link rel="canonical" href="https://slipcaseformat.org/profiles/conventions/">
     <link rel="icon" href="/img/slipcase-icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Slipcase">
     <meta property="og:title" content="Slipcase Profiles — Shared Conventions">
-    <meta property="og:description" content="Things that every profile needs and that would otherwise be defined slightly differently by each: how to write an identifier, an agent, a hash, a date, and a log that cannot be edited without the edit showing. A profile states which of these it uses (FRAMEWORK §8) and defines none of them itself.">
+    <meta property="og:description" content="Things that every profile needs and that would otherwise be defined slightly differently by each: how to write an identifier, a hash, a date, and a log that cannot be edited without the edit showing. A profile states which of these it uses (FRAMEWORK §8) and defines none of them itself.">
     <meta property="og:url" content="https://slipcaseformat.org/profiles/conventions/">
     <meta property="og:image" content="https://slipcaseformat.org/img/og-card.png">
     <meta property="og:image:alt" content="The Slipcase icon beside the words Slipcase and the line: a container file format that attaches metadata to a file.">
@@ -55,10 +55,9 @@
         <h2>Contents</h2>
 <ul>
 <li><a href="#1-identifiers" id="toc-1-identifiers">1. Identifiers</a></li>
-<li><a href="#2-agents" id="toc-2-agents">2. Agents</a></li>
-<li><a href="#3-hashes" id="toc-3-hashes">3. Hashes</a></li>
-<li><a href="#4-dates-and-instants" id="toc-4-dates-and-instants">4. Dates and instants</a></li>
-<li><a href="#5-chained-logs" id="toc-5-chained-logs">5. Chained logs</a></li>
+<li><a href="#2-hashes" id="toc-2-hashes">2. Hashes</a></li>
+<li><a href="#3-dates-and-instants" id="toc-3-dates-and-instants">3. Dates and instants</a></li>
+<li><a href="#4-chained-logs" id="toc-4-chained-logs">4. Chained logs</a></li>
 </ul>
     </section>
 
@@ -66,22 +65,14 @@
 <p><strong>Version:</strong> 1.0<br />
 <strong>Status:</strong> final<br />
 <strong>Framework version:</strong> 1.0</p>
-<p>Things that every profile needs and that would otherwise be defined slightly differently by each: how to write an identifier, an agent, a hash, a date, and a log that cannot be edited without the edit showing. A profile states which of these it uses (FRAMEWORK §8) and defines none of them itself.</p>
+<p>Things that every profile needs and that would otherwise be defined slightly differently by each: how to write an identifier, a hash, a date, and a log that cannot be edited without the edit showing. A profile states which of these it uses (FRAMEWORK §8) and defines none of them itself.</p>
 <p>The key words <strong>MUST</strong>, <strong>MUST NOT</strong>, and <strong>MAY</strong> are to be interpreted as described in BCP 14 when, and only when, they appear in capitals.</p>
 <h2 id="1-identifiers">1. Identifiers</h2>
 <p>An identifier is a UUID version 7 (<a href="https://www.rfc-editor.org/rfc/rfc9562#section-5.7" target="_blank">RFC 9562 §5.7</a>), written as a TOML string in the 36-character hyphenated form with lowercase hexadecimal digits:</p>
 <pre class="toml"><code>id = &quot;01927c3e-8b2a-7d41-9f3c-2a6e5b1c4d7f&quot;</code></pre>
 <p>An identifier is assigned once, when the thing it identifies comes into being, and is never reassigned or changed. A profile states what each of its identifiers identifies and when it is assigned. Comparison is exact over the string.</p>
 <p>A string that is not of this form where an identifier is required is non-conformant.</p>
-<h2 id="2-agents">2. Agents</h2>
-<p>An agent is a person or a system that did something. It is written as a table with two keys, both required:</p>
-<pre class="toml"><code>actor = { email = &quot;rm@example.com&quot;, id = &quot;8f1c2b9e-1d4a-4e5f-9a0b-6c7d8e9f0a1b&quot; }</code></pre>
-<ul>
-<li><strong><code>email</code></strong> — string. The address external systems match on.</li>
-<li><strong><code>id</code></strong> — string. A stable identifier from the organization's directory, which survives a change of name or address. Its form is the directory's; this convention constrains only that it is a non-empty string.</li>
-</ul>
-<p>Two agents are the same when their <code>id</code> values are equal. <code>email</code> is for people reading and for systems that have nothing else.</p>
-<h2 id="3-hashes">3. Hashes</h2>
+<h2 id="2-hashes">2. Hashes</h2>
 <p>A hash is SHA-256 (<a href="https://csrc.nist.gov/pubs/fips/180-4/upd1/final" target="_blank">FIPS 180-4</a>), written as a TOML string of 64 lowercase hexadecimal digits.</p>
 <p>A hash is always taken over the exact bytes of the thing named, as stored. A profile names what is hashed; this convention fixes how:</p>
 <ul>
@@ -90,16 +81,16 @@
 <li>A container as a whole is never hashed, because repacking a ZIP archive changes its bytes without changing what it holds (SPEC §3 requires a rewrite to preserve members, not bytes).</li>
 <li>A TOML document is never hashed from a re-serialization of it. TOML defines no canonical form, so the bytes as stored are the only bytes two readers can agree on.</li>
 </ul>
-<h2 id="4-dates-and-instants">4. Dates and instants</h2>
+<h2 id="3-dates-and-instants">3. Dates and instants</h2>
 <p>A date is a civil calendar date: a TOML local date.</p>
 <pre class="toml"><code>created = 2024-01-17</code></pre>
 <p>An instant is a point in time: a TOML offset date-time in UTC, written with <code>Z</code>.</p>
 <pre class="toml"><code>captured = 2024-02-03T15:04:11Z</code></pre>
 <p>A profile states, for each key, whether it is a date or an instant, and an implementation MUST NOT accept the other form in its place. A TOML local date-time, which names no zone, MUST NOT be used for either.</p>
 <p>Date arithmetic is a profile's to define. This convention fixes only the representation.</p>
-<h2 id="5-chained-logs">5. Chained logs</h2>
+<h2 id="4-chained-logs">4. Chained logs</h2>
 <p>A chained log records what happened to something, in order, in a form where any later edit to an earlier entry can be detected. It is a UTF-8 text file: an additional member of a container under the profile's prefix, or a file beside containers, as the profile states.</p>
-<h3 id="51-form">5.1 Form</h3>
+<h3 id="41-form">4.1 Form</h3>
 <p>The file is a TOML document consisting of an array of tables under one name, the log's <strong>entry name</strong>, which the profile chooses:</p>
 <pre class="toml"><code>[[event]]
 seq = 1
@@ -112,15 +103,15 @@ seq = 2
 at = 2026-03-12T09:14:02Z
 prev = &quot;47b9e224f9aad9d4106b0917cc5d8a78fa4c945fe9e60c86d6db816108b906f9&quot;
 type = &quot;hold_applied&quot;</code></pre>
-<p>The example is a real log: the first <code>prev</code> is the hash of the seed <code>01927c3e-8b2a-7d41-9f3c-2a6e5b1c4d7f</code>, and the second is the hash of the first entry's bytes (§5.3), including the blank line that follows it. <code>examples/conventions/events.toml</code> holds it byte for byte.</p>
+<p>The example is a real log: the first <code>prev</code> is the hash of the seed <code>01927c3e-8b2a-7d41-9f3c-2a6e5b1c4d7f</code>, and the second is the hash of the first entry's bytes (§4.3), including the blank line that follows it. <code>examples/conventions/events.toml</code> holds it byte for byte.</p>
 <p>Every entry MUST contain:</p>
 <ul>
 <li><strong><code>seq</code></strong> — integer. <code>1</code> for the first entry, and one more than the previous entry's for each entry after it.</li>
-<li><strong><code>at</code></strong> — an instant (§4). Entries need not be in <code>at</code> order: a clock can be wrong, and <code>seq</code> is the order.</li>
-<li><strong><code>prev</code></strong> — a hash (§3). §5.3.</li>
+<li><strong><code>at</code></strong> — an instant (§3). Entries need not be in <code>at</code> order: a clock can be wrong, and <code>seq</code> is the order.</li>
+<li><strong><code>prev</code></strong> — a hash (§2). §4.3.</li>
 </ul>
 <p>The profile defines every other key an entry carries.</p>
-<h3 id="52-written-form">5.2 Written form</h3>
+<h3 id="42-written-form">4.2 Written form</h3>
 <p>So that an entry's bytes can be found without parsing the file, a writer MUST write the file in this form, and a file not in this form is non-conformant:</p>
 <ul>
 <li>Line endings are LF (U+000A) alone. There is no byte order mark.</li>
@@ -130,7 +121,7 @@ type = &quot;hold_applied&quot;</code></pre>
 <li>The file ends with LF.</li>
 </ul>
 <p>The file remains an ordinary TOML document, and any TOML reader reads it. The rules above constrain only what a writer produces.</p>
-<h3 id="53-entry-bytes-and-the-chain">5.3 Entry bytes and the chain</h3>
+<h3 id="43-entry-bytes-and-the-chain">4.3 Entry bytes and the chain</h3>
 <p>An entry's <strong>bytes</strong> are the bytes of the file from the first byte of its header line to the byte before the first byte of the next header line, or to the end of the file for the last entry. The LF that ends the entry's last line is part of the entry. A reader finds entry bytes by scanning lines for header lines; it MUST NOT find them by parsing the document and serializing a table again.</p>
 <p>The chain:</p>
 <ul>
@@ -138,18 +129,18 @@ type = &quot;hold_applied&quot;</code></pre>
 <li><code>prev</code> of every later entry is the hash of the previous entry's bytes.</li>
 </ul>
 <p>A log is <strong>intact</strong> when every entry's <code>seq</code> is in sequence from <code>1</code> and every entry's <code>prev</code> is the hash it should be. A log that is not intact is <strong>broken at</strong> the first entry whose <code>seq</code> or <code>prev</code> is wrong, and everything from that entry on is unverified. Verification reads the document to take <code>seq</code> and <code>prev</code> from each entry and delimits the bytes to hash them; both are needed, and neither replaces the other.</p>
-<h3 id="54-appending">5.4 Appending</h3>
+<h3 id="44-appending">4.4 Appending</h3>
 <p>A writer appends an entry by writing its bytes after the last byte of the file. It MUST NOT change any byte already in the file. It computes the new entry's <code>prev</code> over the bytes of the last entry as stored, which it reads back rather than remembers. Where the file does not end with LF, or holds no header line at all, the writer MUST refuse to append rather than repair the file, because repairing it would change bytes an earlier hash covers.</p>
 <p>A profile may place the append inside a larger operation (a repack of the container that also changes the flyleaf) and require the two to succeed or fail together. The convention does not.</p>
-<h3 id="55-the-head">5.5 The head</h3>
+<h3 id="45-the-head">4.5 The head</h3>
 <p>The chain covers every entry but the last: nothing hashes the last entry, so an edit to it, or the removal of any number of entries from the end, leaves a log that verifies. A log's <strong>head</strong> is the hash of its last entry's bytes. A profile that needs the last entry and the length of the log to be protected MUST record outside the log either the head or a hash of the whole file, in a place that is itself covered by a hash or written under the profile's own rules (a key in the profile table that is written in the same operation as the append, for example), and MUST state which and where. Verification then checks the recorded value against the log. The head suits a log that is still being appended to; a hash of the whole file suits one that is complete.</p>
 <p>A profile that records no head is stating that the last entry and the log's length are unprotected. That is a legitimate choice for a log whose entries are corroborated elsewhere.</p>
-<h3 id="56-what-breaks-a-log-and-what-is-meant-to">5.6 What breaks a log, and what is meant to</h3>
+<h3 id="46-what-breaks-a-log-and-what-is-meant-to">4.6 What breaks a log, and what is meant to</h3>
 <p>Any tool that rewrites the file's bytes while preserving its TOML meaning breaks the chain: a TOML formatter, a text editor that converts line endings, a version control system normalizing LF to CRLF. The chain is meant to break in every such case, because the log's claim is that the bytes are the bytes that were written. A profile that stores a chained log in a place where such tools run should say so, and an implementation that sees a broken log reports it and never repairs it.</p>
     </section>
 
     <footer>
-        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase-profiles/blob/0887c6000404c665e220b3d28cd9fa8aa6114d28/CONVENTIONS.md" rel="noopener" target="_blank">CONVENTIONS.md</a> at commit <code>0887c60</code>, 27 November 2026. The repository is the authority on profiles: where this page and it differ, it is right and this page is stale.</p>
+        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase-profiles/blob/eeceeff5000fe0c377cc135b78a89e25166e5143/CONVENTIONS.md" rel="noopener" target="_blank">CONVENTIONS.md</a> at commit <code>eeceeff</code>, 27 November 2026. The repository is the authority on profiles: where this page and it differ, it is right and this page is stale.</p>
         <p><small>This document is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener" target="_blank">CC0 1.0</a>. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener" target="_blank">open to pull requests</a>, though not this page — it is generated.</small></p>
     </footer>
 

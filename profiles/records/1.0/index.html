@@ -100,7 +100,7 @@
 </tr>
 <tr class="even">
 <td>Conventions used</td>
-<td>identifiers, agents, hashes, dates and instants, chained logs</td>
+<td>identifiers, hashes, dates and instants, chained logs</td>
 </tr>
 </tbody>
 </table>
@@ -109,6 +109,14 @@
 <strong>Series</strong> — a line of a retention schedule, identified by the organization's code for it, that governs how long a record is kept.<br />
 <strong>Unclassified</strong> — a container carrying no <code>[records]</code> table, or one whose <code>kind</code> is not <code>record</code>, considered as a candidate record. An unclassified container is not a record and nothing in this profile acts on it.</p>
 <p>A container that Slipcase calls undetermined is never passed over silently where records are expected: an undetermined container can hide a record (§9).</p>
+<h3 id="11-agents">1.1 Agents</h3>
+<p>An <strong>agent</strong> is a person, or a system acting on a person's authority, in the organization's directory: someone the organization can hold accountable for something done to a record or for the record itself. It is written as a table with two keys, both required:</p>
+<pre class="toml"><code>actor = { email = &quot;rm@example.com&quot;, id = &quot;8f1c2b9e-1d4a-4e5f-9a0b-6c7d8e9f0a1b&quot; }</code></pre>
+<ul>
+<li><strong><code>email</code></strong> — string. The address external systems match on.</li>
+<li><strong><code>id</code></strong> — string, non-empty. A stable identifier from the organization's directory, which survives a change of name or address. Its form is the directory's.</li>
+</ul>
+<p>Two agents are the same when their <code>id</code> values are equal. <code>email</code> is for people reading and for systems that have nothing else.</p>
 <h2 id="2-records">2. Records</h2>
 <p>A record is a container whose <code>[records]</code> table has <code>kind = "record"</code>. Its content file is the record's primary document. Its parts, where it has several, are components (§2.7). Its history is the event log (§2.8).</p>
 <h3 id="21-example">2.1 Example</h3>
@@ -130,7 +138,7 @@ essential = false
 marking = &quot;Confidential&quot;
 events_head = &quot;9140413d6cd39affadb3669cb7b09cf05ca2a4cd12f3129049e7736d694f5d8a&quot;
 
-[records.creator]
+[records.captured_by]
 email = &quot;jdoe@example.com&quot;
 id = &quot;8f1c2b9e-1d4a-4e5f-9a0b-6c7d8e9f0a1b&quot;
 
@@ -162,7 +170,7 @@ type = &quot;member-of&quot;
 target = &quot;01927a55-2b1c-7e4d-9f6a-3c4d5e6f7a8b&quot;
 title = &quot;Vendor contract C-4471&quot;</code></pre>
 <h3 id="22-keys">2.2 Keys</h3>
-<p>A record's <code>[records]</code> table MUST contain the three framework keys (FRAMEWORK §3) and the following. Types are TOML types; <strong>identifier</strong>, <strong>agent</strong>, <strong>hash</strong>, <strong>date</strong>, and <strong>instant</strong> are CONVENTIONS §1 to §4.</p>
+<p>A record's <code>[records]</code> table MUST contain the three framework keys (FRAMEWORK §3) and the following. Types are TOML types; <strong>identifier</strong>, <strong>hash</strong>, <strong>date</strong>, and <strong>instant</strong> are CONVENTIONS §1 to §3, and <strong>agent</strong> is §1.1.</p>
 <table>
 <thead>
 <tr class="header">
@@ -208,9 +216,9 @@ title = &quot;Vendor contract C-4471&quot;</code></pre>
 <td>The head of the event log (§2.8).</td>
 </tr>
 <tr class="even">
-<td><code>creator</code></td>
+<td><code>captured_by</code></td>
 <td>agent</td>
-<td>Who created the content. Fixed at capture.</td>
+<td>Who brought the container under management as a record. Fixed at capture. Who made the content is not this profile's to say.</td>
 </tr>
 <tr class="odd">
 <td><code>custodian</code></td>
@@ -265,7 +273,7 @@ title = &quot;Vendor contract C-4471&quot;</code></pre>
 <h3 id="23-fixity">2.3 Fixity</h3>
 <pre class="toml"><code>[records.fixity]
 content_sha256 = &quot;51ab...&quot;</code></pre>
-<p><code>content_sha256</code> is a hash (CONVENTIONS §3) of the content file, taken at capture and whenever the content file is replaced (§2.9). An implementation verifying fixity compares it with the content file's bytes as read; a difference means the content has changed since it was last written under this profile, and §9 says what an implementation does about that.</p>
+<p><code>content_sha256</code> is a hash (CONVENTIONS §2) of the content file, taken at capture and whenever the content file is replaced (§2.9). An implementation verifying fixity compares it with the content file's bytes as read; a difference means the content has changed since it was last written under this profile, and §9 says what an implementation does about that.</p>
 <h3 id="24-series">2.4 Series</h3>
 <p>Each entry of <code>series</code> names one line of the organization's retention schedule that governs the record:</p>
 <pre class="toml"><code>[[records.series]]
@@ -355,7 +363,7 @@ sha256 = &quot;a9f2c1d0e8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1&
 <p>Every member of the container under <code>records/components/</code> MUST be named by one entry, and every entry MUST name a member the container holds. A container failing either is non-conformant.</p>
 <p>Components are destroyed with their container, and a component is never shared between containers.</p>
 <h3 id="28-the-event-log">2.8 The event log</h3>
-<p>Every record carries its own history as a chained log (CONVENTIONS §5):</p>
+<p>Every record carries its own history as a chained log (CONVENTIONS §4):</p>
 <table>
 <tbody>
 <tr class="odd">
@@ -378,7 +386,7 @@ sha256 = &quot;a9f2c1d0e8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1&
 </table>
 <p>A record MUST carry the log, the log MUST be intact, and <code>events_head</code> MUST equal the hash of its last entry. The first entry MUST have <code>type = "captured"</code>.</p>
 <p>Every change to the <code>[records]</code> table appends an entry describing it, and the two are written in one operation: a rewrite of the container that changes the table and appends the entry, so that a change and its record can never be separated. <code>events_head</code> is updated in that same operation.</p>
-<p>Each entry carries the keys CONVENTIONS §5.1 requires and:</p>
+<p>Each entry carries the keys CONVENTIONS §4.1 requires and:</p>
 <table>
 <thead>
 <tr class="header">
@@ -1132,7 +1140,7 @@ manifest_sha256 = &quot;e07d...&quot;</code></pre>
 </ol>
 <p>Deletion is an ordinary filesystem delete. Nothing is overwritten, and nothing written under this profile claims secure erasure or media sanitization: the scope statement describes removal from the repository.</p>
 <h3 id="65-the-journal">6.5 The journal</h3>
-<p><code>N.journal</code> is a chained log (CONVENTIONS §5) beside the containers, entry name <code>outcome</code>, seeded from the UTF-8 bytes of the intent flyleaf's hash (the <code>intent_flyleaf_sha256</code> the final will carry). Each entry carries <code>seq</code>, <code>at</code>, <code>prev</code>, and:</p>
+<p><code>N.journal</code> is a chained log (CONVENTIONS §4) beside the containers, entry name <code>outcome</code>, seeded from the UTF-8 bytes of the intent flyleaf's hash (the <code>intent_flyleaf_sha256</code> the final will carry). Each entry carries <code>seq</code>, <code>at</code>, <code>prev</code>, and:</p>
 <table>
 <thead>
 <tr class="header">
@@ -1216,7 +1224,7 @@ journal_sha256 = &quot;b7c4...&quot;</code></pre>
 </tr>
 </tbody>
 </table>
-<p>Every hash is over stored bytes (CONVENTIONS §3). A register's chain is <strong>intact</strong> when, walking from batch 1, every final's five hashes are what they should be, every sequence from 1 to the last is present, no sequence is claimed twice, and every final's intent exists and matches. Verification reports the first batch at which any of this fails, and every unfinished intent; it never repairs.</p>
+<p>Every hash is over stored bytes (CONVENTIONS §2). A register's chain is <strong>intact</strong> when, walking from batch 1, every final's five hashes are what they should be, every sequence from 1 to the last is present, no sequence is claimed twice, and every final's intent exists and matches. Verification reports the first batch at which any of this fails, and every unfinished intent; it never repairs.</p>
 <p><strong>The register records what happened, never what was planned.</strong> A certificate never claims a destruction that did not occur, and a final is never written until every planned record has an outcome.</p>
 <h3 id="67-one-batch-at-a-time-and-recovery">6.7 One batch at a time, and recovery</h3>
 <p>A run MAY claim sequence N only when N−1 is final: batch N's final chains to N−1's, which does not exist while N−1 is running. A run that finds N−1 unfinished, or that loses the exclusive create for N, MUST refuse and report the unfinished batch: its sequence, host, user, start, and last journal entry.</p>
@@ -1440,7 +1448,7 @@ linux = &quot;/mnt/legal&quot;</code></pre>
     </section>
 
     <footer>
-        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase-profiles/blob/0887c6000404c665e220b3d28cd9fa8aa6114d28/records/SPEC.md" rel="noopener" target="_blank">records/SPEC.md</a> at commit <code>0887c60</code>, 27 November 2026. This page is version 1.0 as it was released: where this page and that commit differ, the commit is right and this page is stale.</p>
+        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase-profiles/blob/eeceeff5000fe0c377cc135b78a89e25166e5143/records/SPEC.md" rel="noopener" target="_blank">records/SPEC.md</a> at commit <code>eeceeff</code>, 27 November 2026. This page is version 1.0 as it was released: where this page and that commit differ, the commit is right and this page is stale.</p>
         <p><small>This document is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener" target="_blank">CC0 1.0</a>. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener" target="_blank">open to pull requests</a>, though not this page — it is generated.</small></p>
     </footer>
 
