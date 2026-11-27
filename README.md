@@ -70,4 +70,4 @@ The exceptions belong to other repositories and are carried here as copies:
 `img/slipcase-icon.svg` is from
 [excelano/slipcase-common](https://github.com/excelano/slipcase-common) and
 `axe/` is from [excelano/axe](https://github.com/excelano/axe), each MIT
-licensed, © Excelano LLC.
+licensed, © David M. Anderson.
