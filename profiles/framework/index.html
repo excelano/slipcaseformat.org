@@ -89,7 +89,7 @@
 <p>Slipcase requires an implementation to preserve keys and members it does not recognize (SPEC §3). That requirement is what carries a profile's data through tools that know nothing of the profile, and a profile relies on it rather than restating it.</p>
 <p>A container that Slipcase calls undetermined (SPEC §2.2) is undetermined for every profile: no profile can be read from it and none can be said to apply.</p>
 <h2 id="3-the-profile-table">3. The profile table</h2>
-<p>A profile owns exactly one top-level table in the flyleaf, and everything the profile defines in the flyleaf lives inside that table. The table's name is the profile's use-case word (§9), in lowercase ASCII letters.</p>
+<p>A profile owns exactly one top-level table in the flyleaf, and everything the profile defines in the flyleaf lives inside that table. The table's name is the profile's use-case word (§9): lowercase ASCII letters and digits, beginning with a letter.</p>
 <p>The table MUST contain these three keys:</p>
 <pre class="toml"><code>[records]
 profile = &quot;https://slipcaseformat.org/profiles/records&quot;
@@ -125,7 +125,7 @@ kind = &quot;record&quot;</code></pre>
 <h2 id="8-shared-conventions">8. Shared conventions</h2>
 <p>Identifiers, hashes, dates and instants, and chained logs are defined once, in <code>CONVENTIONS.md</code>, and are versioned with this framework. A profile MUST state which conventions it uses and MUST NOT define its own form for anything a convention defines. A profile MAY leave a convention unused.</p>
 <h2 id="9-official-profiles">9. Official profiles</h2>
-<p>An official profile is one specified in this repository. Its name is <strong>Slipcase <em>Use</em> Profile</strong>, where <em>Use</em> is one word naming the purpose, and that word is the same everywhere the profile is referred to:</p>
+<p>An official profile is one specified in this repository. Its name is <strong>Slipcase <em>Use</em> Profile</strong>, where <em>Use</em> is one word naming the purpose, or the name of the standard the profile carries (as <code>id3</code> or <code>mp4</code>), and that word is the same everywhere the profile is referred to:</p>
 <table>
 <thead>
 <tr class="header">
@@ -190,7 +190,7 @@ kind = &quot;record&quot;</code></pre>
     </section>
 
     <footer>
-        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase-profiles/blob/eeceeff5000fe0c377cc135b78a89e25166e5143/FRAMEWORK.md" rel="noopener" target="_blank">FRAMEWORK.md</a> at commit <code>eeceeff</code>, 27 November 2026. The repository is the authority on profiles: where this page and it differ, it is right and this page is stale.</p>
+        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase-profiles/blob/a53f45c1ff0f4f0fa259e1f2af00018b31658f18/FRAMEWORK.md" rel="noopener" target="_blank">FRAMEWORK.md</a> at commit <code>a53f45c</code>, 27 November 2026. The repository is the authority on profiles: where this page and it differ, it is right and this page is stale.</p>
         <p><small>This document is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener" target="_blank">CC0 1.0</a>. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener" target="_blank">open to pull requests</a>, though not this page — it is generated.</small></p>
     </footer>
 

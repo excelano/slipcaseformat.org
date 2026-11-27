@@ -102,7 +102,7 @@
 </table>
 <p><strong>Resource</strong> — the content file the container holds, which the <code>[core]</code> table describes. DCMI calls the thing described a resource, and the kind takes its name.</p>
 <p><strong>DCMI term</strong> — a property of the DCMI Metadata Terms, identified by a URI of the form <code>http://purl.org/dc/terms/&lt;name&gt;</code>. Each key in §2.2 names the term it is, and DCMI's definition is the authority on what the term means. The definitions below are summaries for a reader of this document.</p>
-<p><strong>Source</strong> — metadata a content file already carries in its own format: Office document properties, OpenDocument metadata, a PDF's document information or an XMP packet (§4).</p>
+<p><strong>Source</strong> — Dublin Core metadata a content file already carries in its own format (§4).</p>
 <h2 id="2-the-core-table">2. The core table</h2>
 <p>A container is described under this profile when its flyleaf carries a <code>[core]</code> table with the three framework keys (FRAMEWORK §3) and <code>kind = "resource"</code>. Every other key is optional: a table carrying only the framework keys is conformant and says nothing about the resource.</p>
 <h3 id="21-example">2.1 Example</h3>
@@ -279,6 +279,8 @@ email = &quot;jdoe@gulfgeo.example&quot;</code></pre>
 </tbody>
 </table>
 <p>Key names are DCMI's own, case included, so that <code>rightsHolder</code> here is <code>rightsHolder</code> in every DCMI serialization. Keys this section does not define are permitted in the table and MUST be preserved (FRAMEWORK §3). A later version of this profile may add DCMI terms; it never adds a key that is not one.</p>
+<h3 id="23-a-statement-about-the-resource">2.3 A statement about the resource</h3>
+<p>The <code>[core]</code> table is a statement about the resource made by whoever wrote the container. Where it disagrees with metadata the content file carries, the table is what this profile reads: it may correct a file's own metadata without the file being rewritten. An implementation MUST NOT replace a value in the table with one taken from the content file except at a person's request.</p>
 <h2 id="3-value-forms">3. Value forms</h2>
 <h3 id="31-attribution">3.1 Attribution</h3>
 <p><code>creator</code>, <code>contributor</code>, <code>publisher</code>, and <code>rightsHolder</code> are arrays of tables, one table per person or organization, in the order they are credited:</p>
@@ -334,237 +336,25 @@ email = &quot;jdoe@gulfgeo.example&quot;</code></pre>
 <h3 id="38-license">3.8 License</h3>
 <p><code>license</code> is an array of strings, each an absolute URI naming a license: a Creative Commons deed, an SPDX license page, an organization's own terms. Free-text statements belong in <code>rights</code>.</p>
 <h2 id="4-filling-from-a-source">4. Filling from a source</h2>
-<p>An implementation that fills <code>[core]</code> from metadata the content file already carries MUST map it as this section states, so that two implementations reading the same file write the same table. An implementation MAY fill some keys and not others; a key it fills, it fills this way. A person writing the table by hand is not bound by this section.</p>
-<h3 id="41-office-open-xml">4.1 Office Open XML</h3>
-<p>The core properties part (<code>docProps/core.xml</code> in a Word, Excel, or PowerPoint file):</p>
-<table>
-<thead>
-<tr class="header">
-<th>Source</th>
-<th>Key</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>dc:title</code></td>
-<td><code>title</code></td>
-<td></td>
-</tr>
-<tr class="even">
-<td><code>dc:subject</code></td>
-<td><code>subject</code></td>
-<td>First entry. Office's Subject field is a topic phrase.</td>
-</tr>
-<tr class="odd">
-<td><code>cp:keywords</code></td>
-<td><code>subject</code></td>
-<td>Further entries: the value split on <code>;</code> and <code>,</code>, each part trimmed, empty parts dropped.</td>
-</tr>
-<tr class="even">
-<td><code>dc:creator</code></td>
-<td><code>creator</code></td>
-<td>One attribution table (§4.5).</td>
-</tr>
-<tr class="odd">
-<td><code>dc:description</code></td>
-<td><code>description</code></td>
-<td></td>
-</tr>
-<tr class="even">
-<td><code>dc:language</code></td>
-<td><code>language</code></td>
-<td>One entry.</td>
-</tr>
-<tr class="odd">
-<td><code>dc:identifier</code></td>
-<td><code>identifier</code></td>
-<td>One entry.</td>
-</tr>
-<tr class="even">
-<td><code>dcterms:created</code></td>
-<td><code>created</code></td>
-<td>§4.5 for an instant.</td>
-</tr>
-<tr class="odd">
-<td><code>dcterms:modified</code></td>
-<td><code>modified</code></td>
-<td>§4.5 for an instant.</td>
-</tr>
-</tbody>
-</table>
-<p><code>cp:lastModifiedBy</code>, <code>cp:revision</code>, <code>cp:category</code>, <code>cp:contentStatus</code>, <code>cp:lastPrinted</code>, and <code>cp:version</code> are not Dublin Core and map to nothing.</p>
-<h3 id="42-opendocument">4.2 OpenDocument</h3>
-<p>The metadata of an OpenDocument file (<code>meta.xml</code>):</p>
-<table>
-<thead>
-<tr class="header">
-<th>Source</th>
-<th>Key</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>dc:title</code></td>
-<td><code>title</code></td>
-<td></td>
-</tr>
-<tr class="even">
-<td><code>dc:description</code></td>
-<td><code>description</code></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td><code>dc:subject</code></td>
-<td><code>subject</code></td>
-<td>First entry.</td>
-</tr>
-<tr class="even">
-<td><code>meta:keyword</code></td>
-<td><code>subject</code></td>
-<td>Further entries, one per element, in document order.</td>
-</tr>
-<tr class="odd">
-<td><code>meta:initial-creator</code></td>
-<td><code>creator</code></td>
-<td>One attribution table (§4.5).</td>
-</tr>
-<tr class="even">
-<td><code>meta:creation-date</code></td>
-<td><code>created</code></td>
-<td>§4.5 for an instant.</td>
-</tr>
-<tr class="odd">
-<td><code>dc:date</code></td>
-<td><code>modified</code></td>
-<td>§4.5 for an instant.</td>
-</tr>
-<tr class="even">
-<td><code>dc:language</code></td>
-<td><code>language</code></td>
-<td>One entry.</td>
-</tr>
-</tbody>
-</table>
-<p>OpenDocument's <code>dc:creator</code> names whoever last modified the file, not its author, and maps to nothing; <code>meta:initial-creator</code> is the author. <code>meta:generator</code> maps to nothing.</p>
-<h3 id="43-pdf-document-information">4.3 PDF document information</h3>
-<p>The document information dictionary of a PDF:</p>
-<table>
-<thead>
-<tr class="header">
-<th>Source</th>
-<th>Key</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>/Title</code></td>
-<td><code>title</code></td>
-<td></td>
-</tr>
-<tr class="even">
-<td><code>/Author</code></td>
-<td><code>creator</code></td>
-<td>One attribution table (§4.5).</td>
-</tr>
-<tr class="odd">
-<td><code>/Subject</code></td>
-<td><code>description</code></td>
-<td>Where XMP places it (<code>dc:description</code>), so §4.3 and §4.4 agree when combined.</td>
-</tr>
-<tr class="even">
-<td><code>/Keywords</code></td>
-<td><code>subject</code></td>
-<td>The value split on <code>;</code> and <code>,</code>, each part trimmed, empty parts dropped.</td>
-</tr>
-<tr class="odd">
-<td><code>/CreationDate</code></td>
-<td><code>created</code></td>
-<td>§4.5 for an instant.</td>
-</tr>
-<tr class="even">
-<td><code>/ModDate</code></td>
-<td><code>modified</code></td>
-<td>§4.5 for an instant.</td>
-</tr>
-</tbody>
-</table>
-<p><code>/Creator</code> names the application that made the original document and <code>/Producer</code> the one that wrote the PDF; neither maps.</p>
-<h3 id="44-xmp">4.4 XMP</h3>
-<p>An XMP packet: a PDF's metadata stream, or the metadata embedded in an image.</p>
-<table>
-<thead>
-<tr class="header">
-<th>Source</th>
-<th>Key</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>dc:title</code></td>
-<td><code>title</code></td>
-<td>The <code>x-default</code> alternative, else the first.</td>
-</tr>
-<tr class="even">
-<td><code>dc:creator</code></td>
-<td><code>creator</code></td>
-<td>One attribution table per sequence item, in order.</td>
-</tr>
-<tr class="odd">
-<td><code>dc:description</code></td>
-<td><code>description</code></td>
-<td>The <code>x-default</code> alternative, else the first.</td>
-</tr>
-<tr class="even">
-<td><code>dc:subject</code></td>
-<td><code>subject</code></td>
-<td>One entry per bag item.</td>
-</tr>
-<tr class="odd">
-<td><code>dc:rights</code></td>
-<td><code>rights</code></td>
-<td>One entry: the <code>x-default</code> alternative, else the first.</td>
-</tr>
-<tr class="even">
-<td><code>dc:format</code></td>
-<td><code>format</code></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td><code>dc:language</code></td>
-<td><code>language</code></td>
-<td>One entry per bag item.</td>
-</tr>
-<tr class="even">
-<td><code>xmp:CreateDate</code></td>
-<td><code>created</code></td>
-<td>§4.5 for an instant.</td>
-</tr>
-<tr class="odd">
-<td><code>xmp:ModifyDate</code></td>
-<td><code>modified</code></td>
-<td>§4.5 for an instant.</td>
-</tr>
-<tr class="even">
-<td><code>xmpRights:WebStatement</code></td>
-<td><code>license</code></td>
-<td>One entry, when the value is an absolute URI.</td>
-</tr>
-</tbody>
-</table>
-<p>Where a PDF carries both an XMP packet and a document information dictionary, they are combined key by key: each key takes the XMP value where XMP yields one, and the dictionary's where it does not.</p>
-<h3 id="45-rules-for-every-source">4.5 Rules for every source</h3>
+<p>Many files already carry Dublin Core: an Office document's core properties, an OpenDocument file's metadata, the XMP packet in a PDF or an image. An implementation that fills <code>[core]</code> from Dublin Core a content file carries MUST fill it as this section states, so that two implementations reading the same file write the same table. It fills only keys that are absent; a key already present is replaced only at a person's request (§2.3). A person writing the table by hand is not bound by this section.</p>
+<h3 id="41-which-elements">4.1 Which elements</h3>
+<p>An element in the Dublin Core elements namespace (<code>http://purl.org/dc/elements/1.1/</code>) or the DCMI terms namespace (<code>http://purl.org/dc/terms/</code>) whose local name is a key in §2.2 fills that key: <code>dc:title</code> fills <code>title</code>, <code>dcterms:created</code> fills <code>created</code>. Nothing else in a file fills <code>[core]</code>: an element in any other namespace maps to nothing, whatever it means, and so does a Dublin Core element whose local name §2.2 does not define.</p>
+<p>One element is excluded by name. OpenDocument defines its <code>dc:creator</code> as the person who last modified the file, not the author, so an OpenDocument <code>dc:creator</code> maps to nothing.</p>
+<h3 id="42-where-to-read">4.2 Where to read</h3>
+<p>A format's primary metadata is read: <code>docProps/core.xml</code> in an Office Open XML file, <code>meta.xml</code> in an OpenDocument file, the document's metadata stream in a PDF, the XMP packet in an image. Where a file carries Dublin Core in more than one place, only the primary metadata is read.</p>
+<h3 id="43-values">4.3 Values</h3>
+<ul>
+<li>A text element fills a single-text key with its value, or adds one entry to a repeatable-text key.</li>
+<li>An XMP language alternative contributes its <code>x-default</code> item, or its first item where there is none; an XMP sequence or bag contributes one entry per item, in order.</li>
+<li>A <code>creator</code>, <code>contributor</code>, <code>publisher</code>, or <code>rightsHolder</code> value becomes one attribution table whose <code>name</code> is the value, whatever separators it contains: <code>Doe, J.; Roe, R.</code> is one name. A source never yields an <code>email</code>, <code>uri</code>, <code>orcid</code>, or <code>lei</code> the file does not state as one.</li>
+<li>A date element holding a full date fills the date key with it. One holding a date and time fills it with the date in UTC, a time that states no offset being read as UTC. One giving only a year, or a year and month, maps to nothing.</li>
+<li><code>type</code> is filled only by a value that is one of the twelve terms of §3.5.</li>
+</ul>
+<h3 id="44-rules-for-every-value">4.4 Rules for every value</h3>
 <ul>
 <li>A value is trimmed of leading and trailing whitespace. A value that is then empty maps to nothing, and a key with nothing mapped to it is left absent, never written as an empty string or an empty array.</li>
-<li>An author string becomes one attribution table whose <code>name</code> is the string, whatever separators it contains: <code>Doe, J.; Roe, R.</code> is one name. Only the keyword fields of §4.1 and §4.3 are split. A source never yields an <code>email</code>, <code>uri</code>, <code>orcid</code>, or <code>lei</code> the file does not state as one.</li>
-<li>An instant becomes its date in UTC. A timestamp that states no offset is read as UTC. A date that gives only a year or a year and month maps to nothing, since a date key holds a whole day.</li>
-<li>Subject entries keep their first occurrence and drop later exact duplicates.</li>
-<li>A source field this section does not list maps to nothing, even where its name matches a key.</li>
-<li>A value that would not satisfy §5 for its key maps to nothing; the rest of the source is still mapped.</li>
-<li><code>format</code>, where the source does not state it, is the content file's media type as the implementation determines it, or absent.</li>
+<li>A value that would not satisfy §5 for its key maps to nothing; the rest of the file is still read.</li>
+<li>A repeatable key keeps the first occurrence of a value and drops later exact duplicates.</li>
 </ul>
 <h2 id="5-conformance">5. Conformance</h2>
 <p>A container conforms to this version when its <code>[core]</code> table satisfies FRAMEWORK §3 and §5 and each of the following, where the key is present:</p>
@@ -584,6 +374,7 @@ email = &quot;jdoe@gulfgeo.example&quot;</code></pre>
 <ul>
 <li>MUST preserve keys in <code>[core]</code> it does not recognize, and the order of entries in every array it does not change;</li>
 <li>MUST NOT write an empty string, an empty array, or an attribution table without a <code>name</code>;</li>
+<li>MUST NOT replace a value in the table with one taken from the content file except at a person's request (§2.3);</li>
 <li>MUST, when it fills the table from a source, follow §4.</li>
 </ul>
 <h2 id="7-security-considerations">7. Security considerations</h2>
@@ -591,7 +382,7 @@ email = &quot;jdoe@gulfgeo.example&quot;</code></pre>
     </section>
 
     <footer>
-        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase-profiles/blob/98351a6afb3e4ccf308af9024b3e9417543b2cf7/core/SPEC.md" rel="noopener" target="_blank">core/SPEC.md</a> at commit <code>98351a6</code>, 27 November 2026. The repository is the authority on profiles: where this page and it differ, it is right and this page is stale.</p>
+        <p class="provenance">Rendered from <a href="https://github.com/excelano/slipcase-profiles/blob/b680a06958ecea63e84217f2206ac2a02d6aab8d/core/SPEC.md" rel="noopener" target="_blank">core/SPEC.md</a> at commit <code>b680a06</code>, 27 November 2026. The repository is the authority on profiles: where this page and it differ, it is right and this page is stale.</p>
         <p><small>This document is dedicated to the public domain under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener" target="_blank">CC0 1.0</a>. This site is <a href="https://github.com/excelano/slipcaseformat.org" rel="noopener" target="_blank">open to pull requests</a>, though not this page — it is generated.</small></p>
     </footer>
 
